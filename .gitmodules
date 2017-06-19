@@ -1,0 +1,3 @@
+[submodule "ARTutorial"]
+	path = ARTutorial
+	url = ../../Hrily/ARTutorial.git
