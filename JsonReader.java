@@ -26,7 +26,9 @@ public class JsonReader {
 			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
 			String strTemp = "";
 			while (null != (strTemp = br.readLine())) {
+				JSONObject j = new JSONObject(strTemp);
 				System.out.println(strTemp);
+				System.out.println(j.toString());
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
