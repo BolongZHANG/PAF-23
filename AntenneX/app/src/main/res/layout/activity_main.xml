@@ -6,6 +6,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
 
+    <FrameLayout
+        android:id="@+id/frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true">
+
+    </FrameLayout>
+
+
+
+
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        app:itemIconTint="@color/blueDoctihome"
+        app:itemTextColor="@color/black"
+        app:menu="@menu/bottom_navigation_bar"/>
+
+
 
     <Button
         android:id="@+id/camera"
@@ -25,6 +48,9 @@
         android:layout_marginBottom="28dp"
         android:text="Cliquer ici"
         android:textColor="@color/white"
+        android:background="@drawable/grey_border_bottom"
         android:textStyle="bold"
         android:elevation="100dp" />
+
+
 </RelativeLayout>
