@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#51c3f9</color>
+    <color name="colorPrimaryDark">#536d81</color>
+    <color name="colorAccent">#99cb38</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="blueHome">#2196f3</color>
+
+    <color name="red">#bc060b</color>
+    <color name="grey">#383737</color>
+    <color name="grey_light">#cccbcb</color>
+    <color name="green">#09ce7c</color>
+    <color name="purple">#41094b</color>
+    <color name="blueDoctihome">#44a0df</color>
+    <color name="greyDoctihome">#4a4a4a</color>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</resources>
