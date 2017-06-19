@@ -22,13 +22,13 @@ public class JsonReader {
  
 	public static void main(String[] args) {
 		try {
-			URL url = new URL("https://data.anfr.fr/api/datasets/1.0/search/?q=rt");
+			URL url = new URL("https://data.anfr.fr/api/datasets/1.0/search/?nom_dept=PARIS&rows=14");
 			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
 			String strTemp = "";
 			while (null != (strTemp = br.readLine())) {
 				JSONObject j = new JSONObject(strTemp);
-				System.out.println(strTemp);
-				System.out.println(j.toString());
+				//System.out.println(strTemp);
+				System.out.println(j.toString(8));
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
