@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+<<<<<<< a936adad094b9a98c657c255d58bee8739fb4309
 
 public class Fragment2 extends Fragment implements View.OnClickListener{
 
@@ -54,6 +55,16 @@ public class Fragment2 extends Fragment implements View.OnClickListener{
     }
 
 
+=======
+
+public class Fragment2 extends Fragment {
+
+    Button gallery_btn ;
+
+
+
+
+>>>>>>> 22cf2e6af8734ec60fb560868be50075b1812d8b
     public static Fragment2 newInstance() {
         Fragment2 fragment = new Fragment2();
         return fragment;

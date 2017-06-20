@@ -1,6 +1,7 @@
 package com.example.mous.antennex;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Bundle;
 
@@ -10,8 +11,24 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 
-public class Fragment1 extends android.support.v4.app.Fragment{
+public class Fragment1 extends android.support.v4.app.Fragment implements View.OnClickListener {
     private Button btn_camera ;
+
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedinstanceState) {
+        View myView = inflater.inflate(R.layout.fragment1_layout, container, false);
+        btn_camera = (Button) myView.findViewById(R.id.camera);
+        btn_camera.setOnClickListener(this);
+        return myView;
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        Intent intent = new Intent (getActivity(), CoreActivity.class);
+        getActivity().startActivity(intent);
+
+    }
 
     public static Fragment1 newInstance() {
         Fragment1 fragment = new Fragment1();
@@ -22,11 +39,5 @@ public class Fragment1 extends android.support.v4.app.Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-    }
+    }}
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment1_layout, container, false);
-    }
-}
