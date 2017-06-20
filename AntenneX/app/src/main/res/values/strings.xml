@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AntenneX</string>
+    <string name="title_activity_resume">ResumeActivity</string>
 </resources>
