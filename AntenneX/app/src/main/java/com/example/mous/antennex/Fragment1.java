@@ -4,17 +4,14 @@ package com.example.mous.antennex;
 
 import android.view.View;
 
-        import android.app.Fragment;
-        import android.content.Intent;
-        import android.os.Bundle;
+import android.content.Intent;
         import android.os.Bundle;
 
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
         import android.widget.Button;
 
-import com.example.mous.antennex.AugmentedReality.CoreActivity;
+import com.example.mous.antennex.augmentedReality.CoreActivity;
 
 
 public class Fragment1 extends android.support.v4.app.Fragment implements View.OnClickListener {

@@ -31,10 +31,18 @@
             </intent-filter>
         </activity>
         <activity android:name=".GalleryActivity" />
+        <activity android:name=".augmentedReality.CoreActivity" />
+
+
         <activity
             android:name=".ResumeActivity"
             android:label="@string/title_activity_resume"
             android:theme="@style/AppTheme"></activity>
+
+
+
+
+
     </application>
 
 </manifest>

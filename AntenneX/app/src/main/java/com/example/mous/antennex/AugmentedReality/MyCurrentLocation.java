@@ -1,4 +1,4 @@
-package com.example.mous.antennex.AugmentedReality;
+package com.example.mous.antennex.augmentedReality;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;

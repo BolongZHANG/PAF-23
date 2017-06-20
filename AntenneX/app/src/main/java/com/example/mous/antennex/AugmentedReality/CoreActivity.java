@@ -1,4 +1,4 @@
-package com.example.mous.antennex.AugmentedReality;
+package com.example.mous.antennex.augmentedReality;
 
 
 
@@ -21,11 +21,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.mous.antennex.R;
-import com.google.android.gms.maps.LocationSource;
 
 import java.io.IOException;
-        import java.util.ArrayList;
-        import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Callback, OnLocationChangedListener, OnAzimuthChangedListener {
 

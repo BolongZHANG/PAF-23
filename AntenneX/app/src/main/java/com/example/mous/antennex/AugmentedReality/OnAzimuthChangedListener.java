@@ -1,4 +1,4 @@
-package com.example.mous.antennex.AugmentedReality;
+package com.example.mous.antennex.augmentedReality;
 
 /**
  * Created by Mous on 20/06/2017.
