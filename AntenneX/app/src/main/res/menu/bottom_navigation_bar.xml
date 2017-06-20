@@ -6,12 +6,14 @@
         android:id="@+id/homeItem"
         android:icon="@drawable/accueil"
         android:title="Accueil"
+        android:color="@color/red"
         android:enabled="true"
         app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/historique"
         android:icon="@drawable/ic_history"
+        android:color="@color/red"
         android:title="Historique"
         android:enabled="true"
         app:showAsAction="ifRoom"/>
@@ -19,6 +21,7 @@
     <item
         android:id="@+id/parameter"
         android:icon="@drawable/parameter"
+        android:color="@color/red"
         android:title="Paramètres"
         android:enabled="true"
         app:showAsAction="ifRoom"/>

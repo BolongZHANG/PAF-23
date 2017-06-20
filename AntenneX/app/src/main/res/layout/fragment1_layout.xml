@@ -23,8 +23,8 @@
         android:layout_marginBottom="28dp"
         android:text="Cliquer ici"
         android:textColor="@color/white"
-        android:background="@drawable/grey_border_bottom"
-        android:textStyle="bold"
-        android:elevation="100dp" />
+
+        android:elevation="100dp"
+        />
 
 </RelativeLayout>

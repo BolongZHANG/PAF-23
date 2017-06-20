@@ -24,7 +24,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@drawable/grey_border_bottom"
-        app:itemIconTint="@color/blueDoctihome"
         app:itemTextColor="@color/black"
         app:menu="@menu/bottom_navigation_bar"/>
 
