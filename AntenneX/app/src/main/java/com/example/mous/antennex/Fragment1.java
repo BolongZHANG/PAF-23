@@ -7,8 +7,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
 
 public class Fragment1 extends android.support.v4.app.Fragment{
+    private Button btn_camera ;
+
     public static Fragment1 newInstance() {
         Fragment1 fragment = new Fragment1();
         return fragment;
@@ -17,6 +21,7 @@ public class Fragment1 extends android.support.v4.app.Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
