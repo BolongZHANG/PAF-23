@@ -5,5 +5,5 @@ package com.paf23.antennex;
  */
 
 public interface OnRollChangedListener {
-    void onAzimuthChanged(float azimuthFrom, float azimuthTo);
+    void onRollChanged(float azimuthFrom, float azimuthTo);
 }

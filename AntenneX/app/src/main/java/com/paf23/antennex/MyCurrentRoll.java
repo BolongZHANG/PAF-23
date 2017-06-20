@@ -15,13 +15,13 @@ public class MyCurrentRoll implements SensorEventListener {
 
     private SensorManager sensorManager;
     private Sensor sensor;
-    private int azimuthFrom = 0;
-    private int azimuthTo = 0;
-    private OnAzimuthChangedListener mAzimuthListener;
+    private int rollFrom = 0;
+    private int rollTo = 0;
+    private OnRollChangedListener mRollListener;
     Context mContext;
 
-    public MyCurrentRoll(OnAzimuthChangedListener azimuthListener, Context context) {
-        mAzimuthListener = azimuthListener;
+    public MyCurrentRoll(OnRollChangedListener rollListener, Context context) {
+        mRollListener = rollListener;
         mContext = context;
     }
 
@@ -40,20 +40,20 @@ public class MyCurrentRoll implements SensorEventListener {
         sensorManager.unregisterListener(this);
     }
 
-    public void setOnShakeListener(OnAzimuthChangedListener listener) {
-        mAzimuthListener = listener;
+    public void setOnShakeListener(OnRollChangedListener listener) {
+        mRollListener = listener;
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        azimuthFrom = azimuthTo;
+        rollFrom = rollTo;
 
         float[] orientation = new float[3];
         float[] rMat = new float[9];
         SensorManager.getRotationMatrixFromVector(rMat, event.values);
-        azimuthTo = (int) ( Math.toDegrees( SensorManager.getOrientation( rMat, orientation )[0] ) + 360 ) % 360;
+        rollTo =  (- (int) ( Math.toDegrees( SensorManager.getOrientation( rMat, orientation )[2] ))) % 180;
 
-        mAzimuthListener.onAzimuthChanged(azimuthFrom, azimuthTo);
+        mRollListener.onRollChanged(rollFrom, rollTo);
     }
 
     @Override
@@ -61,4 +61,5 @@ public class MyCurrentRoll implements SensorEventListener {
 
     }
 }
+
 

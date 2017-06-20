@@ -7,3 +7,4 @@ package com.paf23.antennex;
 public interface OnAzimuthChangedListener {
     void onAzimuthChanged(float azimuthFrom, float azimuthTo);
 }
+
