@@ -112,19 +112,16 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     public double calculateTheoreticalRoll(AugmentedPOI poi) {
         // Calculates Roll angle  of POI
-        double dy = poi.getPoiLatitude() - mMyLatitude;
-        double dx = poi.getPoiLongitude() - mMyLongitude;
-        double dz = poi.getPoiAltitude() - mMyAltitude;
-
+        double d = distance(poi.getPoiLatitude(), poi.getPoiLongitude(), mMyLatitude,mMyLongitude);
+        Double dz = poi.getPoiAltitude() - mMyAltitude;
         double tanTheta;
         double theta;
 
-        tanTheta= Math.abs(dz/ Math.sqrt(dx*dx+dy*dy));
-        Double tanteta = (Double) tanTheta;
-        Log.d("Sylvain","tanteta "+ tanteta.toString());
+        tanTheta= Math.abs(dz/d);
         theta = Math.atan(tanTheta);
-        //theta = theta *180/Math.PI;
-
+        theta = theta *180/Math.PI;
+        Double thheta = (Double) theta;
+        Log.d("Sylvaintheta","theta "+ thheta.toString());
         return theta;
     }
 
@@ -168,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
             if (rollIsBetween(0, maxAngle, roll) || rollIsBetween(minAngle, 360, roll))
                 return true;
         } else if (roll > minAngle && roll < maxAngle)*/
-        Boolean test = roll> minAngle && roll> maxAngle;
+        Boolean test = roll> minAngle && roll< maxAngle;
         Double minangle = minAngle;
         Double maxangle = maxAngle;
         Log.d("Sylvain", "AHLALALALALALA   " + minangle.toString()+ "  " + maxangle.toString() + " " + roll +" " + test.toString());
@@ -180,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     private void updateDescription() {
         descriptionTextView.setText(mPoi2.getPoiName() + " azimuthTheoretical2 " // faudrait le faire pour les autres poi aussi
-                + mAzimuthTheoretical2 + " azimuthReal " + mAzimuthReal + "rollTheoretical2"+ mRollTheoretical2 + " RollReal " + mRollReal + " latitude "
+                + mAzimuthTheoretical2 + " azimuthReal " + mAzimuthReal + " rollTheoretical2 "+ mRollTheoretical2 + " RollReal " + mRollReal + " latitude "
                 + mMyLatitude + " longitude " + mMyLongitude + " altitude " + mMyAltitude +  " angle caméra " + ROLL_ACCURACY);
     }
 
@@ -311,22 +308,20 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         isCameraViewOn = false;
     }
 
-    public void consequenceIsBetween(double azimuthTheoretical, double mRollTheoretical, ImageView pointer){
+    public void consequenceIsBetween(double azimuthTheoretical, double rollTheoretical, ImageView pointer){
 
         double minAngleA = calculateAzimuthAccuracy(mAzimuthReal).get(0);
         double maxAngleA = calculateAzimuthAccuracy(mAzimuthReal).get(1);
         double minAngleR = calculateRollAccuracy(mRollReal).get(0);
         double maxAngleR = calculateRollAccuracy(mRollReal).get(1);
-        Double minangle = (Double) minAngleR;
-        Double maxangle = (Double) maxAngleR;
-        Boolean test = rollIsBetween(minAngleR, maxAngleR, mRollTheoretical);
-        Log.d("Sylvain", minangle.toString() + "   " + maxangle.toString() + "   " + test.toString());
 
-        if (azimuthIsBetween(minAngleA, maxAngleA, azimuthTheoretical)&& rollIsBetween(minAngleR, maxAngleR, mRollTheoretical)) {
-            float ratio = ((float) (azimuthTheoretical - minAngleA + 360.0) % 360) / ((float) (maxAngleA - minAngleA + 360.0) % 360);
+
+        if (azimuthIsBetween(minAngleA, maxAngleA, azimuthTheoretical)&& rollIsBetween(minAngleR, maxAngleR, rollTheoretical)) {
+            float ratioAzimuth = ((float) (azimuthTheoretical - minAngleA + 360.0) % 360) / ((float) (maxAngleA - minAngleA + 360.0) % 360);
+            float ratioRoll = ((float) (rollTheoretical - minAngleR) % 180) / ((float) (maxAngleR - minAngleR) % 180);
             RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            lp.topMargin = (int) (display.getHeight() * ratio);
-            lp.leftMargin = display.getWidth()/2 - pointer.getWidth();
+            lp.topMargin = (int) (display.getHeight() * ratioAzimuth);
+            lp.leftMargin = (int) (display.getWidth() * ratioRoll ) ;
             pointer.setLayoutParams(lp);
             pointer.setVisibility(View.VISIBLE);
         } else {
@@ -334,6 +329,24 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         }
     }
 
+    //Conversion des degrés en radian
+    public double convertToRad(double degrees){
+        return (Math.PI * degrees)/180;
+    }
+
+    public double distance( double lat_a_degre,  double lon_a_degre, double lat_b_degre,  double lon_b_degre) {
+
+        double R = 6378000; //Rayon de la terre en mètre
+
+        double lat_a = convertToRad(lat_a_degre);
+        double lon_a = convertToRad(lon_a_degre);
+        double lat_b = convertToRad(lat_b_degre);
+        double lon_b = convertToRad(lon_b_degre);
+
+        double d = R * (Math.PI / 2 - Math.asin(Math.sin(lat_b) * Math.sin(lat_a) + Math.cos(lon_b - lon_a) * Math.cos(lat_b) * Math.cos(lat_a)));
+
+        return d;
+    }
 
 
 }
