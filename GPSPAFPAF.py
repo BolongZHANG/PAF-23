@@ -77,13 +77,13 @@ map_osm.save('paf.html')
 #
 #
 #
-#import gmplot
-#
-#
-#gmap = gmplot.GoogleMapPlotter(46.439882,0.11577,16)
-#
-#
-#gmap.scatter([46.43991,46.43981,46.43971,46.43961], [0.115835,0.115845,0.115855,0.115865], '#logo2',size = 1, marker=True)
-#
-#gmap.draw("test34.html")
+import gmplot
+
+
+gmap = gmplot.GoogleMapPlotter(48.853,2.35,16)
+#gmap = gmplot.from_geocode("Paris")
+
+gmap.scatter(Lat,Long, '#logo2',size = 1, marker=True)
+
+gmap.draw("test34.html")
 
