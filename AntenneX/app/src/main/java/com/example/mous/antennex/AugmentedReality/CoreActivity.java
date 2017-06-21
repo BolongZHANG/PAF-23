@@ -91,6 +91,7 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent (getApplicationContext(), ResumeActivity.class);
+                startActivity(intent);
             }
         });
 
