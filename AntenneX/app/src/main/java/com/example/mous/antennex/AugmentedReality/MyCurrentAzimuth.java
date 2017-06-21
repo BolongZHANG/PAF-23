@@ -29,7 +29,7 @@ public class MyCurrentAzimuth implements SensorEventListener {
         //@TODO: CHECKER SI CE QUI SUIT EST BON : J'ai modifie la premiere condition à != null !!
 
 
-        if(sensor != null) sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR);
+        if(sensor == null) sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR);
         if(sensor == null){
             sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR);
             Toast.makeText(mContext, "Using Game Rotation Vector. Direction may not be accurate!", Toast.LENGTH_SHORT).show();

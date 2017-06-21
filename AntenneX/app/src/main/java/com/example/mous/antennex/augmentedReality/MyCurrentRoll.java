@@ -36,7 +36,7 @@ public class MyCurrentRoll implements SensorEventListener {
 
 
 
-        if(sensor != null) sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR);
+        if(sensor == null) sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR);
         if(sensor == null){
             sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR);
             Toast.makeText(mContext, "Using Game Rotation Vector. Direction may not be accurate!", Toast.LENGTH_SHORT).show();
@@ -67,9 +67,12 @@ public class MyCurrentRoll implements SensorEventListener {
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+        //@TODO: COMPLETER !!
+        return;
+
     }
 }
 
 
 
-}
+

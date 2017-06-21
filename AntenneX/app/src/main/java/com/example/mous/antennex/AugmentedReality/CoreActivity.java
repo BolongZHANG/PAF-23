@@ -89,15 +89,15 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
         mPoi = new AugmentedPOI(
                 "NITK",
                 "Surathkal",
-                13.0124554,
-                74.7980362, 10
+                2.27917,
+                48.84694, 60.4
         );
     }
 
-    public double calculateTheoreticalAzimuth() {
+    public double calculateTheoreticalAzimuth(AugmentedPOI poi) {
         // Calculates azimuth angle (phi) of POI
-        double dy = mPoi.getPoiLatitude() - mMyLatitude;
-        double dx = mPoi.getPoiLongitude() - mMyLongitude;
+        double dy = poi.getPoiLatitude() - mMyLatitude;
+        double dx = poi.getPoiLongitude() - mMyLongitude;
 
         double phiAngle;
         double tanPhi;
@@ -119,6 +119,10 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
         return phiAngle;
     }
+
+
+
+
 
     private List<Double> calculateAzimuthAccuracy(double azimuth) {
         // Returns the Camera View Sector
@@ -142,9 +146,9 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
     }
 
     private void updateDescription() {
-        descriptionTextView.setText(mPoi.getPoiName() + " azimuthTheoretical "
-                + mAzimuthTheoretical + " azimuthReal " + mAzimuthReal + " latitude "
-                + mMyLatitude + " longitude " + mMyLongitude )
+        descriptionTextView.setText("Le POI est ici : " + mPoi.getPoiName() + " azimuthTheoretical "
+                + mAzimuthTheoretical + " azimuthReal " + mAzimuthReal + " latitude: "
+                + mMyLatitude + " longitude: " + mMyLongitude  + "altitude: "+ mMyAltitude + "camera angle: " +ROLL_ACCURACY);
     }
 
     @Override
@@ -152,9 +156,11 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
         // Function to handle Change in Location
         mMyLatitude = location.getLatitude();
         mMyLongitude = location.getLongitude();
-        mAzimuthTheoretical = calculateTheoreticalAzimuth();
+        mMyAltitude = location.getAltitude();
+        mAzimuthTheoretical = calculateTheoreticalAzimuth(mPoi);
         updateDescription();
     }
+/*
 
     @Override
     public void onAzimuthChanged(float azimuthChangedFrom, float azimuthChangedTo) {
@@ -183,11 +189,68 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
         updateDescription();
     }
+*/
+
+    @Override
+    public void onAzimuthChanged(float azimuthChangedFrom, float azimuthChangedTo) {
+        // Function to handle Change in azimuth angle
+        mAzimuthReal = azimuthChangedTo;
+        mAzimuthTheoretical = calculateTheoreticalAzimuth(mPoi);
+
+
+        // Since Camera View is perpendicular to device plane
+        mAzimuthReal = (mAzimuthReal+90)%360;
+
+        pointerIcon = (ImageView) findViewById(R.id.icon);
+
+        consequenceIsBetween(mAzimuthTheoretical,pointerIcon);
+         updateDescription();
+    }
+
+
+
+    // To handle Change in azimuth angle
+    public void onRollChanged(float rollChangedFrom, float rollChangedTo) {
+
+        mRollReal = rollChangedTo;
+        mRollTheoretical = calculateTheoreticalAzimuth(mPoi);
+
+        // parce que sinon 0° vers le sol
+        mRollReal = (mRollReal-90)%180;
+
+        pointerIcon = (ImageView) findViewById(R.id.icon);
+        consequenceIsBetween(mRollTheoretical,pointerIcon);
+
+
+        updateDescription();
+    }
+
+
+
+    public void consequenceIsBetween(double azimuthTheoretical, ImageView pointer){
+
+        double minAngle = calculateAzimuthAccuracy(mAzimuthReal).get(0);
+        double maxAngle = calculateAzimuthAccuracy(mAzimuthReal).get(1);
+
+        if (isBetween(minAngle, maxAngle, azimuthTheoretical)) {
+            float ratio = ((float) (azimuthTheoretical - minAngle + 360.0) % 360) / ((float) (maxAngle - minAngle + 360.0) % 360);
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            lp.topMargin = (int) (display.getHeight() * ratio);
+            lp.leftMargin = display.getWidth()/2 - pointer.getWidth();
+            pointer.setLayoutParams(lp);
+            pointer.setVisibility(View.VISIBLE);
+        } else {
+            pointer.setVisibility(View.GONE);
+        }
+    }
+
+
 
     @Override
     protected void onStop() {
         myCurrentAzimuth.stop();
         myCurrentLocation.stop();
+        myCurrentRoll.stop();
         super.onStop();
     }
 
@@ -196,6 +259,7 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
         super.onResume();
         myCurrentAzimuth.start();
         myCurrentLocation.start();
+        myCurrentRoll.start();
     }
 
     private void setupListeners() {
@@ -205,6 +269,9 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
         myCurrentAzimuth = new MyCurrentAzimuth(this, this);
         myCurrentAzimuth.start();
+
+        myCurrentRoll= new MyCurrentRoll(this, this);
+        myCurrentRoll.start();
     }
 
     private void setupLayout() {
