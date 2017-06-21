@@ -26,18 +26,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Callback, OnLocationChangedListener, OnAzimuthChangedListener {
+public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Callback, OnLocationChangedListener, OnAzimuthChangedListener, OnRollChangedListener {
 
     private Camera mCamera;
     private SurfaceHolder mSurfaceHolder;
     private boolean isCameraViewOn = false;
     private AugmentedPOI mPoi;
 
+    private double mRollReal = 0;
+    private double mRollTheoretical = 0;
+    private static double ROLL_ACCURACY =17;
     private double mAzimuthReal = 0;
     private double mAzimuthTheoretical = 0;
     private static double AZIMUTH_ACCURACY = 25;
     private double mMyLatitude = 0;
     private double mMyLongitude = 0;
+    private double mMyAltitude = 0;
+    private MyCurrentRoll myCurrentRoll;
 
     private MyCurrentAzimuth myCurrentAzimuth;
     private MyCurrentLocation myCurrentLocation;
@@ -59,13 +64,33 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     }
 
+    // POUR CALCULER LE ROLL ANGLE THETA :
+
+
+    public double calculateTheoreticalRoll(AugmentedPOI poi) {
+        // Calculates Roll angle  of POI
+        double dy = poi.getPoiLatitude() - mMyLatitude;
+        double dx = poi.getPoiLongitude() - mMyLongitude;
+        double dz = poi.getPoiAltitude() - mMyAltitude;
+
+        double tanTheta;
+        double theta;
+
+        tanTheta= Math.abs(dz/ Math.sqrt(dx*dx+dy*dy));
+        theta = Math.atan(tanTheta);
+
+        return theta;
+    }
+
 
     private void setAugmentedRealityPoint() {
+
+        // @TODO : METTRE DES VALEURS FONCTIONNELES
         mPoi = new AugmentedPOI(
                 "NITK",
                 "Surathkal",
                 13.0124554,
-                74.7980362
+                74.7980362, 10
         );
     }
 
@@ -119,7 +144,7 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private void updateDescription() {
         descriptionTextView.setText(mPoi.getPoiName() + " azimuthTheoretical "
                 + mAzimuthTheoretical + " azimuthReal " + mAzimuthReal + " latitude "
-                + mMyLatitude + " longitude " + mMyLongitude);
+                + mMyLatitude + " longitude " + mMyLongitude )
     }
 
     @Override

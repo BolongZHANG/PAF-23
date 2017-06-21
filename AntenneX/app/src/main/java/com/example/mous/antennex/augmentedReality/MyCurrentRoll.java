@@ -1,5 +1,6 @@
 package com.example.mous.antennex.augmentedReality;
 
+
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -8,17 +9,22 @@ import android.hardware.SensorManager;
 import android.widget.Toast;
 
 
-public class MyCurrentAzimuth implements SensorEventListener {
+/**
+ * Created by Mous on 21/06/2017.
+ */
+
+public class MyCurrentRoll implements SensorEventListener {
+
 
     private SensorManager sensorManager;
     private Sensor sensor;
-    private int azimuthFrom = 0;
-    private int azimuthTo = 0;
-    private OnAzimuthChangedListener mAzimuthListener;
+    private int rollFrom = 0;
+    private int rollTo = 0;
+    private OnRollChangedListener mRollListener;
     Context mContext;
 
-    public MyCurrentAzimuth(OnAzimuthChangedListener azimuthListener, Context context) {
-        mAzimuthListener = azimuthListener;
+    public MyCurrentRoll(OnRollChangedListener rollListener, Context context) {
+        mRollListener = rollListener;
         mContext = context;
     }
 
@@ -27,6 +33,7 @@ public class MyCurrentAzimuth implements SensorEventListener {
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
 
         //@TODO: CHECKER SI CE QUI SUIT EST BON : J'ai modifie la premiere condition à != null !!
+
 
 
         if(sensor != null) sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR);
@@ -41,24 +48,28 @@ public class MyCurrentAzimuth implements SensorEventListener {
         sensorManager.unregisterListener(this);
     }
 
-    public void setOnShakeListener(OnAzimuthChangedListener listener) {
-        mAzimuthListener = listener;
+    public void setOnShakeListener(OnRollChangedListener listener) {
+        mRollListener = listener;
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        azimuthFrom = azimuthTo;
+        rollFrom = rollTo;
 
         float[] orientation = new float[3];
         float[] rMat = new float[9];
         SensorManager.getRotationMatrixFromVector(rMat, event.values);
-        azimuthTo = (int) ( Math.toDegrees( SensorManager.getOrientation( rMat, orientation )[0] ) + 360 ) % 360;
+        rollTo =  (- (int) ( Math.toDegrees( SensorManager.getOrientation( rMat, orientation )[2] ))) % 180;
 
-        mAzimuthListener.onAzimuthChanged(azimuthFrom, azimuthTo);
+        mRollListener.onRollChanged(rollFrom, rollTo);
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
+}
+
+
+
 }
