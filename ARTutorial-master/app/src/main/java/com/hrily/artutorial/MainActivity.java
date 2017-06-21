@@ -1,16 +1,11 @@
 package com.hrily.artutorial;
 
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.graphics.PixelFormat;
-import android.graphics.Point;
 import android.hardware.Camera;
 import android.location.Location;
-import android.support.annotation.Size;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -19,11 +14,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SurfaceHolder.Callback, OnLocationChangedListener, OnAzimuthChangedListener {
     private ArrayList<AntenneModel> antenneList;
@@ -33,8 +26,8 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private AugmentedPOI mPoi;
     private RelativeLayout imageLayout;
     private double mAzimuthReal = 0;
-//    private double mAzimuthTheoretical = 0;
-//    private static double AZIMUTH_ACCURACY = 25;
+//  private double mAzimuthTheoretical = 0;
+//  private static double AZIMUTH_ACCURACY = 25;
     private double mMyLatitude = 0;
     private double mMyLongitude = 0;
 
@@ -43,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private Location oldLocation;
 
     TextView descriptionTextView;
-    //ImageView pointerIcon;
+//  ImageView pointerIcon;
     Display display;
 
     @Override
@@ -91,11 +84,10 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
             antenne.setImageView(imageView);
 
             imageView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-            imageView.setImageResource(R.mipmap.ic_launcher); //图片资源drawable/sym_def_app_icon"
+            imageView.setImageResource(R.mipmap.ic_launcher); //图片资源drawable/sym_def_app_icon
             this.imageLayout.addView(imageView); //动态添加图片
 
         }
-
 
     }
 
@@ -150,6 +142,21 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         descriptionTextView.setText("Location:" + location.toString() + "\n"
                 + "oldLocation:" + oldLocation.toString()
                 + " azimuthReal " + mAzimuthReal );
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        // Function to handle Change in Location
+        if(oldLocation.distanceTo(location) > 100) {
+            mMyLatitude = location.getLatitude();
+            mMyLongitude = location.getLongitude();
+            for(AntenneModel antenne : antenneList) {
+                antenne.calculateTheoreticalAzimuth(mMyLatitude, mMyLongitude);
+            }
+            oldLocation = location;
+        }
+
+        updateDescription(location);
     }
 
     @Override
