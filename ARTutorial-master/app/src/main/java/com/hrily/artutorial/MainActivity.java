@@ -26,15 +26,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SurfaceHolder.Callback, OnLocationChangedListener, OnAzimuthChangedListener {
-
+    private ArrayList<AntenneModel> antenneList;
     private Camera mCamera;
     private SurfaceHolder mSurfaceHolder;
     private boolean isCameraViewOn = false;
     private AugmentedPOI mPoi;
 
     private double mAzimuthReal = 0;
-    private double mAzimuthTheoretical = 0;
-    private static double AZIMUTH_ACCURACY = 25;
+//    private double mAzimuthTheoretical = 0;
+//    private static double AZIMUTH_ACCURACY = 25;
     private double mMyLatitude = 0;
     private double mMyLongitude = 0;
 
@@ -60,80 +60,105 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
 
     private void setAugmentedRealityPoint() {
-        mPoi = new AugmentedPOI(
+        ArrayList<AntenneModel> antenneList = new ArrayList<>();
+
+        antenneList.add(new AntenneModel(
                 "NITK",
                 "Surathkal",
-                48.827453,
+                48.82744,
                 2.346820
-        );
+        ));
+        antenneList.add(new AntenneModel(
+                "NITK1",
+                "Surathkal",
+                48.827453,
+                2.34684
+        ));
+        antenneList.add(new AntenneModel(
+                "NITK2",
+                "Surathkal",
+                48.827353,
+                2.346800
+        ));
+        antenneList.add(new AntenneModel(
+                "NITK3",
+                "Surathkal",
+                48.827440,
+                2.346825
+        ));
+
+
     }
 
-    public double calculateTheoreticalAzimuth() {
-        // Calculates azimuth angle (phi) of POI
-        double dy = mPoi.getPoiLatitude() - mMyLatitude;
-        double dx = mPoi.getPoiLongitude() - mMyLongitude;
+//    public double calculateTheoreticalAzimuth() {
+//        // Calculates azimuth angle (phi) of POI
+//        double dy = mPoi.getPoiLatitude() - mMyLatitude;
+//        double dx = mPoi.getPoiLongitude() - mMyLongitude;
+//
+//        double phiAngle;
+//        double tanPhi;
+//
+//        tanPhi = Math.abs(dx / dy);
+//        phiAngle = Math.atan(tanPhi);
+//        phiAngle = Math.toDegrees(phiAngle);
+//
+//        // phiAngle = [0,90], check quadrant and return correct phiAngle
+//        if (dy > 0 && dx > 0) { // I quadrant
+//            return phiAngle;
+//        } else if (dy < 0 && dx > 0) { // II
+//            return 180 - phiAngle;
+//        } else if (dy < 0 && dx < 0) { // III
+//            return 180 + phiAngle;
+//        } else if (dy > 0 && dx < 0) { // IV
+//            return 360 - phiAngle;
+//        }
+//
+//        return phiAngle;
+//    }
 
-        double phiAngle;
-        double tanPhi;
+//    private List<Double> calculateAzimuthAccuracy(double azimuth) {
+//        // Returns the Camera View Sector
+//        List<Double> minMax = new ArrayList<Double>();
+//        double minAngle = (azimuth - AZIMUTH_ACCURACY + 360) % 360;
+//        double maxAngle = (azimuth + AZIMUTH_ACCURACY) % 360;
+//        minMax.clear();
+//        minMax.add(minAngle);
+//        minMax.add(maxAngle);
+//        return minMax;
+//    }
 
-        tanPhi = Math.abs(dx / dy);
-        phiAngle = Math.atan(tanPhi);
-        phiAngle = Math.toDegrees(phiAngle);
+//    private boolean isBetween(double minAngle, double maxAngle, double azimuth) {
+//        // Checks if the azimuth angle lies in minAngle and maxAngle of Camera View Sector
+//        if (minAngle > maxAngle) {
+//            if (isBetween(0, maxAngle, azimuth) || isBetween(minAngle, 360, azimuth))
+//                return true;
+//        } else if (azimuth > minAngle && azimuth < maxAngle)
+//            return true;
+//        return false;
+//    }
 
-        // phiAngle = [0,90], check quadrant and return correct phiAngle
-        if (dy > 0 && dx > 0) { // I quadrant
-            return phiAngle;
-        } else if (dy < 0 && dx > 0) { // II
-            return 180 - phiAngle;
-        } else if (dy < 0 && dx < 0) { // III
-            return 180 + phiAngle;
-        } else if (dy > 0 && dx < 0) { // IV
-            return 360 - phiAngle;
-        }
-
-        return phiAngle;
-    }
-
-    private List<Double> calculateAzimuthAccuracy(double azimuth) {
-        // Returns the Camera View Sector
-        List<Double> minMax = new ArrayList<Double>();
-        double minAngle = (azimuth - AZIMUTH_ACCURACY + 360) % 360;
-        double maxAngle = (azimuth + AZIMUTH_ACCURACY) % 360;
-        minMax.clear();
-        minMax.add(minAngle);
-        minMax.add(maxAngle);
-        return minMax;
-    }
-
-    private boolean isBetween(double minAngle, double maxAngle, double azimuth) {
-        // Checks if the azimuth angle lies in minAngle and maxAngle of Camera View Sector
-        if (minAngle > maxAngle) {
-            if (isBetween(0, maxAngle, azimuth) || isBetween(minAngle, 360, azimuth))
-                return true;
-        } else if (azimuth > minAngle && azimuth < maxAngle)
-            return true;
-        return false;
-    }
-
-    private void updateDescription() {
-        descriptionTextView.setText(mPoi.getPoiName() + " azimuthTheoretical "
-                + mAzimuthTheoretical + " azimuthReal " + mAzimuthReal + " latitude "
-                + mMyLatitude + " longitude " + mMyLongitude);
-    }
+//    private void updateDescription() {
+//        descriptionTextView.setText(mPoi.getPoiName() + " azimuthTheoretical "
+//                + mAzimuthTheoretical + " azimuthReal " + mAzimuthReal + " latitude "
+//                + mMyLatitude + " longitude " + mMyLongitude);
+//    }
 
     @Override
     public void onLocationChanged(Location location) {
         // Function to handle Change in Location
         mMyLatitude = location.getLatitude();
         mMyLongitude = location.getLongitude();
-        mAzimuthTheoretical = calculateTheoreticalAzimuth();
-        updateDescription();
+        for(AntenneModel antenne : antenneList) {
+            antenne.calculateTheoreticalAzimuth(mMyLatitude, mMyLongitude);
+        }
+//        updateDescription();
     }
 
     @Override
     public void onAzimuthChanged(float azimuthChangedFrom, float azimuthChangedTo) {
         // Function to handle Change in azimuth angle
         mAzimuthReal = azimuthChangedTo;
+
         mAzimuthTheoretical = calculateTheoreticalAzimuth();
 
         // Since Camera View is perpendicular to device plane
