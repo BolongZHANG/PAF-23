@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private SurfaceHolder mSurfaceHolder;
     private boolean isCameraViewOn = false;
     private AugmentedPOI mPoi;
-
+    private RelativeLayout imageLayout;
     private double mAzimuthReal = 0;
 //    private double mAzimuthTheoretical = 0;
 //    private static double AZIMUTH_ACCURACY = 25;
@@ -40,16 +40,19 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     private MyCurrentAzimuth myCurrentAzimuth;
     private MyCurrentLocation myCurrentLocation;
+    private Location oldLocation;
 
     TextView descriptionTextView;
-    ImageView pointerIcon;
+    //ImageView pointerIcon;
     Display display;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        oldLocation = new Location("0,0");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        imageLayout = (RelativeLayout)findViewById(R.id.image_layout) ;
         display = ((android.view.WindowManager)getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 
         setupListeners();
@@ -60,32 +63,38 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
 
     private void setAugmentedRealityPoint() {
-        ArrayList<AntenneModel> antenneList = new ArrayList<>();
+        this.antenneList = new ArrayList<>();
 
         antenneList.add(new AntenneModel(
                 "NITK",
                 "Surathkal",
-                48.82744,
-                2.346820
+                48.828026, 2.346977
         ));
         antenneList.add(new AntenneModel(
                 "NITK1",
                 "Surathkal",
-                48.827453,
-                2.34684
+                48.827444, 2.346589
         ));
         antenneList.add(new AntenneModel(
                 "NITK2",
                 "Surathkal",
-                48.827353,
-                2.346800
+                48.827403, 2.347265
         ));
         antenneList.add(new AntenneModel(
                 "NITK3",
                 "Surathkal",
-                48.827440,
-                2.346825
+                48.827270, 2.346908
         ));
+        ImageView imageView;
+        for(AntenneModel antenne : this.antenneList){
+            imageView = new ImageView(this);
+            antenne.setImageView(imageView);
+
+            imageView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+            imageView.setImageResource(R.mipmap.ic_launcher); //图片资源drawable/sym_def_app_icon"
+            this.imageLayout.addView(imageView); //动态添加图片
+
+        }
 
 
     }
@@ -137,50 +146,36 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 //        return false;
 //    }
 
-//    private void updateDescription() {
-//        descriptionTextView.setText(mPoi.getPoiName() + " azimuthTheoretical "
-//                + mAzimuthTheoretical + " azimuthReal " + mAzimuthReal + " latitude "
-//                + mMyLatitude + " longitude " + mMyLongitude);
-//    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        // Function to handle Change in Location
-        mMyLatitude = location.getLatitude();
-        mMyLongitude = location.getLongitude();
-        for(AntenneModel antenne : antenneList) {
-            antenne.calculateTheoreticalAzimuth(mMyLatitude, mMyLongitude);
-        }
-//        updateDescription();
+    private void updateDescription(Location location) {
+        descriptionTextView.setText("Location:" + location.toString() + "\n"
+                + "oldLocation:" + oldLocation.toString()
+                + " azimuthReal " + mAzimuthReal );
     }
 
     @Override
     public void onAzimuthChanged(float azimuthChangedFrom, float azimuthChangedTo) {
         // Function to handle Change in azimuth angle
-        mAzimuthReal = azimuthChangedTo;
+        for(AntenneModel antenne : antenneList) {
+            mAzimuthReal = azimuthChangedTo;
+            antenne.calculateTheoreticalAzimuth(mMyLatitude, mMyLongitude);
+            mAzimuthReal = (mAzimuthReal+90)%360;
+            double minAngle = antenne.calculateAzimuthAccuracy(mAzimuthReal).get(0);
+            double maxAngle = antenne.calculateAzimuthAccuracy(mAzimuthReal).get(1);
+            if (antenne.isBetween(minAngle, maxAngle)) {
+                float ratio = ((float) (antenne.getmAzimuthTheoretical() - minAngle + 360.0) % 360) / ((float) (maxAngle - minAngle + 360.0) % 360);
+                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                lp.topMargin = (int) (display.getHeight() * ratio);
+                lp.leftMargin = display.getWidth()/2 - antenne.getImageView().getWidth();
+                antenne.getImageView().setLayoutParams(lp);
+                antenne.getImageView().setVisibility(View.VISIBLE);
+            } else {
+                antenne.getImageView().setVisibility(View.GONE);
+            }
 
-        mAzimuthTheoretical = calculateTheoreticalAzimuth();
-
-        // Since Camera View is perpendicular to device plane
-        mAzimuthReal = (mAzimuthReal+90)%360;
-
-        pointerIcon = (ImageView) findViewById(R.id.icon);
-
-        double minAngle = calculateAzimuthAccuracy(mAzimuthReal).get(0);
-        double maxAngle = calculateAzimuthAccuracy(mAzimuthReal).get(1);
-
-        if (isBetween(minAngle, maxAngle, mAzimuthTheoretical)) {
-            float ratio = ((float) (mAzimuthTheoretical - minAngle + 360.0) % 360) / ((float) (maxAngle - minAngle + 360.0) % 360);
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            lp.topMargin = (int) (display.getHeight() * ratio);
-            lp.leftMargin = display.getWidth()/2 - pointerIcon.getWidth();
-            pointerIcon.setLayoutParams(lp);
-            pointerIcon.setVisibility(View.VISIBLE);
-        } else {
-            pointerIcon.setVisibility(View.GONE);
         }
 
-        updateDescription();
+        // Since Camera View is perpendicular to device plane
+
     }
 
     @Override

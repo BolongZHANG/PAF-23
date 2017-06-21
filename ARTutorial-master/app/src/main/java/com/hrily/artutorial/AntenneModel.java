@@ -68,7 +68,11 @@ public class AntenneModel {
         this.imageView = null;
     }
 
-    public void calculateTheoreticalAzimuth(double mMyLatitude, double mMyLongitude){
+    public double getmAzimuthTheoretical() {
+        return mAzimuthTheoretical;
+    }
+
+    public void calculateTheoreticalAzimuth(double mMyLatitude, double mMyLongitude) {
 
         double dy = this.mLatitude - mMyLatitude;
         double dx = this.mLongitude - mMyLongitude;
@@ -106,12 +110,12 @@ public class AntenneModel {
         return minMax;
     }
 
-    public boolean isBetween(double minAngle, double maxAngle, double azimuth) {
+    public boolean isBetween(double minAngle, double maxAngle) {
         // Checks if the azimuth angle lies in minAngle and maxAngle of Camera View Sector
         if (minAngle > maxAngle) {
-            if (isBetween(0, maxAngle, azimuth) || isBetween(minAngle, 360, azimuth))
+            if (isBetween(0, maxAngle) || isBetween(minAngle, 360))
                 return true;
-        } else if (azimuth > minAngle && azimuth < maxAngle)
+        } else if (this.mAzimuthTheoretical > minAngle && this.mAzimuthTheoretical < maxAngle)
             return true;
         return false;
     }
