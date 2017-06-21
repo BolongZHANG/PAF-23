@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+
+<android.support.v7.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/aideToolbar"
+    android:layout_height="?attr/actionBarSize"
+    android:layout_width="match_parent"
+    android:minHeight="?attr/actionBarSize"
+    android:background="@color/greyDoctihome"
+    android:gravity="top|start"
+    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    app:popupTheme="@style/AppTheme.PopupOverlay"
+  >
+
+
+
+
+    <android.support.v7.widget.ActionMenuView
+        android:id="@+id/amvM"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"/>
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lin"
+        android:orientation="horizontal"
+        android:layout_gravity="right"
+        android:layout_marginRight="10dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/ic_history"
+            />
+
+    </LinearLayout>
+
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="100dp"
+        android:id="@+id/showevents"
+        android:textSize="12sp"
+        android:background="@drawable/rsz_1antenna"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</android.support.v7.widget.Toolbar>

@@ -4,6 +4,7 @@ package com.example.mous.antennex.augmentedReality;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 
@@ -11,22 +12,36 @@ import android.hardware.Camera;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ActionMenuView;
+import android.support.v7.widget.Toolbar;
 import android.view.Display;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.mous.antennex.R;
+import com.example.mous.antennex.ResumeActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Callback, OnLocationChangedListener, OnAzimuthChangedListener, OnRollChangedListener {
+
+    private ActionMenuView amvMenu;
+
+
+
+
+
 
     private Camera mCamera;
     private SurfaceHolder mSurfaceHolder;
@@ -38,6 +53,8 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private static double ROLL_ACCURACY =17;
     private double mAzimuthReal = 0;
     private double mAzimuthTheoretical = 0;
+
+
     private static double AZIMUTH_ACCURACY = 25;
     private double mMyLatitude = 0;
     private double mMyLongitude = 0;
@@ -48,6 +65,7 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private MyCurrentLocation myCurrentLocation;
 
     TextView descriptionTextView;
+
     ImageView pointerIcon;
     Display display;
 
@@ -55,6 +73,32 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_core);
+        descriptionTextView = (TextView) findViewById(R.id.cameraTextView);
+
+
+
+        Toolbar coreToolbar = (Toolbar) findViewById(R.id.tToolbar);
+        amvMenu = (ActionMenuView) findViewById(R.id.amvM);
+        amvMenu.setOnMenuItemClickListener(new ActionMenuView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                return onOptionsItemSelected(menuItem);
+            }
+        });
+
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.lin);
+        linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (getApplicationContext(), ResumeActivity.class);
+            }
+        });
+
+        setSupportActionBar(coreToolbar);
+        getSupportActionBar().setTitle(null);
+        /*getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
+
+
 
         display = ((android.view.WindowManager)getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 
@@ -63,6 +107,31 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
         setAugmentedRealityPoint();
 
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        // use amvMenu here
+        inflater.inflate(R.menu.core_menu, amvMenu.getMenu());
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Do your actions here
+        switch (item.getItemId()){
+            case R.id.action_back:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+
+
 
     // POUR CALCULER LE ROLL ANGLE THETA :
 
@@ -87,10 +156,10 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
         // @TODO : METTRE DES VALEURS FONCTIONNELES
         mPoi = new AugmentedPOI(
-                "NITK",
-                "Surathkal",
-                2.27917,
-                48.84694, 60.4
+                "Sacre-Coeur",
+                "Toto",
+                48.49,
+                2.20, 10
         );
     }
 
@@ -157,16 +226,16 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
         mMyLatitude = location.getLatitude();
         mMyLongitude = location.getLongitude();
         mMyAltitude = location.getAltitude();
+        mRollTheoretical=calculateTheoreticalRoll(mPoi);
         mAzimuthTheoretical = calculateTheoreticalAzimuth(mPoi);
         updateDescription();
     }
-/*
 
     @Override
     public void onAzimuthChanged(float azimuthChangedFrom, float azimuthChangedTo) {
         // Function to handle Change in azimuth angle
         mAzimuthReal = azimuthChangedTo;
-        mAzimuthTheoretical = calculateTheoreticalAzimuth();
+        mAzimuthTheoretical = calculateTheoreticalAzimuth(mPoi);
 
         // Since Camera View is perpendicular to device plane
         mAzimuthReal = (mAzimuthReal+90)%360;
@@ -189,9 +258,8 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
         updateDescription();
     }
-*/
 
-    @Override
+    /*@Override
     public void onAzimuthChanged(float azimuthChangedFrom, float azimuthChangedTo) {
         // Function to handle Change in azimuth angle
         mAzimuthReal = azimuthChangedTo;
@@ -204,9 +272,9 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
         pointerIcon = (ImageView) findViewById(R.id.icon);
 
         consequenceIsBetween(mAzimuthTheoretical,pointerIcon);
-         updateDescription();
+        updateDescription();
     }
-
+*/
 
 
     // To handle Change in azimuth angle
@@ -239,6 +307,8 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
             lp.leftMargin = display.getWidth()/2 - pointer.getWidth();
             pointer.setLayoutParams(lp);
             pointer.setVisibility(View.VISIBLE);
+
+
         } else {
             pointer.setVisibility(View.GONE);
         }
@@ -275,7 +345,7 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
     }
 
     private void setupLayout() {
-        descriptionTextView = (TextView) findViewById(R.id.cameraTextView);
+
 
         getWindow().setFormat(PixelFormat.UNKNOWN);
         SurfaceView surfaceView = (SurfaceView) findViewById(R.id.cameraview);
