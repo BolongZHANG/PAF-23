@@ -73,13 +73,8 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         display = ((android.view.WindowManager)getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         setupListeners();
         setupLayout();
-        Log.d("Sylvain", "fin onstarteuh");
 
 
-
-        //Camera.Parameters p = mCamera.getParameters();
-        //ROLL_ACCURACY = Math.toRadians(p.getVerticalViewAngle());
-        //double thetaH = Math.toRadians(p.getHorizontalViewAngle());
 
     }
 
@@ -372,9 +367,13 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         mCamera = Camera.open();
-        //Camera.Parameters p = mCamera.getParameters();
-        //ROLL_ACCURACY = Math.toRadians(p.getVerticalViewAngle())*180/Math.PI;
+        Camera.Parameters p = mCamera.getParameters();
+        ROLL_ACCURACY = (p.getVerticalViewAngle()%360/2);
+        AZIMUTH_ACCURACY = (p.getHorizontalViewAngle()%360)/2;
+        Double r = ROLL_ACCURACY; Double a = AZIMUTH_ACCURACY;
+        Log.d("Sylvainn", r.toString() + "  "+ a.toString());
         mCamera.setDisplayOrientation(90);
+
     }
 
     @Override
