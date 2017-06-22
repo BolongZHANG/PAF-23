@@ -39,7 +39,9 @@ public class MyCurrentLocation implements GoogleApiClient.ConnectionCallbacks, G
     }
 
     public void start(){
-        mGoogleApiClient.connect();
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.connect();
+        }
     }
 
     public void stop(){

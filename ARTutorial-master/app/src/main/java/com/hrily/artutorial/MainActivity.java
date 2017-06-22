@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -61,23 +62,24 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         antenneList.add(new AntenneModel(
                 "NITK",
                 "Surathkal",
-                48.828026, 2.346977
+                48.827839, 2.346874
         ));
         antenneList.add(new AntenneModel(
                 "NITK1",
                 "Surathkal",
-                48.827444, 2.346589
+                48.827006, 2.347727
         ));
         antenneList.add(new AntenneModel(
                 "NITK2",
                 "Surathkal",
-                48.827403, 2.347265
+                48.826441, 2.346708
         ));
         antenneList.add(new AntenneModel(
                 "NITK3",
                 "Surathkal",
-                48.827270, 2.346908
+                48.827041, 2.345780
         ));
+
         ImageView imageView;
         for(AntenneModel antenne : this.antenneList){
             imageView = new ImageView(this);
@@ -142,19 +144,20 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         descriptionTextView.setText("Location:" + location.toString() + "\n"
                 + "oldLocation:" + oldLocation.toString()
                 + " azimuthReal " + mAzimuthReal );
+        Toast.makeText(this,"update descripiton",Toast.LENGTH_SHORT);
     }
 
     @Override
     public void onLocationChanged(Location location) {
         // Function to handle Change in Location
-        if(oldLocation.distanceTo(location) > 100) {
+       // if(oldLocation.distanceTo(location) > 100) {
             mMyLatitude = location.getLatitude();
             mMyLongitude = location.getLongitude();
             for(AntenneModel antenne : antenneList) {
                 antenne.calculateTheoreticalAzimuth(mMyLatitude, mMyLongitude);
             }
             oldLocation = location;
-        }
+        //}
 
         updateDescription(location);
     }

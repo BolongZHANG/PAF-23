@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ARTutorial.iml" filepath="$PROJECT_DIR$/ARTutorial.iml" />
       <module fileurl="file://$PROJECT_DIR$/ARTutorial-master.iml" filepath="$PROJECT_DIR$/ARTutorial-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
