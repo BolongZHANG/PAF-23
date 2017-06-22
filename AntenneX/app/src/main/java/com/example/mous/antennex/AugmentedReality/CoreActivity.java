@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -50,7 +51,7 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     private double mRollReal = 0;
     private double mRollTheoretical = 0;
-    private static double ROLL_ACCURACY =17;
+    private static double ROLL_ACCURACY =20;
     private double mAzimuthReal = 0;
     private double mAzimuthTheoretical = 0;
 
@@ -105,7 +106,11 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
         setupListeners();
         setupLayout();
+        Log.d("Test", "Fin du start");
         setAugmentedRealityPoint();
+
+
+
 
     }
 
@@ -147,6 +152,8 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
         double theta;
 
         tanTheta= Math.abs(dz/ Math.sqrt(dx*dx+dy*dy));
+        Double tanteta = (Double) tanTheta;
+        Log.d("Sylvain","tanteta "+ tanteta.toString());
         theta = Math.atan(tanTheta);
 
         return theta;
@@ -194,8 +201,8 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
 
 
+    //Returns the Camera View Sector horizontally
     private List<Double> calculateAzimuthAccuracy(double azimuth) {
-        // Returns the Camera View Sector
         List<Double> minMax = new ArrayList<Double>();
         double minAngle = (azimuth - AZIMUTH_ACCURACY + 360) % 360;
         double maxAngle = (azimuth + AZIMUTH_ACCURACY) % 360;
@@ -205,15 +212,34 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
         return minMax;
     }
 
-    private boolean isBetween(double minAngle, double maxAngle, double azimuth) {
+    private boolean azimuthIsBetween(double minAngle, double maxAngle, double azimuth) {
         // Checks if the azimuth angle lies in minAngle and maxAngle of Camera View Sector
         if (minAngle > maxAngle) {
-            if (isBetween(0, maxAngle, azimuth) || isBetween(minAngle, 360, azimuth))
+            if (azimuthIsBetween(0, maxAngle, azimuth) || azimuthIsBetween(minAngle, 360, azimuth))
                 return true;
         } else if (azimuth > minAngle && azimuth < maxAngle)
             return true;
         return false;
     }
+
+
+    private boolean rollIsBetween(double minAngle, double maxAngle, double roll) {
+        // Checks if the azimuth angle lies in minAngle and maxAngle of Camera View Sector
+        /*if (minAngle > maxAngle) {
+            if (rollIsBetween(0, maxAngle, roll) || rollIsBetween(minAngle, 360, roll))
+                return true;
+        } else if (roll > minAngle && roll < maxAngle)*/
+        Boolean test = roll> minAngle && roll> maxAngle;
+        Double minangle = minAngle;
+        Double maxangle = maxAngle;
+        Log.d("Sylvain", "AHLALALALALALA   " + minangle.toString()+ "  " + maxangle.toString() + " " + roll +" " + test.toString());
+        if (roll > minAngle && roll < maxAngle)
+            return true;
+        else
+            return false;
+    }
+
+
 
     private void updateDescription() {
         descriptionTextView.setText("Le POI est ici : " + mPoi.getPoiName() + " azimuthTheoretical "
@@ -229,8 +255,26 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
         mMyAltitude = location.getAltitude();
         mRollTheoretical=calculateTheoreticalRoll(mPoi);
         mAzimuthTheoretical = calculateTheoreticalAzimuth(mPoi);
+
+
         updateDescription();
     }
+
+
+    private List<Double> calculateRollAccuracy(double roll) {
+        // Returns the Camera View Sector vertically
+
+
+        List<Double> minMax = new ArrayList<Double>();
+        double minAngle = (roll - ROLL_ACCURACY);// % 180;
+        double maxAngle = (roll + ROLL_ACCURACY);// % 180;
+        minMax.clear();
+        minMax.add(minAngle);
+        minMax.add(maxAngle);
+        return minMax;
+    }
+
+
 
     @Override
     public void onAzimuthChanged(float azimuthChangedFrom, float azimuthChangedTo) {
@@ -238,24 +282,17 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
         mAzimuthReal = azimuthChangedTo;
         mAzimuthTheoretical = calculateTheoreticalAzimuth(mPoi);
 
+
         // Since Camera View is perpendicular to device plane
         mAzimuthReal = (mAzimuthReal+90)%360;
 
         pointerIcon = (ImageView) findViewById(R.id.icon);
 
-        double minAngle = calculateAzimuthAccuracy(mAzimuthReal).get(0);
-        double maxAngle = calculateAzimuthAccuracy(mAzimuthReal).get(1);
 
-        if (isBetween(minAngle, maxAngle, mAzimuthTheoretical)) {
-            float ratio = ((float) (mAzimuthTheoretical - minAngle + 360.0) % 360) / ((float) (maxAngle - minAngle + 360.0) % 360);
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            lp.topMargin = (int) (display.getHeight() * ratio);
-            lp.leftMargin = display.getWidth()/2 - pointerIcon.getWidth();
-            pointerIcon.setLayoutParams(lp);
-            pointerIcon.setVisibility(View.VISIBLE);
-        } else {
-            pointerIcon.setVisibility(View.GONE);
-        }
+
+
+
+        consequenceIsBetween(mAzimuthTheoretical,mRollTheoretical,pointerIcon);
 
         updateDescription();
     }
@@ -280,15 +317,20 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     // To handle Change in azimuth angle
     public void onRollChanged(float rollChangedFrom, float rollChangedTo) {
-
+        // Function to handle Change in azimuth angle
         mRollReal = rollChangedTo;
-        mRollTheoretical = calculateTheoreticalAzimuth(mPoi);
+        mRollTheoretical = calculateTheoreticalRoll(mPoi);
+
 
         // parce que sinon 0° vers le sol
-        mRollReal = (mRollReal-90)%180;
+        mRollReal = (mRollReal-90)%180; // problème à régler pour ceux qui regardent la tête à l'envers
 
         pointerIcon = (ImageView) findViewById(R.id.icon);
-        consequenceIsBetween(mRollTheoretical,pointerIcon);
+
+
+
+
+        consequenceIsBetween(mAzimuthTheoretical,mRollTheoretical,pointerIcon);
 
 
         updateDescription();
@@ -296,25 +338,28 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
 
 
-    public void consequenceIsBetween(double azimuthTheoretical, ImageView pointer){
+    public void consequenceIsBetween(double azimuthTheoretical, double mRollTheoretical, ImageView pointer){
 
-        double minAngle = calculateAzimuthAccuracy(mAzimuthReal).get(0);
-        double maxAngle = calculateAzimuthAccuracy(mAzimuthReal).get(1);
+        double minAngleA = calculateAzimuthAccuracy(mAzimuthReal).get(0);
+        double maxAngleA = calculateAzimuthAccuracy(mAzimuthReal).get(1);
+        double minAngleR = calculateRollAccuracy(mRollReal).get(0);
+        double maxAngleR = calculateRollAccuracy(mRollReal).get(1);
+        Double minangle = (Double) minAngleR;
+        Double maxangle = (Double) maxAngleR;
+        Boolean test = rollIsBetween(minAngleR, maxAngleR, mRollTheoretical);
+        Log.d("Sylvain", minangle.toString() + "   " + maxangle.toString() + "   " + test.toString());
 
-        if (isBetween(minAngle, maxAngle, azimuthTheoretical)) {
-            float ratio = ((float) (azimuthTheoretical - minAngle + 360.0) % 360) / ((float) (maxAngle - minAngle + 360.0) % 360);
+        if (azimuthIsBetween(minAngleA, maxAngleA, azimuthTheoretical)&& rollIsBetween(minAngleR, maxAngleR, mRollTheoretical)) {
+            float ratio = ((float) (azimuthTheoretical - minAngleA + 360.0) % 360) / ((float) (maxAngleA - minAngleA + 360.0) % 360);
             RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             lp.topMargin = (int) (display.getHeight() * ratio);
             lp.leftMargin = display.getWidth()/2 - pointer.getWidth();
             pointer.setLayoutParams(lp);
             pointer.setVisibility(View.VISIBLE);
-
-
         } else {
             pointer.setVisibility(View.GONE);
         }
     }
-
 
 
     @Override
