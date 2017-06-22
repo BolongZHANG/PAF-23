@@ -37,8 +37,10 @@
             android:name=".ResumeActivity"
             android:label="@string/title_activity_resume"
             android:theme="@style/AppTheme" />
-        <activity android:name=".LegalActivity"></activity>
-        <activity android:name=".CartoradioActivity"></activity>
+        <activity android:name=".LegalActivity" />
+        <activity android:name=".CartoradioActivity" />
+        <activity android:name=".augmentedReality.GaugeView" />
+        <activity android:name=".augmentedReality.JaugeActivity"></activity>
     </application>
 
 </manifest>

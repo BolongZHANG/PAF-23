@@ -23,6 +23,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -39,8 +40,16 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     private ActionMenuView amvMenu;
 
-
-
+    //Partie dédiée à la jauge :: A VOIR OPTIMISATION !!
+    private GaugeView gaugeView;
+    private float degree = 1;
+    private float sweepAngleControl = 0;
+    private float sweepAngleFirstChart = 1;
+    private float sweepAngleSecondChart = 1;
+    private float sweepAngleThirdChart = 1;
+    private boolean isInProgress = false;
+    private boolean resetMode = false;
+    private boolean canReset = false;
 
 
 
@@ -74,6 +83,17 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_core);
+        gaugeView = (GaugeView) findViewById(R.id.gaugeView);
+
+        gaugeView.setRotateDegree(degree);
+        if (!isInProgress) {
+            isInProgress = true;
+            startRunning();
+        }
+
+        //Pour maintenir l'activité toujours allumée
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         descriptionTextView = (TextView) findViewById(R.id.cameraTextView);
 
 
@@ -136,26 +156,86 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     }
 
+    //Passer de la valeur de la BDD à la valeur utile en degrés
+    private double toDegreExpostion ( double valueExposition)
+    {
+        return ( valueExposition*Math.floor(270/20)+135);
+    }
+
+    // POUR LA JAUGE :
+    private void startRunning() {
+
+
+
+        new Thread() {
+            public void run() {
+                for (int i = 0; i < 405; i++) {
+                    try {
+                        runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                degree++;
+                                sweepAngleControl++;
+                                double valueExposition = 10;
+                                double degreExposition = toDegreExpostion(valueExposition);
+                                if (degree < degreExposition )  // ICI IL FAUT METTRE LA VALEUR D'INTERET : ici je veux 90 degrés donc je mets - 90 : checker le cercle du cahier !!! ATTENTION AU -
+                                {
+                                    gaugeView.setRotateDegree(degree);
+
+                                }
+
+                                if (sweepAngleControl <= 90) {
+                                    sweepAngleFirstChart++;
+                                    gaugeView.setSweepAngleFirstChart(sweepAngleFirstChart);
+
+                                } else if (sweepAngleControl <= 180) {
+                                    sweepAngleSecondChart++;
+                                    gaugeView.setSweepAngleSecondChart(sweepAngleSecondChart);
+
+
+                                } else if (sweepAngleControl <= 270) {
+                                    sweepAngleThirdChart++;
+                                    gaugeView.setSweepAngleThirdChart(sweepAngleThirdChart);
+
+                                }
+
+                            }
+                        });
+                        Thread.sleep(15);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (i == 299) {
+                        isInProgress = false;
+                        canReset = true;
+                    }
+
+                }
+            }
+        }.start();
+
+    }
+
+
+
 
 
 
     // POUR CALCULER LE ROLL ANGLE THETA :
-
-
     public double calculateTheoreticalRoll(AugmentedPOI poi) {
         // Calculates Roll angle  of POI
-        double dy = poi.getPoiLatitude() - mMyLatitude;
-        double dx = poi.getPoiLongitude() - mMyLongitude;
-        double dz = poi.getPoiAltitude() - mMyAltitude;
-
+        double d = distance(poi.getPoiLatitude(), poi.getPoiLongitude(), mMyLatitude,mMyLongitude);
+        Double dz = poi.getPoiAltitude() - mMyAltitude;
         double tanTheta;
         double theta;
 
-        tanTheta= Math.abs(dz/ Math.sqrt(dx*dx+dy*dy));
-        Double tanteta = (Double) tanTheta;
-        Log.d("Sylvain","tanteta "+ tanteta.toString());
+        tanTheta= Math.abs(dz/d);
         theta = Math.atan(tanTheta);
-
+        theta = theta *180/Math.PI;
+        Double thheta = (Double) theta;
+        Log.d("Sylvaintheta","theta "+ thheta.toString());
         return theta;
     }
 
@@ -229,7 +309,7 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
             if (rollIsBetween(0, maxAngle, roll) || rollIsBetween(minAngle, 360, roll))
                 return true;
         } else if (roll > minAngle && roll < maxAngle)*/
-        Boolean test = roll> minAngle && roll> maxAngle;
+        Boolean test = roll> minAngle && roll< maxAngle;
         Double minangle = minAngle;
         Double maxangle = maxAngle;
         Log.d("Sylvain", "AHLALALALALALA   " + minangle.toString()+ "  " + maxangle.toString() + " " + roll +" " + test.toString());
@@ -338,22 +418,21 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
 
 
-    public void consequenceIsBetween(double azimuthTheoretical, double mRollTheoretical, ImageView pointer){
+    public void consequenceIsBetween(double azimuthTheoretical, double rollTheoretical, ImageView pointer)
+    {
 
         double minAngleA = calculateAzimuthAccuracy(mAzimuthReal).get(0);
         double maxAngleA = calculateAzimuthAccuracy(mAzimuthReal).get(1);
         double minAngleR = calculateRollAccuracy(mRollReal).get(0);
         double maxAngleR = calculateRollAccuracy(mRollReal).get(1);
-        Double minangle = (Double) minAngleR;
-        Double maxangle = (Double) maxAngleR;
-        Boolean test = rollIsBetween(minAngleR, maxAngleR, mRollTheoretical);
-        Log.d("Sylvain", minangle.toString() + "   " + maxangle.toString() + "   " + test.toString());
 
-        if (azimuthIsBetween(minAngleA, maxAngleA, azimuthTheoretical)&& rollIsBetween(minAngleR, maxAngleR, mRollTheoretical)) {
-            float ratio = ((float) (azimuthTheoretical - minAngleA + 360.0) % 360) / ((float) (maxAngleA - minAngleA + 360.0) % 360);
+
+        if (azimuthIsBetween(minAngleA, maxAngleA, azimuthTheoretical)&& rollIsBetween(minAngleR, maxAngleR, rollTheoretical)) {
+            float ratioAzimuth = ((float) (azimuthTheoretical - minAngleA + 360.0) % 360) / ((float) (maxAngleA - minAngleA + 360.0) % 360);
+            float ratioRoll = ((float) (rollTheoretical - minAngleR) % 180) / ((float) (maxAngleR - minAngleR) % 180);
             RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            lp.topMargin = (int) (display.getHeight() * ratio);
-            lp.leftMargin = display.getWidth()/2 - pointer.getWidth();
+            lp.topMargin = (int) (display.getHeight() * ratioAzimuth);
+            lp.leftMargin = (int) (display.getWidth() * ratioRoll ) ;
             pointer.setLayoutParams(lp);
             pointer.setVisibility(View.VISIBLE);
         } else {
@@ -362,11 +441,36 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
     }
 
 
+
+    //Conversion des degrés en radian
+    public double convertToRad(double degrees){
+        return (Math.PI * degrees)/180;
+    }
+
+
+    // Calculer la distance
+    public double distance( double lat_a_degre,  double lon_a_degre, double lat_b_degre,  double lon_b_degre) {
+
+        double R = 6378000; //Rayon de la terre en mètre
+
+        double lat_a = convertToRad(lat_a_degre);
+        double lon_a = convertToRad(lon_a_degre);
+        double lat_b = convertToRad(lat_b_degre);
+        double lon_b = convertToRad(lon_b_degre);
+
+        double d = R * (Math.PI / 2 - Math.asin(Math.sin(lat_b) * Math.sin(lat_a) + Math.cos(lon_b - lon_a) * Math.cos(lat_b) * Math.cos(lat_a)));
+
+        return d;
+    }
+
+    
+
     @Override
     protected void onStop() {
         myCurrentAzimuth.stop();
         myCurrentLocation.stop();
         myCurrentRoll.stop();
+        getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         super.onStop();
     }
 

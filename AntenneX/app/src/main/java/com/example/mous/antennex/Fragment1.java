@@ -12,6 +12,7 @@ import android.view.ViewGroup;
         import android.widget.Button;
 
 import com.example.mous.antennex.augmentedReality.CoreActivity;
+import com.example.mous.antennex.augmentedReality.JaugeActivity;
 
 
 public class Fragment1 extends android.support.v4.app.Fragment implements View.OnClickListener {

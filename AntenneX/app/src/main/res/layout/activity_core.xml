@@ -16,6 +16,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+   <!-- Pour la jauge -->
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <com.example.mous.antennex.augmentedReality.GaugeView
+            android:id="@+id/gaugeView"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+
+        </RelativeLayout>
+
     <TextView
         android:id="@+id/cameraTextView"
         android:layout_width="wrap_content"
