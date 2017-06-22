@@ -58,6 +58,19 @@ public class CartoradioActivity extends AppCompatActivity {
         myWebView.setWebViewClient(new WebViewClient());
         WebSettings webSettings = myWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
+        myWebView.setWebViewClient(new WebViewClient() {
+
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                //hide loading image
+                findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                //show webview
+                findViewById(R.id.webView).setVisibility(View.VISIBLE);
+            }
+
+
+        });
         myWebView.loadUrl("file:///android_asset/paf.html");
 
     }
