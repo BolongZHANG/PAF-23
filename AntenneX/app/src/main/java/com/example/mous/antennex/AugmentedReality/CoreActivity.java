@@ -24,11 +24,14 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.mous.antennex.CartoradioActivity;
+import com.example.mous.antennex.ProximityActivity;
 import com.example.mous.antennex.R;
 import com.example.mous.antennex.ResumeActivity;
 
@@ -77,6 +80,7 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
     TextView descriptionTextView;
 
     ImageView pointerIcon;
+    ImageButton mapButton;
     Display display;
 
     @Override
@@ -84,6 +88,15 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_core);
         gaugeView = (GaugeView) findViewById(R.id.gaugeView);
+        mapButton=(ImageButton) findViewById(R.id.buttonMaps);
+
+        mapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), CartoradioActivity.class);
+                startActivity(intent);
+            }
+        });
 
         gaugeView.setRotateDegree(degree);
         if (!isInProgress) {
@@ -111,7 +124,7 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent (getApplicationContext(), ResumeActivity.class);
+                Intent intent = new Intent (getApplicationContext(), ProximityActivity.class);
                 startActivity(intent);
             }
         });

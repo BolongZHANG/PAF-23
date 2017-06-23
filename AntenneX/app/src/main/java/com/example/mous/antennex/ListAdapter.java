@@ -32,18 +32,18 @@ public class ListAdapter extends ArrayAdapter<String> {
     private ProximityActivity activity;
     private List<String> operatorList;
     private List<String> searchList;
-    private List<String> hauteursList; // Pour l'affichage de l'état de connexion
+    private List<String> distanceList; // Pour l'affichage de l'état de connexion
     private ArrayList<Integer> profilePictures;
     private List<String> hauteurList;
 
 
-    public ListAdapter(ProximityActivity context, int resource, List<String> objects, List<String> hauteurs, List<String> hauteurList, ArrayList<Integer> profilePictures) {
+    public ListAdapter(ProximityActivity context, int resource, List<String> objects, List<String> distance, List<String> hauteurList, ArrayList<Integer> profilePictures) {
         super(context, resource, objects);
         this.activity = context;
         this.operatorList = objects;
         this.searchList = new ArrayList<>();
         this.searchList.addAll(operatorList);
-        this.hauteursList = hauteurs;
+        this.distanceList = distance;
         this.profilePictures = profilePictures;
         this.hauteurList=hauteurList;
     }
@@ -83,14 +83,56 @@ public class ListAdapter extends ArrayAdapter<String> {
         }
 
         holder.operatorName.setText(getItem(position));
+        
+        
+        // Condition pour colorer la distance: si la distance est inférieure à 50 m, on colore en rouge, si la distance est entre 50 et 150 on colore en jaune et de 150 à 250 vert
 
-        if (hauteursList.get(position).equals("Connecté")) {
-            holder.operatorConnected.setTextColor(Color.parseColor("#1E824C"));
+       /* String hauteurReal = distanceList.get(position).replaceAll("\\D+","");*/
+
+        /*char hauteurReal = distanceList.get(position).charAt(11);*/
+
+        /*String hauteurReal = distanceList.get(position);
+        int valeurHauteur=Integer.parseInt(hauteurReal);*/
+
+        /*int valeurHauteur = Character.getNumericValue(hauteurReal);*/
+        String redCode = "#ff0000";
+        String orangeCode="#ffa500";
+        String greenCode="#09ce7c";
+
+        if (Integer.parseInt(distanceList.get(position))<50 ) {
+            holder.operatorConnected.setTextColor(Color.parseColor(redCode));
         }
-        else {
+        if (Integer.parseInt(distanceList.get(position))>50 && Integer.parseInt(distanceList.get(position))<150 ) {
+            holder.operatorConnected.setTextColor(Color.parseColor(orangeCode));
+        }
+
+        if (Integer.parseInt(distanceList.get(position))>150  ) {
+            holder.operatorConnected.setTextColor(Color.parseColor(greenCode));
+        }
+
+
+
+
+
+
+       /*if (valeurHauteur<50 && valeurHauteur>0){
+           holder.operatorConnected.setTextColor(Color.parseColor("#1E824C"));
+       }
+
+       if (valeurHauteur<150 && valeurHauteur>50){
+           holder.operatorConnected.setTextColor(Color.parseColor("#ffa500"));
+       }
+
+        if (valeurHauteur>150){
+            holder.operatorConnected.setTextColor(Color.parseColor("#ff0000"));
+        }*/
+
+        /*else {
             holder.operatorConnected.setTextColor(Color.parseColor("#bc060b"));
-        }
-        holder.operatorConnected.setText(hauteursList.get(position));
+        }*/
+
+
+        holder.operatorConnected.setText(distanceList.get(position));
 
         int identifiant = profilePictures.get(position);
 
@@ -106,18 +148,13 @@ public class ListAdapter extends ArrayAdapter<String> {
         }
 
 
-
-
-
         holder.operatorHauteur.setText(hauteurList.get(position));
-
-
-
-
-
 
         return convertView;
     }
+    
+    
+    
 
     private class ViewHolder {
         private CircleImageView imageView;

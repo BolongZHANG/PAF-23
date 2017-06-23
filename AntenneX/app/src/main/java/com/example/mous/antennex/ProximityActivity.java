@@ -37,6 +37,7 @@ public class ProximityActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.list_item);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("A proximité ...");
 
         setData();
         adapter = new ListAdapter(this, R.layout.item_listview, stringArrayList, distanceList,hauteurList, profilePictures);
@@ -63,13 +64,15 @@ public class ProximityActivity extends AppCompatActivity {
         stringArrayList.add("BOUYGUES TELECOM, 3G");
         stringArrayList.add("SFR, 3G");
 
-        distanceList.add("3 mètres");
-        distanceList.add("3 mètres");
-        distanceList.add("3 mètres");
+        distanceList.add("3");
+        distanceList.add("100");
+        distanceList.add("300");
 
-        hauteurList.add("hauteur: 5mètres");
-        hauteurList.add("hauteur: 5mètres");
-        hauteurList.add("hauteur: 5mètres");
+        hauteurList.add("hauteur: 5 mètres");
+        hauteurList.add("hauteur: 70 mètres");
+        hauteurList.add("hauteur: 200 mètres");
+
+
 
 
 
