@@ -52,12 +52,13 @@ o2 = folium.features.CustomIcon(
     icon_anchor=(10, 40)
 )
 
-map_osm = folium.Map(location=[46.44, 0.12])
+map_osm = folium.Map(location=[48.8534, 2.35])
 #HTML('map_osm')
 #from pyensae import folium_html_map
+print(len(Lat))
 for i in range(len(Lat)):
    map_osm.add_child(folium.CircleMarker(location=[Lat[i],Long[i]], popup='a',fill_color='red', radius=10))
-map_osm.save('paf.html')
+map_osm.save('paf1.html')
 ## on demande à l'utilisateur de donner une limite et les coordonées gps de la référence
 
 
@@ -83,7 +84,8 @@ import gmplot
 gmap = gmplot.GoogleMapPlotter(48.853,2.35,16)
 #gmap = gmplot.from_geocode("Paris")
 
-gmap.scatter(Lat,Long, '#logo2',size = 1, marker=True)
+#gmap.scatter(Lat,Long, '#logo2',size = 1, marker=True)
+gmap.scatter(Lat,Long, '#FFFAFA',size = 1, marker=True)
 
-gmap.draw("test34.html")
+gmap.draw("paf2.html")
 
