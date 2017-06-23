@@ -5,7 +5,7 @@ import org.junit.Test;
 public class AppRequestTest {
     @Test
     public void json() throws Exception {
-        System.out.print(AppRequest.json("48.82628", "2.34519", "100"));
+        System.out.print(AppRequest.jsonVolumes("48.826891", "2.346764", "48.825856", "2.345192"));
     }
 }
 
