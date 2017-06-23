@@ -122,6 +122,7 @@
     <orderEntry type="library" exported="" name="firebase-messaging-11.0.1" level="project" />
     <orderEntry type="library" exported="" name="firebase-database-11.0.1" level="project" />
     <orderEntry type="library" exported="" name="play-services-wallet-11.0.1" level="project" />
+    <orderEntry type="library" exported="" name="preference-v14-24.2.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-gcm-11.0.1" level="project" />
     <orderEntry type="library" exported="" name="play-services-vision-common-11.0.1" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="exposed-instrumentation-api-publish-0.5" level="project" />
@@ -158,6 +159,7 @@
     <orderEntry type="library" exported="" name="firebase-storage-11.0.1" level="project" />
     <orderEntry type="library" exported="" name="firebase-auth-11.0.1" level="project" />
     <orderEntry type="library" exported="" name="play-services-base-11.0.1" level="project" />
+    <orderEntry type="library" exported="" name="preference-v7-24.2.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-tagmanager-api-11.0.1" level="project" />
     <orderEntry type="library" exported="" name="play-services-awareness-11.0.1" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="jsr305-2.0.1" level="project" />
