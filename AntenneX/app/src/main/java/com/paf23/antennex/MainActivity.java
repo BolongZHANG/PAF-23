@@ -1,6 +1,7 @@
 package com.paf23.antennex;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
@@ -12,10 +13,14 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -23,6 +28,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,18 +39,13 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private Camera mCamera;
     private SurfaceHolder mSurfaceHolder;
     private boolean isCameraViewOn = false;
-    private int nb_antennes = 0;
+    private int nb_poi = 0;
     private int listSize = 100;
-    //private AugmentedPOI mPoi, mPoi2;
     ArrayList<AugmentedPOI> mPoiList = new ArrayList<AugmentedPOI>(listSize);
 
     private double mAzimuthReal = 0;
     private double mRollReal = 0;
-    //private double mAzimuthTheoretical = 0;
-    //private double mAzimuthTheoretical2 = 0;
     ArrayList<Double> mAzimuthTheoreticalList = new ArrayList<Double>(listSize);
-    //private double mRollTheoretical = 0;
-    //private double mRollTheoretical2 = 0;
     ArrayList<Double> mRollTheoreticalList = new ArrayList<Double>(listSize);
 
     private static double AZIMUTH_ACCURACY = 25;
@@ -57,11 +59,9 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private MyCurrentLocation myCurrentLocation;
 
     TextView descriptionTextView;
-    //ImageView pointerIcon;
-    //ImageView pointerIcon2;
+    TextView debug;
     ArrayList<ImageView> pointerIconList = new ArrayList<ImageView>(listSize);
-    ArrayList<Integer> viewId = new ArrayList<Integer>(listSize);
-     private ImageView imageView;
+    ArrayList<ImageView> textIconList = new ArrayList<ImageView>(listSize);
     Display display;
 
     @Override
@@ -80,35 +80,49 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
 
     private void setAugmentedRealityPoint() {
-        /*mPoi = new AugmentedPOI(
-                "Sacré-Coeur",
-                "Romantisme à  l'état pur",
-                48.886705,
-                2.343104, 207
-        );
-        mPoi2 = new AugmentedPOI("Eiffel Tower","symbol of Paris",48.85837009999999,2.2944813000000295,358);*/
 
-        mPoiList.add(new AugmentedPOI(
-                "Sacré-Coeur",
-                "Romantisme à  l'état pur",
-                48.886705,
-                2.343104, 207
-        ));
-        mPoiList.add(new AugmentedPOI("Eiffel Tower","symbol of Paris",48.85837009999999,2.2944813000000295,358));
-        mPoiList.add(new AugmentedPOI("Strasbourg","sausages&beer",48.573405,7.752111,147));
+        mPoiList.add(new AugmentedPOI("Sacré-Coeur", "Romantisme à  l'état pur", "antenne", 48.886705, 2.343104, 207));
+        mPoiList.add(new AugmentedPOI("Eiffel Tower","symbol of Paris","antenne",48.85837009999999,2.2944813000000295,358));
+        mPoiList.add(new AugmentedPOI("Strasbourg","sausages&beer","antenne",48.573405,7.752111,147));
+        nb_poi= mPoiList.size();
 
-        nb_antennes= mPoiList.size();
+        final RelativeLayout layout = (RelativeLayout) findViewById(R.id.imageView_layout);
+        final RelativeLayout layout2 = (RelativeLayout) findViewById(R.id.main_layout);
 
-        RelativeLayout layout = (RelativeLayout) findViewById(R.id.imageView_layout);
-        for (int i = 0; i < nb_antennes; i++) {
+        for (int i = 0; i < nb_poi; i++) {
+
+            final int j= i; // pour pouvoir le passer dans le on click
 
             ImageView image = new ImageView(this);
             image.setLayoutParams(new android.view.ViewGroup.LayoutParams(80, 60));
             image.setImageResource(R.drawable.antenna_rotated);
+
+
+            image.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    descriptionTextView.setVisibility(View.VISIBLE);
+
+
+
+                    DecimalFormat df = new DecimalFormat("#"); // Pour tronquer le nombre
+                    df.setRoundingMode(RoundingMode.CEILING);
+                    Double distance = getDistance(mPoiList.get(j).getPoiLatitude(), mPoiList.get(j).getPoiLongitude(), mMyLatitude,mMyLongitude)/1000 ;
+                    final String details = mPoiList.get(j).getPoiDescription() + " Distance:  " +
+                            df.format(distance)+" km";
+                    TextView descriptionTextView = (TextView)findViewById(R.id.descriptionTextView);
+                    descriptionTextView.setText(details);
+                    disappear(); // fais un effet toast
+
+                }
+            });
+
             image.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             // Adds the view to the layout
             layout.addView(image);
             pointerIconList.set(i,image);
+
+            //to be continued...
         }
     }
 
@@ -140,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     public double calculateTheoreticalRoll(AugmentedPOI poi) {
         // Calculates Roll angle  of POI
-        double d = distance(poi.getPoiLatitude(), poi.getPoiLongitude(), mMyLatitude,mMyLongitude);
+        double d = getDistance(poi.getPoiLatitude(), poi.getPoiLongitude(), mMyLatitude,mMyLongitude);
         Double dz = poi.getPoiAltitude() - mMyAltitude;
         double tanTheta;
         double theta;
@@ -204,10 +218,8 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     }
 
     private void updateDescription() {
-        /*descriptionTextView.setText(mPoi2.getPoiName() + " azimuthTheoretical2 " // faudrait le faire pour les autres poi aussi
-                + mAzimuthTheoretical2 + " azimuthReal " + mAzimuthReal + " rollTheoretical2 "+ mRollTheoretical2 + " RollReal " + mRollReal + " latitude "
-                + mMyLatitude + " longitude " + mMyLongitude + " altitude " + mMyAltitude +  " angle caméra " + ROLL_ACCURACY);*/
-        descriptionTextView.setText(mPoiList.get(2).getPoiName() + " azimuthTheoretical2 " // faudrait le faire pour les autres poi aussi
+
+        debug.setText(mPoiList.get(2).getPoiName() + " azimuthTheoretical2 " // faudrait le faire pour les autres poi aussi
                 + mAzimuthTheoreticalList.get(2) + " azimuthReal " + mAzimuthReal + " rollTheoretical2 "+ mRollTheoreticalList.get(2) + " RollReal " + mRollReal + " latitude "
                 + mMyLatitude + " longitude " + mMyLongitude + " altitude " + mMyAltitude +  " angle caméra " + ROLL_ACCURACY);
     }
@@ -218,11 +230,8 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         mMyLatitude = location.getLatitude();
         mMyLongitude = location.getLongitude();
         mMyAltitude = location.getAltitude();
-        /*mAzimuthTheoretical = calculateTheoreticalAzimuth(mPoi);
-        mRollTheoretical = calculateTheoreticalRoll(mPoi);
-        mAzimuthTheoretical2 = calculateTheoreticalAzimuth(mPoi2);//faudrait gÃ©nÃ©raliser pour une liste
-        mRollTheoretical2 = calculateTheoreticalRoll(mPoi2);*/
-        for (int i = 0; i < nb_antennes; i++) {
+
+        for (int i = 0; i < nb_poi; i++) {
             mAzimuthTheoreticalList.set(i, calculateTheoreticalAzimuth(mPoiList.get(i)));
             mRollTheoreticalList.set(i, calculateTheoreticalRoll(mPoiList.get(i)));
         }
@@ -233,38 +242,19 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     public void onAzimuthChanged(float azimuthChangedFrom, float azimuthChangedTo) {
         // Function to handle Change in azimuth angle
         mAzimuthReal = azimuthChangedTo;
-        //mAzimuthTheoretical = calculateTheoreticalAzimuth(mPoi);
-        //mAzimuthTheoretical2 = calculateTheoreticalAzimuth(mPoi2);
-        for (int i = 0; i < nb_antennes; i++) {
+
+        for (int i = 0; i < nb_poi; i++) {
             mAzimuthTheoreticalList.set(i, calculateTheoreticalAzimuth(mPoiList.get(i)));
         }
 
         // Since Camera View is perpendicular to device plane
         mAzimuthReal = (mAzimuthReal+90)%360;
 
-        //pointerIcon = (ImageView) findViewById(R.id.icon);
-        //pointerIcon2 = (ImageView) findViewById(R.id.icon2);
 
-        /*RelativeLayout layout = (RelativeLayout) findViewById(R.id.imageView_layout);
-        for (int i = 0; i < nb_antennes; i++) {
-
-            ImageView image = new ImageView(this);
-            image.setLayoutParams(new android.view.ViewGroup.LayoutParams(80,60));
-            image.setImageResource(R.drawable.antenna_rotated);
-            image.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            viewId.set(i,image.generateViewId()); // generate a valid id
-            // Adds the view to the layout
-            layout.addView(image);
-            pointerIconList.set(i,(ImageView) findViewById(viewId.get(i)));
-            consequenceIsBetween(mAzimuthTheoreticalList.get(i),mRollTheoreticalList.get(i),image);
-        }*/
-
-        for (int i =0; i<nb_antennes;i++){
+        for (int i =0; i<nb_poi;i++){
             consequenceIsBetween(mAzimuthTheoreticalList.get(i),mRollTheoreticalList.get(i),pointerIconList.get(i));
         }
 
-        //consequenceIsBetween(mAzimuthTheoretical,mRollTheoretical,pointerIcon);
-        //consequenceIsBetween(mAzimuthTheoretical2,mRollTheoretical2,pointerIcon2);
 
         updateDescription();
     }
@@ -272,38 +262,19 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     public void onRollChanged(float rollChangedFrom, float rollChangedTo) {
         // Function to handle Change in azimuth angle
         mRollReal = rollChangedTo;
-        //mRollTheoretical = calculateTheoreticalRoll(mPoi);
-        //mRollTheoretical2 = calculateTheoreticalRoll(mPoi2);
-        for (int i = 0; i < nb_antennes; i++) {
+
+        for (int i = 0; i < nb_poi; i++) {
             mRollTheoreticalList.set(i, calculateTheoreticalRoll(mPoiList.get(i)));
         }
 
         // parce que sinon 0° vers le sol
         mRollReal = (mRollReal-90)%180; // problème à régler pour ceux qui regardent la tête à l'envers
 
-        //pointerIcon = (ImageView) findViewById(R.id.icon);
-        //pointerIcon2 = (ImageView) findViewById(R.id.icon2);
 
-        /*RelativeLayout layout = (RelativeLayout) findViewById(R.id.imageView_layout);
-        for (int i = 0; i < nb_antennes; i++) {
 
-            ImageView image = new ImageView(this);
-            image.setLayoutParams(new android.view.ViewGroup.LayoutParams(80,60));
-            image.setImageResource(R.drawable.antenna_rotated);
-            image.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            viewId.set(i,image.generateViewId()); // generate a valid id
-            // Adds the view to the layout
-            layout.addView(image);
-            pointerIconList.set(i,(ImageView) findViewById(viewId.get(i)));
-            consequenceIsBetween(mAzimuthTheoreticalList.get(i),mRollTheoreticalList.get(i),image );
-        }*/
-
-        for (int i =0; i<nb_antennes;i++){
+        for (int i =0; i<nb_poi;i++){
             consequenceIsBetween(mAzimuthTheoreticalList.get(i),mRollTheoreticalList.get(i),pointerIconList.get(i));
         }
-
-        //consequenceIsBetween(mAzimuthTheoretical,mRollTheoretical,pointerIcon);
-        //consequenceIsBetween(mAzimuthTheoretical2,mRollTheoretical2,pointerIcon2);
 
         updateDescription();
     }
@@ -336,8 +307,8 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     }
 
     private void setupLayout() {
-        descriptionTextView = (TextView) findViewById(R.id.cameraTextView);
-
+        descriptionTextView = (TextView) findViewById(R.id.descriptionTextView);
+        debug = (TextView) findViewById(R.id.debug);
         getWindow().setFormat(PixelFormat.UNKNOWN);
         SurfaceView surfaceView = (SurfaceView) findViewById(R.id.cameraview);
         mSurfaceHolder = surfaceView.getHolder();
@@ -410,7 +381,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         return (Math.PI * degrees)/180;
     }
 
-    public double distance( double lat_a_degre,  double lon_a_degre, double lat_b_degre,  double lon_b_degre) {
+    public double getDistance( double lat_a_degre,  double lon_a_degre, double lat_b_degre,  double lon_b_degre) {
 
         double R = 6378000; //Rayon de la terre en mètre
 
@@ -427,11 +398,31 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private void initializeArrays(){
         mAzimuthTheoreticalList = new ArrayList<Double>(Collections.nCopies(listSize, 0.));
         mRollTheoreticalList = new ArrayList<Double>(Collections.nCopies(listSize, 0.));
-        viewId = new ArrayList<Integer>(Collections.nCopies(listSize, 0));
         pointerIconList = new ArrayList<ImageView>(Collections.nCopies(listSize,new ImageView(this)));
 
 
 
+    }
+
+    private void disappear(){
+        // fade out view nicely after 5 seconds
+        AlphaAnimation alphaAnim = new AlphaAnimation(1.0f,0.0f);
+        alphaAnim.setStartOffset(3000);                        // start in 5 seconds
+        alphaAnim.setDuration(400);
+        alphaAnim.setAnimationListener(new Animation.AnimationListener()
+        {
+            public void onAnimationEnd(Animation animation)
+            {
+                // make invisible when animation completes, you could also remove the view from the layout
+                descriptionTextView.setVisibility(View.INVISIBLE);
+            }
+
+            public void onAnimationStart(Animation a) { }
+            public void onAnimationRepeat(Animation a) { }
+
+        });
+
+        descriptionTextView.setAnimation(alphaAnim);
     }
 
 }
