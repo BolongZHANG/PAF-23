@@ -23,11 +23,14 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.mous.antennex.CartoradioActivity;
 import com.example.mous.antennex.R;
 import com.example.mous.antennex.ResumeActivity;
 
@@ -75,6 +78,15 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_core);
         descriptionTextView = (TextView) findViewById(R.id.cameraTextView);
+
+        ImageButton buttonMaps =(ImageButton) findViewById(R.id.buttonMaps);
+        buttonMaps.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(CoreActivity.this, CartoradioActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
 
