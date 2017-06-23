@@ -28,11 +28,11 @@ public class AppRequest {
     }
 
     public static JSONObject jsonVolumes(String MyLongitude, String MyLatitude, String PoiLongitude, String PoiLatitude) {
-        String requete = "https://opendata.paris.fr/api/v1/console/records/1.0/search/?"
+        String requete = "https://opendata.paris.fr/api/records/1.0/search/?"
                 + "dataset=volumesbatisparis2011&geofilter.polygon="
-                + "(" + MyLongitude + "," + MyLatitude + ")" + ","
-                + "(" + PoiLongitude + "," +PoiLatitude + ")" + ","
-                + "(" + PoiLongitude + "," + MyLatitude + ")";
+                + "(" + MyLongitude + "%2C" + MyLatitude + ")" + "%2C"
+                + "(" + PoiLongitude + "%2C" +PoiLatitude + ")" + "%2C"
+                + "(" + PoiLongitude + "%2C" + MyLatitude + ")";
 
         try {
             URL url = new URL(requete);
