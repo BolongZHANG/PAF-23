@@ -40,7 +40,8 @@
         <activity android:name=".LegalActivity" />
         <activity android:name=".CartoradioActivity" />
         <activity android:name=".augmentedReality.GaugeView" />
-        <activity android:name=".augmentedReality.JaugeActivity"></activity>
+        <activity android:name=".augmentedReality.JaugeActivity" />
+        <activity android:name=".ProximityActivity"></activity>
     </application>
 
 </manifest>

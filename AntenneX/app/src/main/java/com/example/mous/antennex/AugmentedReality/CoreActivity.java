@@ -50,7 +50,7 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private boolean isInProgress = false;
     private boolean resetMode = false;
     private boolean canReset = false;
-
+    //Fin initialisation variables jauge
 
 
     private Camera mCamera;
