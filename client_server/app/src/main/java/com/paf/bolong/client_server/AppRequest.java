@@ -26,34 +26,14 @@ public class AppRequest {
         }
         return null;
     }
-//
-//    public static JSONObject jsonVolumes(String MyLongitude, String MyLatitude, String PoiLongitude, String PoiLatitude) {
-//        String requete = "https://opendata.paris.fr/api/records/1.0/search/?"
-//                + "dataset=volumesbatisparis2011&geofilter.polygon="
-//                + "(" + MyLongitude + "%2C" + MyLatitude + ")" + "%2C"
-//                + "(" + PoiLongitude + "%2C" +PoiLatitude + ")" + "%2C"
-//                + "(" + MyLongitude + "%2C" + Double.parseDouble(MyLatitude)+0.000001 + ")";
-//
-//        try {
-//            URL url = new URL(requete);
-//            BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-//            String strTemp = "";
-//            while (null != (strTemp = br.readLine())) {
-//                JSONObject j = new JSONObject(strTemp);
-//                return j;
-//            }
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//        return null;
-//    }
+
 
     public static JSONObject jsonVolumes(double MyLongitude, double MyLatitude, double PoiLongitude, double PoiLatitude) {
         String requete = "https://opendata.paris.fr/api/records/1.0/search/?"
                 + "dataset=volumesbatisparis2011&geofilter.polygon="
                 + "(" + MyLongitude + "%2C" + MyLatitude + ")" + "%2C"
                 + "(" + PoiLongitude + "%2C" +PoiLatitude + ")" + "%2C"
-                + "(" + MyLongitude + "%2C" + MyLatitude+0.000001 + ")";
+                + "(" + MyLongitude + "%2C" + (MyLatitude+0.000001) + ")";
 
         try {
             URL url = new URL(requete);
