@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class GeoUtils{
 	
-	public static double pas = 0.00001;
+	public static double pas = 0.0001;
 	
 	public static boolean isVisible(double myLongitude,
 			 						double myLatitude,
