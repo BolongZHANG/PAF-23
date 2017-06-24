@@ -3,6 +3,7 @@ package com.paf23.antennex;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.hardware.Camera;
@@ -19,6 +20,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
@@ -50,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     private static double AZIMUTH_ACCURACY = 25;
     private static double ROLL_ACCURACY =20;
+    private int maxRayon = 300 ; //mètres
     private double mMyLatitude = 0;
     private double mMyLongitude = 0;
     private double mMyAltitude = 0;
@@ -61,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     TextView descriptionTextView;
     TextView debug;
     ArrayList<ImageView> pointerIconList = new ArrayList<ImageView>(listSize);
-    ArrayList<ImageView> textIconList = new ArrayList<ImageView>(listSize);
     Display display;
 
     @Override
@@ -73,6 +76,8 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         display = ((android.view.WindowManager)getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         setupListeners();
         setupLayout();
+        ImageView wallpaper = (ImageView) findViewById(R.id.wallpaper);
+        fadeOutAndHideImage(wallpaper);
 
 
 
@@ -81,13 +86,12 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     private void setAugmentedRealityPoint() {
 
-        mPoiList.add(new AugmentedPOI("Sacré-Coeur", "Romantisme à  l'état pur", "antenne", 48.886705, 2.343104, 207));
-        mPoiList.add(new AugmentedPOI("Eiffel Tower","symbol of Paris","antenne",48.85837009999999,2.2944813000000295,358));
-        mPoiList.add(new AugmentedPOI("Strasbourg","sausages&beer","antenne",48.573405,7.752111,147));
+        mPoiList.add(new AugmentedPOI("Sacré-Coeur", "Haut du dôme du Sacré-Coeur", "antenne", 48.886705, 2.343104, 207));
+        mPoiList.add(new AugmentedPOI("Eiffel Tower","Antenne de la tour Eiffel","antenne",48.85837009999999,2.2944813000000295,358));
+        mPoiList.add(new AugmentedPOI("Strasbourg","Strasbourg mesure","mesure",48.573405,7.752111,147));
         nb_poi= mPoiList.size();
 
         final RelativeLayout layout = (RelativeLayout) findViewById(R.id.imageView_layout);
-        final RelativeLayout layout2 = (RelativeLayout) findViewById(R.id.main_layout);
 
         for (int i = 0; i < nb_poi; i++) {
 
@@ -95,7 +99,17 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
             ImageView image = new ImageView(this);
             image.setLayoutParams(new android.view.ViewGroup.LayoutParams(80, 60));
-            image.setImageResource(R.drawable.antenna_rotated);
+
+
+            String type = mPoiList.get(i).getPoiType(); // type : antenne ou mesure
+
+            if(type.equals("antenne"))
+                image.setImageResource(R.drawable.antenne_rotated_big);
+            else if (type.equals("mesure")) {
+                image.setImageResource(R.drawable.mesure_rotated_big);
+            }
+            else
+                image.setImageResource(R.drawable.question_mark_rotated); //  au cas où
 
 
             image.setOnClickListener(new View.OnClickListener(){
@@ -112,12 +126,12 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
                             df.format(distance)+" km";
                     TextView descriptionTextView = (TextView)findViewById(R.id.descriptionTextView);
                     descriptionTextView.setText(details);
-                    disappear(); // fais un effet toast
+                    disappear(descriptionTextView); // fais un effet toast
 
                 }
             });
 
-            image.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            //image.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             // Adds the view to the layout
             layout.addView(image);
             pointerIconList.set(i,image);
@@ -227,6 +241,14 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     @Override
     public void onLocationChanged(Location location) {
         // Function to handle Change in Location
+
+        //Commentaire ci-dessous pour actualisation BDD
+        /*initializeArrays();
+        final RelativeLayout layout = (RelativeLayout) findViewById(R.id.imageView_layout);
+        if(((RelativeLayout) layout).getChildCount() > 0)
+            ((RelativeLayout) layout).removeAllViews();
+        setAugmentedRealityPoint();*/
+
         mMyLatitude = location.getLatitude();
         mMyLongitude = location.getLongitude();
         mMyAltitude = location.getAltitude();
@@ -252,7 +274,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
 
         for (int i =0; i<nb_poi;i++){
-            consequenceIsBetween(mAzimuthTheoreticalList.get(i),mRollTheoreticalList.get(i),pointerIconList.get(i));
+            consequenceIsBetween(mAzimuthTheoreticalList.get(i),mRollTheoreticalList.get(i),pointerIconList.get(i),i);
         }
 
 
@@ -273,10 +295,12 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
 
         for (int i =0; i<nb_poi;i++){
-            consequenceIsBetween(mAzimuthTheoreticalList.get(i),mRollTheoreticalList.get(i),pointerIconList.get(i));
+            consequenceIsBetween(mAzimuthTheoreticalList.get(i),mRollTheoreticalList.get(i),pointerIconList.get(i),i);
         }
 
         updateDescription();
+
+
     }
 
     @Override
@@ -355,7 +379,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         isCameraViewOn = false;
     }
 
-    public void consequenceIsBetween(double azimuthTheoretical, double rollTheoretical, ImageView pointer){
+    public void consequenceIsBetween(double azimuthTheoretical, double rollTheoretical, ImageView pointer, int index){
 
         double minAngleA = calculateAzimuthAccuracy(mAzimuthReal).get(0);
         double maxAngleA = calculateAzimuthAccuracy(mAzimuthReal).get(1);
@@ -363,10 +387,14 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         double maxAngleR = calculateRollAccuracy(mRollReal).get(1);
 
 
+
+
         if (azimuthIsBetween(minAngleA, maxAngleA, azimuthTheoretical)&& rollIsBetween(minAngleR, maxAngleR, rollTheoretical)) {
-            float ratioAzimuth = ((float) (azimuthTheoretical - minAngleA + 360.0) % 360) / ((float) (maxAngleA - minAngleA + 360.0) % 360);
-            float ratioRoll = ((float) (rollTheoretical - minAngleR) % 180) / ((float) (maxAngleR - minAngleR) % 180);
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+            float ratioAzimuth = ((float) (azimuthTheoretical - minAngleA + 360.0) % 360) / ((float) (maxAngleA - minAngleA + 360.0) % 360); // où afficher sur le tel
+            float ratioRoll = ((float) (rollTheoretical - minAngleR) % 180) / ((float) (maxAngleR - minAngleR) % 180); // ou afficher sur le tel
+            int imageDP = imageSizeDP(index);
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(dpToPx(imageDP,this.getApplicationContext()), dpToPx(imageDP,this.getApplicationContext())); // taille image
             lp.topMargin = (int) (display.getHeight() * ratioAzimuth);
             lp.leftMargin = (int) (display.getWidth() * ratioRoll ) ;
             pointer.setLayoutParams(lp);
@@ -399,12 +427,13 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         mAzimuthTheoreticalList = new ArrayList<Double>(Collections.nCopies(listSize, 0.));
         mRollTheoreticalList = new ArrayList<Double>(Collections.nCopies(listSize, 0.));
         pointerIconList = new ArrayList<ImageView>(Collections.nCopies(listSize,new ImageView(this)));
+        mPoiList = new ArrayList<AugmentedPOI>(listSize);
 
 
 
     }
 
-    private void disappear(){
+    private void disappear(final View view){
         // fade out view nicely after 5 seconds
         AlphaAnimation alphaAnim = new AlphaAnimation(1.0f,0.0f);
         alphaAnim.setStartOffset(3000);                        // start in 5 seconds
@@ -414,7 +443,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
             public void onAnimationEnd(Animation animation)
             {
                 // make invisible when animation completes, you could also remove the view from the layout
-                descriptionTextView.setVisibility(View.INVISIBLE);
+                view.setVisibility(View.INVISIBLE);
             }
 
             public void onAnimationStart(Animation a) { }
@@ -425,4 +454,41 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         descriptionTextView.setAnimation(alphaAnim);
     }
 
+    public static int dpToPx(int dp, Context context) {
+        //transforme dp en pixels
+        float density = context.getResources().getDisplayMetrics().density;
+        return Math.round((float) dp * density);
+    }
+
+
+
+    private void fadeOutAndHideImage(final ImageView img)
+    {
+        Animation fadeOut = new AlphaAnimation(1, 0);
+        fadeOut.setInterpolator(new AccelerateInterpolator());
+        fadeOut.setDuration(3000);
+
+        fadeOut.setAnimationListener(new Animation.AnimationListener()
+        {
+            public void onAnimationEnd(Animation animation)
+            {
+                img.setVisibility(View.GONE);
+            }
+            public void onAnimationRepeat(Animation animation) {}
+            public void onAnimationStart(Animation animation) {}
+        });
+
+        img.startAnimation(fadeOut);
+    }
+
+    private int imageSizeDP(int index){
+        int imageDP;
+        double distance = getDistance(mPoiList.get(index).getPoiLatitude(),mPoiList.get(index).getPoiLongitude(), mMyLatitude,mMyLongitude);
+        double size =  (100 - distance * 70 / maxRayon); // Diminue la taille de l'icon avec l'éloignement affinement
+        if (size<0)
+            imageDP = 30;
+        else imageDP = (int) size;
+
+        return imageDP;
+    }
 }
