@@ -41,7 +41,7 @@ public class Fragment2 extends Fragment implements View.OnClickListener{
                 getActivity().startActivity(intent);
                 break;
             case R.id.resume_btn:
-                Intent intent2 = new Intent (getActivity(), ResumeActivity.class);
+                Intent intent2 = new Intent (getActivity(), ProximityActivity.class);
                 getActivity().startActivity(intent2);
                 break;
             case R.id.carte_btn:

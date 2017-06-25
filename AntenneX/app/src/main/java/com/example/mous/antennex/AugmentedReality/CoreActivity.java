@@ -153,8 +153,8 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
         initializeArrays();
         Log.d("Test", "Fin du start");
         setAugmentedRealityPoint();
-        ImageView wallpaper = (ImageView) findViewById(R.id.wallpaper);
-        fadeOutAndHideImage(wallpaper);
+        /*ImageView wallpaper = (ImageView) findViewById(R.id.wallpaper);
+        fadeOutAndHideImage(wallpaper);*/
 
 
 

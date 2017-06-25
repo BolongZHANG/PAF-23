@@ -69,12 +69,12 @@
         android:visibility="visible"
         android:rotation="90"/>
 
-    <ImageView
+    <!--<ImageView
         android:id="@+id/wallpaper"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/wallpaper_ellipse2" />
-
+-->
         </RelativeLayout>
 
     <RelativeLayout
