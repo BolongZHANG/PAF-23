@@ -11,17 +11,26 @@ public class AugmentedPOI {
         private double mLatitude;
         private double mLongitude;
         private double mAltitude;
+        private String mType;
 
-        public AugmentedPOI(String newName, String newDescription,
+        public AugmentedPOI(String newName, String newDescription, String mType,
                             double newLatitude, double newLongitude, double newAltitude) {
 
             this.mName = newName;
+            this.mType=mType;
             this.mDescription = newDescription;
             this.mLatitude = newLatitude;
             this.mLongitude = newLongitude;
             this.mAltitude=newAltitude;
 
         }
+
+    public String getPoiType() {
+        return mType;
+    }
+    public void setPoiType(String poiType) {
+        this.mType = poiType;
+    }
 
         public int getPoiId() {
             return mId;

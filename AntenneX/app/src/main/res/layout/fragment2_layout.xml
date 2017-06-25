@@ -2,17 +2,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/lightPurple"
     >
 
-    <View
+
+
+    <!--<View
         android:id="@+id/rectangle_at_the_top"
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_alignParentTop="true"
         android:layout_marginTop="120dp"
         android:layout_marginLeft="58dp"
-        android:background="@color/grey_light"
-        android:visibility="visible" />
+        android:background="@color/lightPurple"
+
+        android:visibility="visible" />-->
 
     <Button
         android:id="@+id/gallery"
@@ -21,38 +25,64 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="146dp"
-        android:background="@android:color/holo_purple"
+        android:background="@color/white"
         android:drawableRight="@drawable/ic_chevron_right__24dp"
         android:text="Gallerie"
-        android:textColor="@color/white" />
+        android:textColor="@color/darkPurple" />
+
+
+    <Button
+        android:id="@+id/gallery"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="146dp"
+
+        android:drawableRight="@drawable/ic_chevron_right__24dp"
+        android:text="Gallerie"
+
+
+        android:textColor="#3e0348"
+        android:textSize="15sp"
+
+        android:layout_width="170dp"
+        android:layout_height="50dp"
+        android:background="@drawable/buttonshape"
+        />
 
     <Button
         android:id="@+id/resume_btn"
-        android:layout_width="150dp"
-        android:layout_height="45dp"
         android:layout_alignLeft="@+id/carte_btn"
         android:layout_alignStart="@+id/carte_btn"
         android:layout_below="@+id/gallery"
         android:layout_marginTop="20dp"
-        android:background="@android:color/holo_purple"
         android:drawableRight="@drawable/ic_chevron_right__24dp"
         android:text="Résumé"
-        android:textColor="@color/white" />
+
+
+        android:textColor="#3e0348"
+        android:textSize="15sp"
+
+        android:layout_width="170dp"
+        android:layout_height="50dp"
+        android:background="@drawable/buttonshape"
+        />
 
 
     <Button
         android:id="@+id/carte_btn"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
         android:layout_below="@+id/resume_btn"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:background="@android:color/holo_purple"
         android:drawableRight="@drawable/ic_chevron_right__24dp"
-        android:text="CartoRadio"
-        android:textColor="@android:color/white" />
 
+        android:text="CartoRadio"
+        android:textColor="#3e0348"
+        android:textSize="15sp"
+
+        android:layout_width="170dp"
+        android:layout_height="50dp"
+        android:background="@drawable/buttonshape"
+        />
 
 
 </RelativeLayout>
