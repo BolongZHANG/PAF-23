@@ -10,15 +10,29 @@ import android.support.v7.app.AppCompatActivity;
         import android.support.v4.app.Fragment;
         import android.support.v4.app.FragmentTransaction;
         import android.support.v7.app.AppCompatActivity;
-        import android.view.MenuItem;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.app.AppCompatDelegate;
+import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
+
+
+    static {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
+
+
+
 
         bottomNavigationView.setOnNavigationItemSelectedListener
                 (new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -33,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                                 selectedFragment = Fragment2.newInstance();
                                 break;
                             case R.id.parameter:
-                                selectedFragment = Fragment3.newInstance();
+                                selectedFragment = PreferenceFragmentCustom.newInstance();
                                 break;
                         }
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

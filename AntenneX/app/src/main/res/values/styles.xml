@@ -7,6 +7,11 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:navigationBarColor">@color/black</item>
+        <!-- Theme for the Preferences -->
+        <item name="preferenceTheme">@style/AppPreferenceTheme</item>
+
+        <!-- Theme for all Alert Dialogs (e.g. from DialogPreference) -->
+        <item name="alertDialogTheme">@style/AppAlertDialog</item>
 
     </style>
 
@@ -31,35 +36,29 @@
 
 
 
+
+
 <!-- Base application theme. -->
-<style name="AppTheme2" parent="Theme.AppCompat">
-    <!-- Customize your theme here. -->
-    <item name="colorPrimary">@color/colorPrimary</item>
-    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-    <item name="colorAccent">@color/colorAccent</item>
-    <item name="android:windowBackground">@color/colorPrimary</item>
 
-    <!-- Theme for the Preferences -->
-    <item name="preferenceTheme">@style/AppPreferenceTheme</item>
 
-    <!-- Theme for all Alert Dialogs (e.g. from DialogPreference) -->
-    <item name="alertDialogTheme">@style/AppAlertDialog</item>
-</style>
+
+
+
 
 <!-- Custom Preference Theme inherits from the v14 support library Material Theme -->
-<style name="AppPreferenceTheme" parent="@style/PreferenceThemeOverlay.v14.Material">
+<style name="AppPreferenceTheme" parent="@style/Platform.AppCompat">
     <item name="preferenceFragmentCompatStyle">@style/AppPreferenceFragmentCompatStyle</item>
 </style>
 
 <!-- Custom Style for PreferenceFragmentCompat -->
-<style name="AppPreferenceFragmentCompatStyle" parent="@style/PreferenceFragment.Material">
+<style name="AppPreferenceFragmentCompatStyle" parent="@style/Platform.AppCompat">
     <!-- Custom layout for PreferenceFragmentCompat -->
     <item name="android:layout">@layout/pref_screen</item>
 </style>
 
 <!-- Style for a custom Preference Entry -->
 <style name="AppPreference">
-    <item name="android:layout">@layout/preference_material</item>
+    <item name="android:layout">@layout/pref_screen</item>
 </style>
 
 <!-- Style for a DialogPreference Entry -->

@@ -31,7 +31,7 @@
     <android.support.v7.preference.PreferenceCategory
         android:title="@string/preferences_category_two">
 
-        <de.jakobulbrich.preferences.TimePreference
+        <com.example.mous.antennex.TimePreference
             style="@style/AppPreference.DialogPreference"
             android:defaultValue="90"
             android:key="@string/pref_pref4"

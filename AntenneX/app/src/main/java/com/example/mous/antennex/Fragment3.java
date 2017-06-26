@@ -1,9 +1,12 @@
 package com.example.mous.antennex;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceFragmentCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,50 +14,57 @@ import android.view.ViewGroup;
 
 
 
-public class Fragment3 extends Fragment {
-    public static Fragment3 newInstance() {
-        Fragment3 fragment = new Fragment3();
-        return fragment;
-    }
 
 
-    public static class MainActivity extends AppCompatActivity {
+   /* public class Fragment3 extends PreferenceFragmentCompat {
 
-        static {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
+        /**
+         * {@inheritDoc}
+
+        @Override
+        public void onCreatePreferences(Bundle bundle, String s) {
+            // Load the Preferences from the XML file
+            addPreferencesFromResource(R.xml.app_preferences);
         }
 
         /**
          * {@inheritDoc}
-         */
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main_test);
 
-            if (savedInstanceState == null) {
-                Fragment preferenceFragment = new PreferenceFragmentCustom();
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.add(R.id.pref_container, preferenceFragment);
-                ft.commit();
+        @Override
+        public void onDisplayPreferenceDialog(Preference preference) {
+
+            // Try if the preference is one of our custom Preferences
+            DialogFragment dialogFragment = null;
+            if (preference instanceof TimePreference) {
+                // Create a new instance of TimePreferenceDialogFragment with the key of the related
+                // Preference
+                dialogFragment = TimePreferenceDialogFragmentCompat.newInstance(preference.getKey());
+            }
+
+
+            if (dialogFragment != null) {
+                // The dialog was created (it was one of our custom Preferences), show the dialog for it
+                dialogFragment.setTargetFragment(this, 0);
+                dialogFragment.show(this.getFragmentManager(), "android.support.v7.preference" +
+                        ".PreferenceFragment.DIALOG");
+            } else {
+                // Dialog creation could not be handled here. Try with the super method.
+                super.onDisplayPreferenceDialog(preference);
             }
 
         }
-
-
     }
 
+    */
 
 
 
 
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_main_test, container, false);
-    }
-}
+
+
+
+
 
 
 
