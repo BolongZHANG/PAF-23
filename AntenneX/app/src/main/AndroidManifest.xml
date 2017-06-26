@@ -41,7 +41,8 @@
         <activity android:name=".CartoradioActivity" />
         <activity android:name=".augmentedReality.GaugeView" />
         <activity android:name=".augmentedReality.JaugeActivity" />
-        <activity android:name=".ProximityActivity"></activity>
+        <activity android:name=".ProximityActivity" />
+        <activity android:name=".TestActivity"></activity>
     </application>
 
 </manifest>

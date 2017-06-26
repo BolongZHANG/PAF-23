@@ -5,16 +5,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <include
-        android:id="@+id/tToolbar"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        layout="@layout/toolbar_core"
-        />
+
 
     <SurfaceView
         android:id="@+id/cameraview"
-        android:layout_marginTop="50dp"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -28,6 +23,7 @@
             android:id="@+id/gaugeView"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
+            android:rotation="-90"
 
             android:layout_width="50dp"
             android:layout_height="50dp" />
@@ -66,7 +62,7 @@
         android:textColor="#FFFFFF"
         android:text="Debug"
         android:layout_centerVertical="true"
-        android:visibility="visible"
+        android:visibility="invisible"
         android:rotation="90"/>
 
     <!--<ImageView
@@ -85,14 +81,18 @@
             android:id="@+id/icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:rotation="90"
+            android:rotation="-180"
             android:layout_marginTop="200dp"
-            android:src="@android:drawable/sym_def_app_icon" />
+            android:src="@drawable/antenna_rotated"
+            />
+
+     <!--   android:src="@android:drawable/sym_def_app_icon"-->
 
         <ImageButton
             android:id="@+id/buttonMaps"
             android:layout_width="43dp"
             android:layout_height="47dp"
+            android:rotation="-90"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
@@ -100,7 +100,19 @@
             <!--android:layout_marginBottom="14dp"
             android:layout_marginEnd="14dp"
             android:layout_marginRight="14dp"-->
-            app:srcCompat="@drawable/maps" />
+
+
+
+        <ImageButton
+            android:id="@+id/buttonProximity"
+            android:layout_width="43dp"
+            android:layout_height="47dp"
+            android:rotation="-90"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            app:srcCompat="@drawable/ic_history"/>
+
 
 
     </RelativeLayout>

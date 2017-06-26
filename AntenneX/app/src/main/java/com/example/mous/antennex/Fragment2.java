@@ -37,7 +37,7 @@ public class Fragment2 extends Fragment implements View.OnClickListener{
 
         switch (v.getId()) {
             case R.id.gallery:
-                Intent intent = new Intent (getActivity(), GalleryActivity.class);
+                Intent intent = new Intent (getActivity(), TestActivity.class);
                 getActivity().startActivity(intent);
                 break;
             case R.id.resume_btn:

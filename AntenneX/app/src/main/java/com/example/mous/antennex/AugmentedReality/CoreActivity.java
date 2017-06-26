@@ -10,6 +10,7 @@ import android.hardware.Camera;
 
 
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ActionMenuView;
@@ -47,7 +48,7 @@ import java.util.List;
 
 public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Callback, OnLocationChangedListener, OnAzimuthChangedListener, OnRollChangedListener {
 
-    private ActionMenuView amvMenu;
+    /*private ActionMenuView amvMenu;*/
 
     //Partie dédiée à la jauge :: A VOIR OPTIMISATION !!
     private GaugeView gaugeView;
@@ -78,6 +79,7 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private static double ROLL_ACCURACY =20;
     private double mMyLatitude = 0;
     private int maxRayon = 300 ; //mètres
+    private ArrayList<Double> myInitiateLocation;
     private double mMyLongitude = 0;
     private double mMyAltitude = 0;
 
@@ -92,19 +94,32 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     ImageView pointerIcon;
     ImageButton mapButton;
+    ImageButton proximityButton;
+
     Display display;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_core);
+        myInitiateLocation = locationInOnCreate(); // récupère la position dès l'ouverture, ensuite elle est actualisée avec les listeners
+        mMyLatitude = myInitiateLocation.get(0); mMyLatitude = myInitiateLocation.get(1); mMyAltitude = myInitiateLocation.get(2);
         gaugeView = (GaugeView) findViewById(R.id.gaugeView);
         mapButton=(ImageButton) findViewById(R.id.buttonMaps);
+        proximityButton=(ImageButton) findViewById(R.id.buttonProximity);
 
         mapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), CartoradioActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        proximityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent (getApplicationContext(),ProximityActivity.class);
                 startActivity(intent);
             }
         });
@@ -122,16 +137,16 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
 
 
-        Toolbar coreToolbar = (Toolbar) findViewById(R.id.tToolbar);
+        /*Toolbar coreToolbar = (Toolbar) findViewById(R.id.tToolbar);
         amvMenu = (ActionMenuView) findViewById(R.id.amvM);
         amvMenu.setOnMenuItemClickListener(new ActionMenuView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 return onOptionsItemSelected(menuItem);
             }
-        });
+        });*/
 
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.lin);
+        /*LinearLayout linearLayout = (LinearLayout) findViewById(R.id.lin);
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,9 +154,9 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 startActivity(intent);
             }
         });
-
-        setSupportActionBar(coreToolbar);
-        getSupportActionBar().setTitle(null);
+*/
+        /*setSupportActionBar(coreToolbar);
+        getSupportActionBar().setTitle(null);*/
         /*getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
 
 
@@ -162,7 +177,7 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
     }
 
 
-    @Override
+   /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         // use amvMenu here
@@ -181,7 +196,7 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 return super.onOptionsItemSelected(item);
         }
 
-    }
+    }*/
 
     //Passer de la valeur de la BDD à la valeur utile en degrés
     private double toDegreExpostion ( double valueExposition)
@@ -271,7 +286,7 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
         mPoiList.add(new AugmentedPOI("Sacré-Coeur", "Haut du dôme du Sacré-Coeur", "antenne", 48.886705, 2.343104, 207));
         mPoiList.add(new AugmentedPOI("Eiffel Tower","Antenne de la tour Eiffel","antenne",48.85837009999999,2.2944813000000295,358));
-        mPoiList.add(new AugmentedPOI("Strasbourg","Strasbourg mesure","mesure",48.573405,7.752111,147));
+        mPoiList.add(new AugmentedPOI("Strasbourg","Strasbourg mesure","mesure",48.573405,7.752111,mMyAltitude));
         nb_poi= mPoiList.size();
 
         final RelativeLayout layout = (RelativeLayout) findViewById(R.id.imageView_layout);
@@ -693,5 +708,37 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
         return imageDP;
     }
+
+    private ArrayList<Double> locationInOnCreate(){ // pour récupérer la postion gps à envoyer dans le oncreate et pour les points de mesure
+        LocationManager locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+
+        boolean network_enabled = locManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+        Location location;
+        Double latitude =  new Double(0);
+        Double longitude =  new Double(0);
+        Double altitude =  new Double(0);
+
+        if(network_enabled){
+            try {
+                location = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            } catch (SecurityException e) {
+                Log.d("Sylvainn","Network exception");
+                location = null;
+            }
+
+            if(location!=null){
+                longitude = location.getLongitude();
+                latitude = location.getLatitude();
+                altitude = location.getAltitude();
+            }
+        }
+        ArrayList<Double> position = new ArrayList<Double>();
+        position.add(latitude);
+        position.add(longitude);
+        position.add(altitude);
+        return (position);
+    }
+
 
 }
