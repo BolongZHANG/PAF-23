@@ -8,6 +8,7 @@ import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.hardware.Camera;
 import android.location.Location;
+import android.location.LocationManager;
 import android.support.annotation.Size;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private static double AZIMUTH_ACCURACY = 25;
     private static double ROLL_ACCURACY =20;
     private int maxRayon = 300 ; //mètres
+    private ArrayList<Double> myInitiateLocation;
     private double mMyLatitude = 0;
     private double mMyLongitude = 0;
     private double mMyAltitude = 0;
@@ -72,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         super.onCreate(savedInstanceState);
         initializeArrays();
         setContentView(R.layout.activity_main);
+        myInitiateLocation = locationInOnCreate(); // récupère la position dès l'ouverture, ensuite elle est actualisée avec les listeners
+        mMyLatitude = myInitiateLocation.get(0); mMyLatitude = myInitiateLocation.get(1); mMyAltitude = myInitiateLocation.get(2);
         setAugmentedRealityPoint();
         display = ((android.view.WindowManager)getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         setupListeners();
@@ -86,9 +90,9 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     private void setAugmentedRealityPoint() {
 
-        mPoiList.add(new AugmentedPOI("Sacré-Coeur", "Haut du dôme du Sacré-Coeur", "antenne", 48.886705, 2.343104, 207));
+        mPoiList.add(new AugmentedPOI("Sacré-Coeur", "Haut du dôme du Sacré-Coeur", "antenne", 48.886705, 2.343104, 354));
         mPoiList.add(new AugmentedPOI("Eiffel Tower","Antenne de la tour Eiffel","antenne",48.85837009999999,2.2944813000000295,358));
-        mPoiList.add(new AugmentedPOI("Strasbourg","Strasbourg mesure","mesure",48.573405,7.752111,147));
+        mPoiList.add(new AugmentedPOI("Strasbourg","Strasbourg mesure","mesure",48.573405,7.752111,mMyAltitude));
         nb_poi= mPoiList.size();
 
         final RelativeLayout layout = (RelativeLayout) findViewById(R.id.imageView_layout);
@@ -490,5 +494,36 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         else imageDP = (int) size;
 
         return imageDP;
+    }
+
+    private ArrayList<Double> locationInOnCreate(){ // pour récupérer la postion gps à envoyer dans le oncreate et pour les points de mesure
+        LocationManager locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+
+        boolean network_enabled = locManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+        Location location;
+        Double latitude =  new Double(0);
+        Double longitude =  new Double(0);
+        Double altitude =  new Double(0);
+
+        if(network_enabled){
+            try {
+                location = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            } catch (SecurityException e) {
+                Log.d("Sylvainn","Network exception");
+                location = null;
+            }
+
+            if(location!=null){
+                longitude = location.getLongitude();
+                latitude = location.getLatitude();
+                altitude = location.getAltitude();
+            }
+        }
+        ArrayList<Double> position = new ArrayList<Double>();
+        position.add(latitude);
+        position.add(longitude);
+        position.add(altitude);
+        return (position);
     }
 }
