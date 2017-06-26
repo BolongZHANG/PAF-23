@@ -50,7 +50,7 @@
             android:id="@+id/wallpaper"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/wallpaper_ellipse2" />
+            app:srcCompat="@drawable/visio_wallpaper" />
 
 
         <!--<RelativeLayout
