@@ -102,6 +102,17 @@
             android:layout_marginRight="14dp"-->
 
 
+        <Button
+            android:id="@+id/cameraButton"
+            android:background="@drawable/circle_round"
+            android:layout_width="60sp"
+            android:layout_height="60sp"
+
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+
 
         <ImageButton
             android:id="@+id/buttonProximity"
