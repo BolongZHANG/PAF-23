@@ -9,14 +9,15 @@
 
     <Button
         android:id="@+id/share"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:background="@drawable/circle_round"
+        android:layout_width="60sp"
+        android:layout_height="60sp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="116dp"
         android:layout_marginStart="116dp"
         android:layout_marginTop="200dp"
-        android:text="Button"
+
         android:textColor="@color/black"/>
 </RelativeLayout>
