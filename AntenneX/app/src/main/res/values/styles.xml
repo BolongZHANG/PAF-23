@@ -2,13 +2,13 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:navigationBarColor">@color/black</item>
         <!-- Theme for the Preferences -->
-        <item name="preferenceTheme">@style/AppPreferenceTheme</item>
 
         <!-- Theme for all Alert Dialogs (e.g. from DialogPreference) -->
         <item name="alertDialogTheme">@style/AppAlertDialog</item>
@@ -47,6 +47,7 @@
 
 <!-- Custom Preference Theme inherits from the v14 support library Material Theme -->
 <style name="AppPreferenceTheme" parent="@style/Platform.AppCompat">
+
     <item name="preferenceFragmentCompatStyle">@style/AppPreferenceFragmentCompatStyle</item>
 </style>
 

@@ -3,41 +3,50 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <android.support.v7.preference.PreferenceCategory
-        android:title="@string/preferences_category_one">
+        android:title="Paramètres">
 
         <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="@string/pref_pref1"
-            android:summary="@string/preferences_switch_summ"
-            android:title="@string/preferences_switch_title"/>
+            android:summary="Vous pouvez désactiver l'affichage des antennes et ne conserver que les points de mesure"
+            android:title="Afficher les antennes"/>
+
+        <android.support.v7.preference.SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:key="@string/pref_pref3"
+            android:summary="Vous pouvez désactiver l'affichage des antennes et ne conserver que les points de mesure"
+            android:title="Afficher les points de mesure"/>
+
+
 
         <android.support.v7.preference.EditTextPreference
             android:defaultValue="@string/preferences_edittext_default"
             android:dialogLayout="@layout/pref_dialog_edittext_fix"
-            android:dialogMessage="@string/preferences_edittext_message"
+            android:dialogMessage="Veuillez renseigner la distance d'affichage souhaitée en mètres"
             android:inputType="number"
             android:key="@string/pref_pref2"
-            android:summary="@string/preferences_edittext_summ"
-            android:title="@string/preferences_edittext_title"/>
+            android:summary="Vous pouvez choisir de régler la distance d'affichage pour avoir un plus grand champs de vision"
+            android:title="Régler la distance d'affichage"/>
 
-        <android.support.v7.preference.CheckBoxPreference
-            android:defaultValue="true"
-            android:key="@string/pref_pref3"
-            android:summary="@string/preferences_checkbox_summ"
-            android:title="@string/preferences_checkbox_title"/>
 
     </android.support.v7.preference.PreferenceCategory>
 
     <android.support.v7.preference.PreferenceCategory
-        android:title="@string/preferences_category_two">
+        android:title="À propos">
 
-        <com.example.mous.antennex.TimePreference
-            style="@style/AppPreference.DialogPreference"
-            android:defaultValue="90"
-            android:key="@string/pref_pref4"
-            android:summary="@string/preferences_time_summ"
-            android:title="@string/preferences_time_title"/>
+        <Preference android:title="Nous découvrir"
+                    android:summary="Accéder à notre site web">
+            <intent android:action="android.intent.action.VIEW"
+                android:data="http://chairec2m.mines-telecom.fr/index.php?id=240.com" />
+        </Preference>
+
+        <Preference android:title="Version"
+            android:summary="Beta 1.0.0">
+        </Preference>
+
 
     </android.support.v7.preference.PreferenceCategory>
+
+
 
 </android.support.v7.preference.PreferenceScreen>

@@ -14,9 +14,6 @@ import android.support.v7.preference.PreferenceFragmentCompat;
  */
 public class PreferenceFragmentCustom extends PreferenceFragmentCompat {
 
-    static {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
-    }
 
     public static PreferenceFragmentCustom newInstance() {
         PreferenceFragmentCustom fragment = new PreferenceFragmentCustom();
