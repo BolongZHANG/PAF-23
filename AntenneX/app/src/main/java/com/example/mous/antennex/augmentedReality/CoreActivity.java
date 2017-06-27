@@ -39,6 +39,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.mous.antennex.CartoradioActivity;
+import com.example.mous.antennex.FetchDataActivity;
 import com.example.mous.antennex.ProximityActivity;
 import com.example.mous.antennex.R;
 import com.example.mous.antennex.ResumeActivity;
@@ -52,6 +53,9 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static com.example.mous.antennex.FetchDataActivity.Antennes;
+import static com.example.mous.antennex.FetchDataActivity.Mesures;
 
 public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Callback, OnLocationChangedListener, OnAzimuthChangedListener, OnRollChangedListener {
 
@@ -89,6 +93,10 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private ArrayList<Double> myInitiateLocation;
     private double mMyLongitude = 0;
     private double mMyAltitude = 0;
+
+    // TEST
+    private ArrayList<ArrayList<String>> testArray = Antennes;
+    // TEST
 
     private MyCurrentAzimuth myCurrentAzimuth;
     private MyCurrentRoll myCurrentRoll;
@@ -346,7 +354,33 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
     }
 
 
+
+
     private void setAugmentedRealityPoint() {
+        ArrayList<ArrayList<String>> Listefinale=new ArrayList<ArrayList<String>>();
+        for (int i=0; i<Antennes.size();i++){
+
+            ArrayList<String> liste=new ArrayList<String>();
+            liste.add("antenne");// Type
+            liste.add(Antennes.get(i).get(3));// génération
+            liste.add(Antennes.get(i).get(4)); // opérateur
+            liste.add(Antennes.get(i).get(1));//latitude
+            liste.add(Antennes.get(i).get(2));//longitude
+            liste.add(Antennes.get(i).get(5));//hauteur
+            Listefinale.add(liste);
+
+        }
+        for (int i=0; i<Mesures.size();i++){
+            ArrayList<String> liste1=new ArrayList<String>();
+            liste1.add("mesures");//Type
+            liste1.add(Mesures.get(i).get(0));//latitude
+            liste1.add(Mesures.get(i).get(1));//longitude
+            liste1.add(Mesures.get(i).get(2));//niveau global
+            Listefinale.add(liste1);
+        }
+
+
+
 
         mPoiList.add(new AugmentedPOI("Sacré-Coeur", "Haut du dôme du Sacré-Coeur", "antenne", 48.886705, 2.343104, 207));
         mPoiList.add(new AugmentedPOI("Eiffel Tower","Antenne de la tour Eiffel","antenne",48.85837009999999,2.2944813000000295,358));
@@ -811,9 +845,6 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
         position.add(altitude);
         return (position);
     }
-
-
-
 
 
 }

@@ -10,6 +10,7 @@
     <SurfaceView
         android:id="@+id/cameraview"
 
+
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -22,8 +23,8 @@
         <com.example.mous.antennex.augmentedReality.GaugeView
             android:id="@+id/gaugeView"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:rotation="-90"
+            android:layout_alignParentRight="true"
+            android:rotation="90"
 
             android:layout_width="50dp"
             android:layout_height="50dp" />
@@ -85,10 +86,10 @@
             android:id="@+id/buttonMaps"
             android:layout_width="43dp"
             android:layout_height="47dp"
-            android:rotation="-90"
+            android:rotation="90"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
+
+            android:layout_alignParentLeft="true"
             app:srcCompat="@drawable/maps"/>
             <!--android:layout_marginBottom="14dp"
             android:layout_marginEnd="14dp"
@@ -102,8 +103,8 @@
             android:layout_height="60sp"
 
             android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentLeft="true"
+            />
 
 
 
@@ -111,10 +112,9 @@
             android:id="@+id/buttonProximity"
             android:layout_width="43dp"
             android:layout_height="47dp"
-            android:rotation="-90"
+            android:rotation="90"
             android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentLeft="true"
             app:srcCompat="@drawable/ic_history"/>
 
 

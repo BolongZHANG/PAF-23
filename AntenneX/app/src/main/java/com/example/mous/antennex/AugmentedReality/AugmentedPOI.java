@@ -6,7 +6,7 @@ package com.example.mous.antennex.augmentedReality;
 
 public class AugmentedPOI {
         private int mId;
-        private String mName;
+        private String type;
         private String mDescription;
         private double mLatitude;
         private double mLongitude;
