@@ -32,7 +32,9 @@
         <activity android:name=".GalleryActivity" />
         <activity
             android:name=".augmentedReality.CoreActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".ResumeActivity"
             android:label="@string/title_activity_resume"
