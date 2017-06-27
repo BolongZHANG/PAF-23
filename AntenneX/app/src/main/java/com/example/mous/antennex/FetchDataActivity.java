@@ -1,5 +1,6 @@
 package com.example.mous.antennex;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.app.ProgressDialog;
@@ -7,9 +8,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.example.mous.antennex.augmentedReality.CoreActivity;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,6 +54,13 @@ public class FetchDataActivity extends AppCompatActivity {
         setContentView(R.layout.activity_fetch_data);
 
         mListView = (ListView) findViewById(R.id.list);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getApplicationContext(), CoreActivity.class);
+                startActivity(intent);
+            }
+        });
         Mesures=new ArrayList<ArrayList<String>>();
         Antennes=new ArrayList<ArrayList<String>>();
         ZoneAntenne=new ArrayList<ArrayList<String>>();

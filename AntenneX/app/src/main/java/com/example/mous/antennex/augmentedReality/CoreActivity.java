@@ -364,8 +364,8 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
             liste.add("antenne");// Type
             liste.add(Antennes.get(i).get(3));// génération
             liste.add(Antennes.get(i).get(4)); // opérateur
-            liste.add(Antennes.get(i).get(1));//latitude
-            liste.add(Antennes.get(i).get(2));//longitude
+            liste.add(Antennes.get(i).get(2));//latitude
+            liste.add(Antennes.get(i).get(1));//longitude
             liste.add(Antennes.get(i).get(5));//hauteur
             Listefinale.add(liste);
 
@@ -378,13 +378,27 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
             liste1.add(Mesures.get(i).get(2));//niveau global
             Listefinale.add(liste1);
         }
+        for(int i=0;i<Listefinale.size();i++){
+            if(Listefinale.get(i).get(0).equals("antenne")){
+                mPoiList.add(new AugmentedPOI(Listefinale.get(i).get(1), Listefinale.get(i).get(2), "antenne",Float.parseFloat(Listefinale.get(i).get(3)),Float.parseFloat(Listefinale.get(i).get(4)),10 ));
+            }
+            else if(Listefinale.get(i).get(0).equals("mesure")){
+                mPoiList.add(new AugmentedPOI("Mesure(V/m)", Listefinale.get(i).get(2), "mesure",Float.parseFloat(Listefinale.get(i).get(0)),Float.parseFloat(Listefinale.get(i).get(1)),mMyAltitude ));
+
+            }
+            else
+                Log.d("","Error sur le type");
+        }
+
+        Integer test1 = Listefinale.size();
+        Integer test2 = mPoiList.size();
+        Log.d("tailleliste", test1.toString()+" "+test2.toString());
 
 
 
-
-        mPoiList.add(new AugmentedPOI("Sacré-Coeur", "Haut du dôme du Sacré-Coeur", "antenne", 48.886705, 2.343104, 207));
+       /* mPoiList.add(new AugmentedPOI("Sacré-Coeur", "Haut du dôme du Sacré-Coeur", "antenne", 48.886705, 2.343104, 207));
         mPoiList.add(new AugmentedPOI("Eiffel Tower","Antenne de la tour Eiffel","antenne",48.85837009999999,2.2944813000000295,358));
-        mPoiList.add(new AugmentedPOI("Strasbourg","Strasbourg mesure","mesure",48.573405,7.752111,mMyAltitude));
+        mPoiList.add(new AugmentedPOI("Strasbourg","Strasbourg mesure","mesure",48.573405,7.752111,mMyAltitude));*/
         nb_poi= mPoiList.size();
 
         final RelativeLayout layout = (RelativeLayout) findViewById(R.id.imageView_layout);
@@ -417,9 +431,9 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
                     DecimalFormat df = new DecimalFormat("#"); // Pour tronquer le nombre
                     df.setRoundingMode(RoundingMode.CEILING);
-                    Double distance = getDistance(mPoiList.get(j).getPoiLatitude(), mPoiList.get(j).getPoiLongitude(), mMyLatitude,mMyLongitude)/1000 ;
+                    Double distance = getDistance(mPoiList.get(j).getPoiLatitude(), mPoiList.get(j).getPoiLongitude(), mMyLatitude,mMyLongitude) ;
                     final String details = mPoiList.get(j).getPoiDescription() + " Distance:  " +
-                            df.format(distance)+" km";
+                            df.format(distance)+" mètres";
                     TextView descriptionTextView = (TextView)findViewById(R.id.cameraTextView);
                     descriptionTextView.setText(details);
                     disappear(descriptionTextView); // fais un effet toast
