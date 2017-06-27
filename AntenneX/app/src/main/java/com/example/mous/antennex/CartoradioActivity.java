@@ -58,7 +58,7 @@ public class CartoradioActivity extends AppCompatActivity {
         myWebView.setWebViewClient(new WebViewClient());
         WebSettings webSettings = myWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        myWebView.loadUrl("file:///android_asset/paf.html");
+        myWebView.loadUrl("file:///android_asset/Cartoradio.html");
 
     }
 
