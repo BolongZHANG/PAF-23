@@ -370,7 +370,8 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
             Listefinale.add(liste);
 
         }
-        for (int i=0; i<Mesures.size();i++){
+        for (int i=0; i<Mesures.size();i++)
+        {
             ArrayList<String> liste1=new ArrayList<String>();
             liste1.add("mesures");//Type
             liste1.add(Mesures.get(i).get(0));//latitude

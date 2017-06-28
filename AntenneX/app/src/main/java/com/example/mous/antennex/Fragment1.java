@@ -29,7 +29,7 @@ public class Fragment1 extends android.support.v4.app.Fragment implements View.O
     @Override
     public void onClick(View v) {
 
-        Intent intent = new Intent (getActivity(), FetchDataActivity.class);
+        Intent intent = new Intent (getActivity(), CoreActivity.class);
         getActivity().startActivity(intent);
 
     }
