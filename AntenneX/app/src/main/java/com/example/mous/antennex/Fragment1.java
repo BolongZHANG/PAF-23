@@ -5,14 +5,12 @@ package com.example.mous.antennex;
 import android.view.View;
 
 import android.content.Intent;
-        import android.os.Bundle;
+import android.os.Bundle;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-        import android.widget.Button;
+import android.widget.Button;
 
-import com.example.mous.antennex.augmentedReality.CoreActivity;
-import com.example.mous.antennex.augmentedReality.JaugeActivity;
 
 
 public class Fragment1 extends android.support.v4.app.Fragment implements View.OnClickListener {
@@ -29,7 +27,7 @@ public class Fragment1 extends android.support.v4.app.Fragment implements View.O
     @Override
     public void onClick(View v) {
 
-        Intent intent = new Intent (getActivity(), FetchDataActivity.class);
+        Intent intent = new Intent (getActivity(), com.example.mous.antennex.augmentedReality.CoreActivity.class);
         getActivity().startActivity(intent);
 
     }

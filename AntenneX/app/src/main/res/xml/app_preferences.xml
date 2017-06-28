@@ -8,13 +8,14 @@
         <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="@string/pref_pref1"
-            android:icon="@drawable/antenna"
+            android:icon="@drawable/antenna2"
             android:summary="Vous pouvez désactiver l'affichage des antennes et ne conserver que les points de mesure"
             android:title="Afficher les antennes"/>
 
         <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="@string/pref_pref3"
+            android:icon="@drawable/mesure_rotated_big"
             android:summary="Vous pouvez désactiver l'affichage des antennes et ne conserver que les points de mesure"
             android:title="Afficher les points de mesure"/>
 
