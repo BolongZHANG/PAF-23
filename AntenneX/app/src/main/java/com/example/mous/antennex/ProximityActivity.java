@@ -14,6 +14,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import static com.example.mous.antennex.FetchDataActivity.Antennezone;
 
 public class ProximityActivity extends AppCompatActivity {
 
@@ -23,6 +26,8 @@ public class ProximityActivity extends AppCompatActivity {
     private ListAdapter adapter;
     private ArrayList<String> distanceList;
     private ArrayList<String> hauteurList;
+    private ArrayList<HashMap<String, String>> listeAntenneZone ;
+
 
 
     private ArrayList<Integer> profilePictures;
@@ -34,6 +39,9 @@ public class ProximityActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_proximity);
+
+        listeAntenneZone=FetchDataActivity.Antennezone ;
+
         listView = (ListView) findViewById(R.id.list_item);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -55,11 +63,25 @@ public class ProximityActivity extends AppCompatActivity {
 
 
     private void setData() {
+       /* ArrayList<ArrayList<String>> Listefinale=new ArrayList<ArrayList<String>>();*/
         stringArrayList = new ArrayList<>();
         distanceList=new ArrayList<>();
         profilePictures=new ArrayList<>();
         hauteurList=new ArrayList<>();
 
+
+        for (int i=0; i<Antennezone.size();i++){
+            stringArrayList.add(Antennezone.get(i).get("adm_lb_nomzone") + ", " + Antennezone.get(i).get("generationzone"));
+            distanceList.add("100");// A CHANGER AVEC GET DISTANCE
+            profilePictures.add(5);
+            hauteurList.add(Antennezone.get(i).get("hauteurzone"));
+
+
+        }
+
+
+
+/*
 
 
 
@@ -83,6 +105,7 @@ public class ProximityActivity extends AppCompatActivity {
         profilePictures.add(5);
         profilePictures.add(5);
         profilePictures.add(5);
+*/
 
 
     }
