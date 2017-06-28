@@ -37,6 +37,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mous.antennex.CartoradioActivity;
 import com.example.mous.antennex.FetchDataActivity;
@@ -97,6 +98,9 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private double mMyLongitude = 0;
     private double mMyAltitude = 0;
 
+    // Valeur de la jauge d'exposition
+    public double valueGauge ;
+
     // TEST
     // TEST
 
@@ -114,6 +118,7 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
     ImageView proximityButton;
 
     Display display;
+    private Button buttonExposition;
 
     //POUR PRENDRE UN SCREEN DE L'ACTIVITE ET L'ENREGISTRER ENSUITE
     private Button share ;
@@ -126,6 +131,22 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_core);
+        buttonExposition=(Button) findViewById(R.id.gaugeButton);
+
+        buttonExposition.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                descriptionTextView.setVisibility(View.VISIBLE);
+
+
+
+
+                TextView descriptionTextView = (TextView)findViewById(R.id.cameraTextView);
+                descriptionTextView.setText("LA CON DE TES MORTS");
+                /*disappear(descriptionTextView); // fais un effet toast*/
+
+            }
+        });
 
 
 
@@ -306,7 +327,16 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
                             public void run() {
                                 degree++;
                                 sweepAngleControl++;
-                                double valueExposition = 10;
+                                double valeur=Float.parseFloat(Mesureszone1.get(0).get("Niveauglobal"));
+                                for (int i=1;i<Mesureszone1.size();i++){
+                                    if (Float.parseFloat(Mesureszone1.get(i).get("Niveauglobal"))>valeur){
+                                        valeur=Float.parseFloat(Mesureszone1.get(i).get("Niveauglobal"));
+                                    }
+
+                                }
+                                double valueExposition = valeur;
+                                valueGauge=valueExposition;
+
                                 double degreExposition = toDegreExpostion(valueExposition);
                                 if (degree < degreExposition )  // ICI IL FAUT METTRE LA VALEUR D'INTERET : ici je veux 90 degrés donc je mets - 90 : checker le cercle du cahier !!! ATTENTION AU -
                                 {
@@ -374,10 +404,10 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private void setAugmentedRealityPoint() {
 
 
-        ArrayList<ArrayList<String>> Listefinale=new ArrayList<ArrayList<String>>();
+        ArrayList<ArrayList<String>> Listefinale=new ArrayList<>();
         for (int i=0; i<Antennezone.size();i++){
 
-            ArrayList<String> liste=new ArrayList<String>();
+            ArrayList<String> liste=new ArrayList<>();
             liste.add("antenne");// Type
             liste.add(Antennezone.get(i).get("generationzone"));// génération
             liste.add(Antennezone.get(i).get("adm_lb_nomzone")); // opérateur
@@ -391,7 +421,7 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
         for (int i=0; i<Mesureszone1.size();i++)
         {
             ArrayList<String> liste1=new ArrayList<String>();
-            liste1.add("Mesureszone1");//Type
+            liste1.add("mesure");//Type
             liste1.add(Mesureszone1.get(i).get("Latitude"));//latitude
             liste1.add(Mesureszone1.get(i).get("Longitude"));//longitude
             liste1.add(Mesureszone1.get(i).get("Niveauglobal"));//niveau global
@@ -399,10 +429,10 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
         }
         for(int i=0;i<Listefinale.size();i++){
             if(Listefinale.get(i).get(0).equals("antenne")){
-                mPoiList.add(new AugmentedPOI(Listefinale.get(i).get(1), Listefinale.get(i).get(2), "antenne",Float.parseFloat(Listefinale.get(i).get(3)),Float.parseFloat(Listefinale.get(i).get(4)),10 ));
+                mPoiList.add(new AugmentedPOI(Listefinale.get(i).get(1), Listefinale.get(i).get(2), "antenne",Float.parseFloat(Listefinale.get(i).get(3)),Float.parseFloat(Listefinale.get(i).get(4)),Float.parseFloat(Listefinale.get(i).get(5)) ));
             }
             else if(Listefinale.get(i).get(0).equals("mesure")){
-                mPoiList.add(new AugmentedPOI("Mesure(V/m)", Listefinale.get(i).get(2), "mesure",Float.parseFloat(Listefinale.get(i).get(0)),Float.parseFloat(Listefinale.get(i).get(1)),mMyAltitude ));
+                mPoiList.add(new AugmentedPOI("Mesure(V/m)", Listefinale.get(i).get(3), "mesure",Float.parseFloat(Listefinale.get(i).get(1)),Float.parseFloat(Listefinale.get(i).get(2)),mMyAltitude ));
 
             }
             else

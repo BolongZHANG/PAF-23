@@ -43,8 +43,8 @@
       <file leaf-file-name="FetchDataActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/FetchDataActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2972">
-              <caret line="312" column="79" selection-start-line="312" selection-start-column="79" selection-end-line="312" selection-end-column="79" />
+            <state relative-caret-position="830">
+              <caret line="81" column="26" selection-start-line="81" selection-start-column="26" selection-end-line="81" selection-end-column="26" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#13790#13825#0" expanded="true" />
@@ -52,7 +52,7 @@
                 <element signature="e#15339#15357#0" expanded="true" />
                 <element signature="e#15500#15507#0" expanded="true" />
                 <element signature="e#16163#16172#0" expanded="true" />
-                <marker date="1498668251125" expanded="false" signature="5388:5396" ph="&lt;~&gt;" />
+                <marker date="1498677431798" expanded="false" signature="5388:5396" ph="&lt;~&gt;" />
               </folding>
             </state>
           </provider>
@@ -71,53 +71,54 @@
       <file leaf-file-name="CoreActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/augmentedReality/CoreActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2105">
-              <caret line="382" column="33" selection-start-line="382" selection-start-column="22" selection-end-line="382" selection-end-column="33" />
+            <state relative-caret-position="232">
+              <caret line="138" column="47" selection-start-line="138" selection-start-column="47" selection-end-line="138" selection-end-column="47" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2765#2779#0" expanded="true" />
-                <element signature="e#2924#2932#0" expanded="true" />
-                <element signature="e#3002#3010#0" expanded="true" />
-                <element signature="e#3592#3603#0" expanded="true" />
-                <element signature="e#3668#3679#0" expanded="true" />
-                <element signature="e#12272#12291#0" expanded="true" />
-                <element signature="e#12394#12402#0" expanded="true" />
-                <element signature="e#12971#12979#0" expanded="true" />
+                <element signature="e#2794#2808#0" expanded="true" />
+                <element signature="e#2953#2961#0" expanded="true" />
+                <element signature="e#3031#3039#0" expanded="true" />
+                <element signature="e#3692#3703#0" expanded="true" />
+                <element signature="e#3768#3779#0" expanded="true" />
+                <element signature="e#4381#4805#0" expanded="true" />
+                <element signature="e#4804#4805#0" expanded="true" />
+                <element signature="e#14152#14160#0" expanded="true" />
+                <element signature="e#16583#17472#0" expanded="true" />
+                <element signature="e#17471#17472#0" expanded="true" />
+                <marker date="1498678500977" expanded="false" signature="10416:10519" ph="() → {" />
+                <marker date="1498678500977" expanded="false" signature="12365:12396" ph="}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ProximityActivity.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/ProximityActivity.java">
+      <file leaf-file-name="AugmentedPOI.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/augmentedReality/AugmentedPOI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="74" column="66" selection-start-line="74" selection-start-column="66" selection-end-line="74" selection-end-column="66" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ListAdapter.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/ListAdapter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1309">
-              <caret line="39" column="51" selection-start-line="39" selection-start-column="51" selection-end-line="39" selection-end-column="51" />
+            <state relative-caret-position="-46">
+              <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="activity_fetch_data.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_fetch_data.xml">
-          <provider selected="true" editor-type-id="android-designer2">
-            <state />
+      <file leaf-file-name="ProximityActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/ProximityActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="408">
+              <caret line="75" column="35" selection-start-line="75" selection-start-column="35" selection-end-line="75" selection-end-column="35" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
           </provider>
-          <provider editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+        </entry>
+      </file>
+      <file leaf-file-name="ListAdapter.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/ListAdapter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="408">
+              <caret line="151" column="82" selection-start-line="151" selection-start-column="82" selection-end-line="151" selection-end-column="82" />
               <folding />
             </state>
           </provider>
@@ -2600,7 +2601,6 @@
         <option value="$PROJECT_DIR$/app/src/main/res/values/styles.xml" />
         <option value="$PROJECT_DIR$/app/build/intermediates/res/merged/debug/values/values.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/AugmentedReality/CoreActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_core.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/Point.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/GeoUtils.java" />
@@ -2612,9 +2612,11 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/Fragment1.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_fetch_data.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/FetchDataActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/augmentedReality/CoreActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/ProximityActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/FetchDataActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_core.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/augmentedReality/CoreActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/ListAdapter.java" />
       </list>
     </option>
   </component>
@@ -2688,6 +2690,38 @@
               <option name="myItemId" value="app" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AntenneX" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="drawable" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderTypeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AntenneX" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -2719,6 +2753,28 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="antennex" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AntenneX" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="antennex" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="augmentedReality" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -3115,41 +3171,12 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="2" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/toolbar_core.xml">
-      <provider selected="true" editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/pref_dialog_time.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="36" selection-start-line="7" selection-start-column="36" selection-end-line="7" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/TimePreferenceDialogFragmentCompat.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-165">
-          <caret line="12" column="2" selection-start-line="12" selection-start-column="2" selection-end-line="12" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/SettingsActivity.java" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/ResumeActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
@@ -3343,17 +3370,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_core.xml">
-      <provider selected="true" editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="2125">
-          <caret line="125" column="17" selection-start-line="125" selection-start-column="17" selection-end-line="125" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/colors.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="425">
@@ -3494,10 +3510,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/augmentedReality/AugmentedPOI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-46">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/FetchDataActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2972">
-          <caret line="312" column="79" selection-start-line="312" selection-start-column="79" selection-end-line="312" selection-end-column="79" />
+        <state relative-caret-position="830">
+          <caret line="81" column="26" selection-start-line="81" selection-start-column="26" selection-end-line="81" selection-end-column="26" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#13790#13825#0" expanded="true" />
@@ -3505,44 +3529,80 @@
             <element signature="e#15339#15357#0" expanded="true" />
             <element signature="e#15500#15507#0" expanded="true" />
             <element signature="e#16163#16172#0" expanded="true" />
-            <marker date="1498668251125" expanded="false" signature="5388:5396" ph="&lt;~&gt;" />
+            <marker date="1498677431798" expanded="false" signature="5388:5396" ph="&lt;~&gt;" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/augmentedReality/JaugeActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1050">
+          <caret line="148" column="67" selection-start-line="148" selection-start-column="64" selection-end-line="148" selection-end-column="67" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/augmentedReality/GaugeView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1283">
+          <caret line="40" column="49" selection-start-line="40" selection-start-column="47" selection-end-line="40" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_core.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="379">
+          <caret line="38" column="36" selection-start-line="38" selection-start-column="36" selection-end-line="38" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/free.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/augmentedReality/CoreActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2105">
-          <caret line="382" column="33" selection-start-line="382" selection-start-column="22" selection-end-line="382" selection-end-column="33" />
+        <state relative-caret-position="232">
+          <caret line="138" column="47" selection-start-line="138" selection-start-column="47" selection-end-line="138" selection-end-column="47" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2765#2779#0" expanded="true" />
-            <element signature="e#2924#2932#0" expanded="true" />
-            <element signature="e#3002#3010#0" expanded="true" />
-            <element signature="e#3592#3603#0" expanded="true" />
-            <element signature="e#3668#3679#0" expanded="true" />
-            <element signature="e#12272#12291#0" expanded="true" />
-            <element signature="e#12394#12402#0" expanded="true" />
-            <element signature="e#12971#12979#0" expanded="true" />
+            <element signature="e#2794#2808#0" expanded="true" />
+            <element signature="e#2953#2961#0" expanded="true" />
+            <element signature="e#3031#3039#0" expanded="true" />
+            <element signature="e#3692#3703#0" expanded="true" />
+            <element signature="e#3768#3779#0" expanded="true" />
+            <element signature="e#4381#4805#0" expanded="true" />
+            <element signature="e#4804#4805#0" expanded="true" />
+            <element signature="e#14152#14160#0" expanded="true" />
+            <element signature="e#16583#17472#0" expanded="true" />
+            <element signature="e#17471#17472#0" expanded="true" />
+            <marker date="1498678500977" expanded="false" signature="10416:10519" ph="() → {" />
+            <marker date="1498678500977" expanded="false" signature="12365:12396" ph="}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/ProximityActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="75" column="35" selection-start-line="75" selection-start-column="35" selection-end-line="75" selection-end-column="35" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/ListAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1309">
-          <caret line="39" column="51" selection-start-line="39" selection-start-column="51" selection-end-line="39" selection-end-column="51" />
+        <state relative-caret-position="408">
+          <caret line="151" column="82" selection-start-line="151" selection-start-column="82" selection-end-line="151" selection-end-column="82" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/mous/antennex/ProximityActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="74" column="66" selection-start-line="74" selection-start-column="66" selection-end-line="74" selection-end-column="66" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
