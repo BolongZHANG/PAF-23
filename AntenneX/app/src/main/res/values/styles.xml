@@ -71,6 +71,7 @@
 <style name="AppAlertDialog" parent="Theme.AppCompat.DayNight.Dialog.Alert">
     <!-- To tint the buttons -->
     <item name="colorAccent">@color/colorAccent</item>
+    <item name="colorPrimary">@color/colorPrimary</item>
 </style>
 
 <style name="AppAlertDialogContent" parent="Theme.AppCompat.DayNight">
