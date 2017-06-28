@@ -12,9 +12,21 @@ import android.support.v7.app.AppCompatActivity;
         import android.support.v4.app.Fragment;
         import android.support.v4.app.FragmentTransaction;
         import android.support.v7.app.AppCompatActivity;
-        import android.view.MenuItem;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.app.AppCompatDelegate;
+import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
+
+
+
+    static {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
+    }
 
 
     @Override
@@ -24,12 +36,13 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
 
 
+
         Intent intent = getIntent();
         String s1 = intent.getStringExtra("Check");
 
         if (s1==null) {
             s1 = "";
-            Fragment fragment = new Fragment3();
+            Fragment fragment = new PreferenceFragmentCustom();
             if (fragment != null) {
 
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -38,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
+
 
 
         bottomNavigationView.setOnNavigationItemSelectedListener
@@ -53,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                                 selectedFragment = Fragment2.newInstance();
                                 break;
                             case R.id.parameter:
-                                selectedFragment = Fragment3.newInstance();
+                                selectedFragment = PreferenceFragmentCustom.newInstance();
                                 break;
                         }
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

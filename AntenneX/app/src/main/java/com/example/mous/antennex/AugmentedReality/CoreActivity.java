@@ -108,8 +108,8 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
     ArrayList<ImageView> textIconList = new ArrayList<ImageView>(listSize);
 
     ImageView pointerIcon;
-    ImageButton mapButton;
-    ImageButton proximityButton;
+    ImageView mapButton;
+    ImageView proximityButton;
 
     Display display;
 
@@ -128,8 +128,8 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
         mMyAltitude = myInitiateLocation.get(2);
 
         gaugeView = (GaugeView) findViewById(R.id.gaugeView);
-        mapButton=(ImageButton) findViewById(R.id.buttonMaps);
-        proximityButton=(ImageButton) findViewById(R.id.buttonProximity);
+        mapButton= (ImageView) findViewById(R.id.buttonMaps);
+        proximityButton=(ImageView) findViewById(R.id.buttonProximity);
 
         mapButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -709,7 +709,7 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
         return d;
     }
 
-    
+
 
     @Override
     protected void onStop() {
