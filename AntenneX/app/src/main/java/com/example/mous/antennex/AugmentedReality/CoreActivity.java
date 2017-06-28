@@ -40,6 +40,7 @@ import android.widget.TextView;
 
 import com.example.mous.antennex.CartoradioActivity;
 import com.example.mous.antennex.FetchDataActivity;
+import com.example.mous.antennex.MainActivity;
 import com.example.mous.antennex.ProximityActivity;
 import com.example.mous.antennex.R;
 import com.example.mous.antennex.ResumeActivity;
@@ -54,11 +55,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.example.mous.antennex.FetchDataActivity.Antennes;
-import static com.example.mous.antennex.FetchDataActivity.Mesures;
+
+import static com.example.mous.antennex.FetchDataActivity.Antennezone;
+import static com.example.mous.antennex.FetchDataActivity.Mesureszone1 ;
 
 public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Callback, OnLocationChangedListener, OnAzimuthChangedListener, OnRollChangedListener {
-
+    
+   
     /*private ActionMenuView amvMenu;*/
 
     //Partie dédiée à la jauge :: A VOIR OPTIMISATION !!
@@ -95,7 +98,6 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private double mMyAltitude = 0;
 
     // TEST
-    private ArrayList<ArrayList<String>> testArray = Antennes;
     // TEST
 
     private MyCurrentAzimuth myCurrentAzimuth;
@@ -120,11 +122,17 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_core);
+
+
+
+
         myInitiateLocation = locationInOnCreate(); // récupère la position dès l'ouverture, ensuite elle est actualisée avec les listeners
         mMyLatitude = myInitiateLocation.get(0);
-        mMyLatitude = myInitiateLocation.get(1);
+        mMyLongitude = myInitiateLocation.get(1);
         mMyAltitude = myInitiateLocation.get(2);
 
         gaugeView = (GaugeView) findViewById(R.id.gaugeView);
@@ -207,6 +215,13 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
 
 
+    }
+
+    // POUR REVENIR A L'ACTIVITE MAIN :
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class );
+        startActivity(intent);
     }
 
 
@@ -357,26 +372,29 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
 
     private void setAugmentedRealityPoint() {
+
+
         ArrayList<ArrayList<String>> Listefinale=new ArrayList<ArrayList<String>>();
-        for (int i=0; i<Antennes.size();i++){
+        for (int i=0; i<Antennezone.size();i++){
 
             ArrayList<String> liste=new ArrayList<String>();
             liste.add("antenne");// Type
-            liste.add(Antennes.get(i).get(3));// génération
-            liste.add(Antennes.get(i).get(4)); // opérateur
-            liste.add(Antennes.get(i).get(2));//latitude
-            liste.add(Antennes.get(i).get(1));//longitude
-            liste.add(Antennes.get(i).get(5));//hauteur
+            liste.add(Antennezone.get(i).get("generationzone"));// génération
+            liste.add(Antennezone.get(i).get("adm_lb_nomzone")); // opérateur
+            liste.add(Antennezone.get(i).get("Latitude"));//latitude
+            liste.add(Antennezone.get(i).get("Longitude"));//longitude
+            liste.add(Antennezone.get(i).get("hauteurzone"));//hauteur
             Listefinale.add(liste);
 
         }
-        for (int i=0; i<Mesures.size();i++)
+
+        for (int i=0; i<Mesureszone1.size();i++)
         {
             ArrayList<String> liste1=new ArrayList<String>();
-            liste1.add("mesures");//Type
-            liste1.add(Mesures.get(i).get(0));//latitude
-            liste1.add(Mesures.get(i).get(1));//longitude
-            liste1.add(Mesures.get(i).get(2));//niveau global
+            liste1.add("Mesureszone1");//Type
+            liste1.add(Mesureszone1.get(i).get("Latitude"));//latitude
+            liste1.add(Mesureszone1.get(i).get("Longitude"));//longitude
+            liste1.add(Mesureszone1.get(i).get("Niveauglobal"));//niveau global
             Listefinale.add(liste1);
         }
         for(int i=0;i<Listefinale.size();i++){
@@ -642,7 +660,8 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
         // Function to handle Change in azimuth angle
         mRollReal = rollChangedTo;
 
-        for (int i = 0; i < nb_poi; i++) {
+        for (int i = 0; i < nb_poi; i++)
+        {
             mRollTheoreticalList.set(i, calculateTheoreticalRoll(mPoiList.get(i)));
         }
 
@@ -830,7 +849,9 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
         return imageDP;
     }
 
-    private ArrayList<Double> locationInOnCreate(){ // pour récupérer la postion gps à envoyer dans le oncreate et pour les points de mesure
+    // pour récupérer la postion gps à envoyer dans le oncreate et pour les points de mesure
+    public  ArrayList<Double> locationInOnCreate()
+    {
         LocationManager locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
         boolean network_enabled = locManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);

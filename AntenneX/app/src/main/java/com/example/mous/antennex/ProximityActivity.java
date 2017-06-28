@@ -53,11 +53,14 @@ public class ProximityActivity extends AppCompatActivity {
     }
 
 
+
     private void setData() {
         stringArrayList = new ArrayList<>();
         distanceList=new ArrayList<>();
         profilePictures=new ArrayList<>();
         hauteurList=new ArrayList<>();
+
+
 
 
         stringArrayList.add("ORANGE, 3G");

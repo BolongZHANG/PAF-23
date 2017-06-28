@@ -89,6 +89,6 @@ public class MainActivity extends AppCompatActivity {
             //bottomNavigationView.getMenu().getItem(2).setChecked(true);
         }
     }
-    }
+}
 
 
