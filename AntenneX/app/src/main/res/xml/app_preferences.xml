@@ -8,6 +8,7 @@
         <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="@string/pref_pref1"
+            android:icon="@drawable/antenna"
             android:summary="Vous pouvez désactiver l'affichage des antennes et ne conserver que les points de mesure"
             android:title="Afficher les antennes"/>
 
@@ -23,6 +24,7 @@
             android:defaultValue="@string/preferences_edittext_default"
             android:dialogLayout="@layout/pref_dialog_edittext_fix"
             android:dialogMessage="Veuillez renseigner la distance d'affichage souhaitée en mètres"
+            android:icon="@drawable/distance_logo"
             android:inputType="number"
             android:key="@string/pref_pref2"
             android:summary="Vous pouvez choisir de régler la distance d'affichage pour avoir un plus grand champs de vision"
@@ -35,13 +37,15 @@
         android:title="À propos">
 
         <Preference android:title="Nous découvrir"
-                    android:summary="Accéder à notre site web">
+                    android:summary="Accéder à notre site web"
+                    android:icon="@drawable/chaire">
             <intent android:action="android.intent.action.VIEW"
                 android:data="http://chairec2m.mines-telecom.fr/index.php?id=240.com" />
         </Preference>
 
         <Preference android:title="Version"
-            android:summary="Beta 1.0.0">
+            android:summary="Beta 1.0.0"
+            android:icon="@drawable/ic_info_black_24dp">
         </Preference>
 
 
