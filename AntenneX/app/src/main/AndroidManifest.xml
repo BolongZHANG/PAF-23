@@ -32,6 +32,7 @@
         <activity android:name=".GalleryActivity" />
         <activity
             android:name=".augmentedReality.CoreActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ResumeActivity"
@@ -39,19 +40,11 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".LegalActivity" />
         <activity android:name=".CartoradioActivity" />
-
-        <!--
-             The API key for Google Maps-based APIs is defined as a string resource.
-             (See the file "res/values/google_maps_api.xml").
-             Note that the API key is linked to the encryption key used to sign the APK.
-             You need a different API key for each encryption key, including the release key that is used to
-             sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
-        -->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
-
+        <activity android:name=".augmentedReality.GaugeView" />
+        <activity android:name=".augmentedReality.JaugeActivity" />
+        <activity android:name=".ProximityActivity" />
+        <activity android:name=".TestActivity" />
+        <activity android:name=".FetchDataActivity"></activity>
     </application>
 
 </manifest>

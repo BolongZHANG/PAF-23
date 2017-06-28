@@ -5,6 +5,6 @@
         </shape>
     </item>
     <item>
-        <bitmap android:src="@drawable/ic_chevron_right__24dp" android:gravity="center" />
+        <bitmap android:src="@drawable/ic_chevron_right__24dp" android:gravity="left" />
     </item>
 </layer-list>

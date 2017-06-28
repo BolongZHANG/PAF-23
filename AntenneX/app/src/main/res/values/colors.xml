@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#51c3f9</color>
+    <color name="colorPrimary">#b651f9</color>
     <color name="colorPrimaryDark">#536d81</color>
     <color name="colorAccent">#99cb38</color>
     <color name="black">#000000</color>
@@ -14,6 +14,11 @@
     <color name="purple">#41094b</color>
     <color name="blueDoctihome">#44a0df</color>
     <color name="greyDoctihome">#4a4a4a</color>
+
+    <color name="lightPurple">#C96DD8</color>
+    <color name="darkPurple">#3e0348</color>
+
+
 
 
 

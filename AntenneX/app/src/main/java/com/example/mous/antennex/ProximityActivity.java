@@ -1,19 +1,8 @@
 package com.example.mous.antennex;
 
-
-
-
-
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-
-import android.app.Activity;
-        import android.content.Intent;
-        import android.graphics.Bitmap;
-        import android.graphics.BitmapFactory;
-        import android.net.Uri;
-        import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -21,47 +10,48 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-        import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-public class GalleryActivity extends AppCompatActivity {
+import java.util.ArrayList;
 
-    TextView textTargetUri;
-    ImageView targetImage;
+public class ProximityActivity extends AppCompatActivity {
+
+
     private ListView listView;
     private ArrayList<String> stringArrayList;
-    private ListAdapterGallery adapter;
+    private ListAdapter adapter;
     private ArrayList<String> distanceList;
     private ArrayList<String> hauteurList;
 
 
     private ArrayList<Integer> profilePictures;
 
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gallery);
 
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_proximity);
         listView = (ListView) findViewById(R.id.list_item);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Gallerie ...");
+        getSupportActionBar().setTitle("A proximité ...");
 
         setData();
-        adapter = new ListAdapterGallery(this, R.layout.item_listview, stringArrayList, distanceList,hauteurList, profilePictures);
+        adapter = new ListAdapter(this, R.layout.item_listview, stringArrayList, distanceList,hauteurList, profilePictures);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(), (String)parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProximityActivity.this, (String)parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
             }
         });
+
     }
+
 
     private void setData() {
         stringArrayList = new ArrayList<>();
@@ -121,6 +111,7 @@ public class GalleryActivity extends AppCompatActivity {
         });
         return true;
     }
+
 
 
 
