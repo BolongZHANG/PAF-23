@@ -871,10 +871,14 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private int imageSizeDP(int index){
         int imageDP;
         double distance = getDistance(mPoiList.get(index).getPoiLatitude(),mPoiList.get(index).getPoiLongitude(), mMyLatitude,mMyLongitude);
-        double size =  (100 - distance * 70 / maxRayon); // Diminue la taille de l'icon avec l'éloignement affinement
-        if (size<0)
+        double size =  (100 - (distance * 70 / maxRayon)); // Diminue la taille de l'icon avec l'éloignement affinement
+        if (size<30) {
             imageDP = 30;
-        else imageDP = (int) size;
+            Integer test = imageDP;
+            Log.d("imageDP",test.toString());
+        }
+        else
+            imageDP = (int) size;
 
         return imageDP;
     }

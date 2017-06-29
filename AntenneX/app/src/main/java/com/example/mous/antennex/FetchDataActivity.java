@@ -82,8 +82,12 @@ public class FetchDataActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        myLatitude=48.825945;
-        myLongitude =  2.345271;
+        ArrayList<Double> myInitialLocation = locationInOnCreate();
+        myLatitude = myInitialLocation.get(0);
+        myLongitude = myInitialLocation.get(1);
+
+        //myLatitude=48.825945;
+        //myLongitude =  2.345271;
 
 
         /*locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
@@ -301,8 +305,8 @@ public class FetchDataActivity extends AppCompatActivity {
                         String adm_lb_nomzone = fields.getString("adm_lb_nom");
                         String sup_id = fields.getString("sup_id");
                         JSONArray coordonnees = fields.getJSONArray("coordonnees");
-                        String Latitude = coordonnees.getInt(0)+"";
-                        String Longitude = coordonnees.getInt(1)+"";
+                        String Latitude = coordonnees.getDouble(0)+"";
+                        String Longitude = coordonnees.getDouble(1)+"";
                         HashMap<String, String> contactzone = new HashMap<>();
 
                         // adding each child node to HashMap key => value
@@ -494,5 +498,37 @@ public class FetchDataActivity extends AppCompatActivity {
             /*lv.setAdapter(adapter1);*/
         }
 
+    }
+
+    public  ArrayList<Double> locationInOnCreate()
+    {
+        LocationManager locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+
+        boolean network_enabled = locManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+        Location location;
+        Double latitude =  new Double(0);
+        Double longitude =  new Double(0);
+        Double altitude =  new Double(0);
+
+        if(network_enabled){
+            try {
+                location = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            } catch (SecurityException e) {
+                Log.d("Sylvainn","Network exception");
+                location = null;
+            }
+
+            if(location!=null){
+                longitude = location.getLongitude();
+                latitude = location.getLatitude();
+                altitude = location.getAltitude();
+            }
+        }
+        ArrayList<Double> position = new ArrayList<Double>();
+        position.add(latitude);
+        position.add(longitude);
+        position.add(altitude);
+        return (position);
     }
 }
