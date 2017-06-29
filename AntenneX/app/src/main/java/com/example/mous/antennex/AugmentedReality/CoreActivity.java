@@ -481,11 +481,24 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
                     DecimalFormat df = new DecimalFormat("#"); // Pour tronquer le nombre
                     df.setRoundingMode(RoundingMode.CEILING);
                     Double distance = getDistance(mPoiList.get(j).getPoiLatitude(), mPoiList.get(j).getPoiLongitude(), mMyLatitude,mMyLongitude) ;
-                    final String details = mPoiList.get(j).getPoiDescription() + " Distance:  " +
-                            df.format(distance)+" mètres";
-                    TextView descriptionTextView = (TextView)findViewById(R.id.cameraTextView);
-                    descriptionTextView.setText(details);
-                    disappear(descriptionTextView); // fais un effet toast
+
+                    if(mPoiList.get(j).getPoiType()=="antenne"){
+                        final String details = mPoiList.get(j).getPoiDescription() + " " + mPoiList.get(j).getPoiName() +  "   distance :  " +
+                                df.format(distance)+" mètres";
+                        TextView descriptionTextView = (TextView)findViewById(R.id.cameraTextView);
+                        descriptionTextView.setText(details);
+                        disappear(descriptionTextView); // fais un effet toast
+                    }
+                    else if(mPoiList.get(j).getPoiType()=="mesure"){
+                        final String details = "Mesure " + mPoiList.get(j).getPoiDescription() + " V/m" + "   distance :  " +
+                                df.format(distance)+" mètres";
+                        TextView descriptionTextView = (TextView)findViewById(R.id.cameraTextView);
+                        descriptionTextView.setText(details);
+                        disappear(descriptionTextView); // fais un effet toast
+                    }
+                    else
+                        ;
+
 
                 }
             });
@@ -620,7 +633,7 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
         mMyLatitude = location.getLatitude();
         mMyLongitude = location.getLongitude();
-        mMyAltitude = location.getAltitude();
+        mMyAltitude = locationInOnCreate().get(2);
 
         for (int i = 0; i < nb_poi; i++) {
             mAzimuthTheoreticalList.set(i, calculateTheoreticalAzimuth(mPoiList.get(i)));
