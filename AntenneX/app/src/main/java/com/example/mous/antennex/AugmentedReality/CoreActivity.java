@@ -124,6 +124,7 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private Button share ;
     private File imagePath;
     // FIN DE CETTE PARTIE ( SCREEN + SHARE )
+
     private int valeurEntiereGauge;
 
     @Override
@@ -143,8 +144,7 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
 
                 TextView descriptionTextView = (TextView)findViewById(R.id.cameraTextView);
-                valeurEntiereGauge
-                descriptionTextView.setText(valueGauge+"");
+                descriptionTextView.setText("Exposé à: "+valueGauge+"  V/m");
                 disappear(descriptionTextView); // fais un effet toast
 
             }
