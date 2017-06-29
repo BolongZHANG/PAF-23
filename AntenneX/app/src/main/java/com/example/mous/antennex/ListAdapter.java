@@ -147,6 +147,11 @@ public class ListAdapter extends ArrayAdapter<String> {
             holder.imageView.setImageDrawable(activity.getDrawable(R.drawable.bouygues));
         }
 
+        if (operatorList.get(position).equals("FREE MOBILE, 4G") || operatorList.get(position).equals("FREE MOBILE, 3G") || operatorList.get(position).equals("FREE MOBILE, 2G"))
+        {
+            holder.imageView.setImageDrawable(activity.getDrawable(R.drawable.free));
+        }
+
 
         holder.operatorHauteur.setText(hauteurList.get(position));
 

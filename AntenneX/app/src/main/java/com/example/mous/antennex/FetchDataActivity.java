@@ -1,29 +1,32 @@
 package com.example.mous.antennex;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.example.mous.antennex.augmentedReality.CoreActivity;
 
-import java.io.IOException;
-import java.io.InputStream;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static com.example.mous.antennex.GeoUtils.isVisible;
 
 
 public class FetchDataActivity extends AppCompatActivity {
@@ -35,41 +38,92 @@ public class FetchDataActivity extends AppCompatActivity {
 
     // URL to get contacts JSON
     private static String url = "https://data.anfr.fr/api/records/1.0/search/?dataset=observatoire_2g_3g_4g&q=nom_dept%3DParis&rows=100";
-    private static String url1 ="https://data.anfr.fr/api/records/1.0/search/?dataset=sup_support&q=dept%3D75&rows=1936";
-    public static ArrayList<ArrayList<String>> Mesures;
-    public static ArrayList<ArrayList<String>> Antennes;
-    public static ArrayList<ArrayList<String>> ZoneAntenne;
-    ArrayList<ArrayList<ArrayList<ArrayList<String>>>> batvisibles;
-    ArrayList<ArrayList<String>> antennesafficher;
+    private static  String urlhauteur="https://data.anfr.fr/api/records/1.0/search/?dataset=sup_support&q=dept%3D75&rows=1860";
+    //modifier l'urlzone avec les positions gps du telephone
+    private static String urlzone ;
+    private static String urlzonemesure ="https://data.anfr.fr/api/records/1.0/search/?dataset=mesures-de-lexposition-aux-ondes&geofilter.distance=48.825804%2C2.346267%2C500";
+    ArrayList<HashMap<String, String>> contactList;
+    public static ArrayList<HashMap<String, String>> Antennezone;
+    ArrayList<HashMap<String,String>> Mesures;
+    ArrayList<HashMap<String,String>> Mesureszone;
+    public static ArrayList<HashMap<String,String>> Mesureszone1;
+    ArrayList<ArrayList<Polygon>> polygones;
+    ArrayList<HashMap<String,String>> antennesafficher;
+
+    /*CoreActivity core = new CoreActivity();
+    public String myLatitude = core.locationInOnCreate().get(0)+""; ;
+    public String myLongitude = core.locationInOnCreate().get(1)+""; ;*/
+
+    Double myLatitude;
+    Double myLongitude;
 
 
-    HashMap<String, String> hashhauteur ;
+
+
+    HashMap<String, String> sup_support;
+    ArrayList<ArrayList<ArrayList<HashMap<String,String>>>> batvisibles;
+    ArrayList<ArrayList<ArrayList<Point>>> batvisiblesfloat;
     ArrayList<ArrayList<String>> Listefinale;
-    private ListView mListView;
-    static JSONArray testx=null;
+
+    // TEST
+    LocationManager locManager;
+    boolean network_enabled ;
+
+    Location location;
+    Double latitude ;
+    Double longitude ;
+    Double altitude =  0.0;
+
+    //TEST
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fetch_data);
+        setContentView(R.layout.activity_main);
+        myLatitude=48.825945;
+        myLongitude =  2.345271;
 
-        mListView = (ListView) findViewById(R.id.list);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getApplicationContext(), CoreActivity.class);
-                startActivity(intent);
+
+        /*locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+
+        if(network_enabled){
+            try {
+                location = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            } catch (SecurityException e) {
+                Log.d("Sylvainn","Network exception");
+                location = null;
             }
-        });
-        Mesures=new ArrayList<ArrayList<String>>();
-        Antennes=new ArrayList<ArrayList<String>>();
-        ZoneAntenne=new ArrayList<ArrayList<String>>();
-        batvisibles=new ArrayList<ArrayList<ArrayList<ArrayList<String>>>>();
-        antennesafficher=new ArrayList<ArrayList<String>>();
 
-        hashhauteur=new HashMap<String, String>();
+            if(location!=null){
+                longitude = location.getLongitude();
+                latitude = location.getLatitude();
+                altitude = location.getAltitude();
+            }
+        }*/
+
+
+        urlzone="https://data.anfr.fr/api/records/1.0/search/?dataset=observatoire_2g_3g_4g&rows=1000&geofilter.distance="+myLatitude+"%2C"+myLongitude+"%2C250";
+
+
+
+
+        Mesures=new ArrayList<>();
+        contactList = new ArrayList<>();
+        Antennezone = new ArrayList<>();
+        sup_support = new HashMap<>();
+        Mesureszone=new ArrayList<>();
+        Mesureszone1=new ArrayList<>();
+        batvisibles=new ArrayList<ArrayList<ArrayList<HashMap<String,String>>>>();
+        batvisiblesfloat=new ArrayList<ArrayList<ArrayList<Point>>>();
+        polygones=new ArrayList<ArrayList<Polygon>>();
+        antennesafficher=new ArrayList<HashMap<String,String>>();
         Listefinale=new ArrayList<ArrayList<String>>();
 
+
+
+        lv = (ListView) findViewById(R.id.list);
 
         new GetContacts().execute();
     }
@@ -77,275 +131,260 @@ public class FetchDataActivity extends AppCompatActivity {
     /**
      * Async task class to get json by making HTTP call
      */
+
+
+    /*// pour récupérer la postion gps à envoyer dans le oncreate et pour les points de mesure
+    public  ArrayList<Double> locationInOnCreate()
+    {
+        LocationManager locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+
+        boolean network_enabled = locManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+        Location location;
+        Double latitude = 0.0;
+        Double longitude =  new Double(0);
+        Double altitude =  new Double(0);
+
+        if(network_enabled){
+            try {
+                location = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            } catch (SecurityException e) {
+                Log.d("Sylvainn","Network exception");
+                location = null;
+            }
+
+            if(location!=null){
+                longitude = location.getLongitude();
+                latitude = location.getLatitude();
+                altitude = location.getAltitude();
+            }
+        }
+        ArrayList<Double> position = new ArrayList<Double>();
+        position.add(latitude);
+        position.add(longitude);
+        position.add(altitude);
+        return (position);
+    }*/
+
     private class GetContacts extends AsyncTask<Void, Void, Void> {
-        private ProgressDialog pDialog = new ProgressDialog(FetchDataActivity.this);
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+
+
+
+
             // Showing progress dialog
-            pDialog.setMessage("Please wait...");
+            pDialog = new ProgressDialog(FetchDataActivity.this);
+            pDialog.setMessage("Mise à jour de la base de données ... ");
             pDialog.setCancelable(false);
             pDialog.show();
 
         }
 
-
-
-        /*public String zoneantenne(String myLatitude,String myLongitude,String distance){
-            String json=null;
-            String urlzone = "https://data.anfr.fr/api/records/1.0/search/?dataset=observatoire_2g_3g_4g&geofilter.distance=48.853%2C2.35%2C250";
-            HttpHandler sh = new HttpHandler();
-            String jsonStr = sh.makeServiceCall(urlzone);
-            return jsonStr;
-
-        }*/
-        /*public String batvis(String myLatitude,String myLongitude,String latAntenne,String longAntenne){
-            String json=null;
-            String urlbatvis = "https://opendata.paris.fr/api/records/1.0/search/?dataset=volumesbatisparis2011&rows=10&geofilter.polygon=("+myLatitude+"%2C"+myLongitude+")%2C("+latAntenne+"%2C"+longAntenne+")%2C("+latAntenne+"%2C"+myLongitude+")";
-           *//* HttpHandler sh = new HttpHandler();
-            String jsonStr = sh.makeServiceCall(urlbatvis);*//*
-            return jsonStr;
-
-        }*/
-
-
-        public String readJSONFromAsset1() {
-            String json = null;
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            String jsonmesure=null;
             try {
                 InputStream is = getAssets().open("mesures_globales.json");
                 int size = is.available();
                 byte[] buffer = new byte[size];
                 is.read(buffer);
                 is.close();
-                json = new String(buffer, "UTF-8");
+                jsonmesure = new String(buffer, "UTF-8");
             } catch (IOException ex) {
                 ex.printStackTrace();
-                return null;
             }
-            return json;
-        }
-        public String readJSONFromAssetantenneprox() {
-            String json = null;
-            try {
-                InputStream is = getAssets().open("antennestelecom.json");
-                int size = is.available();
-                byte[] buffer = new byte[size];
-                is.read(buffer);
-                is.close();
-                json = new String(buffer, "UTF-8");
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                return null;
-            }
-            return json;
-        }
-        public String readJSONFromAssetsup_support() {
-            String json = null;
-            try {
-                InputStream is = getAssets().open("sup_supportbis.json");
-                int size = is.available();
-                byte[] buffer = new byte[size];
-                is.read(buffer);
-                is.close();
-                json = new String(buffer, "UTF-8");
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                return null;
-            }
-            return json;
-        }
 
-        @Override
-        protected Void doInBackground(Void... arg0) {
-            /*HttpHandler sh = new HttpHandler();*/
+
+            HttpHandler sh = new HttpHandler();
+            HttpHandler sh1 = new HttpHandler();
+            HttpHandler sh2 = new HttpHandler();
+            HttpHandler sh3 = new HttpHandler();
+
+
+
+
+
+
 
             // Making a request to url and getting response
-            //String jsonStr = sh.makeServiceCall(url);
-            //String jsonStr1=sh.makeServiceCall(url1);
-            //String jsonStrzone=sh.makeServiceCall("https://data.anfr.fr/api/records/1.0/search/?dataset=observatoire_2g_3g_4g&geofilter.distance=48.853%2C2.35%2C250");
-            // Log.e(TAG, "Response from url: " + jsonStr);
+            String jsonStr = sh.makeServiceCall(url);
+            String jsonStrhauteur= sh2.makeServiceCall(urlhauteur);
+            String jsonStrzone= sh1.makeServiceCall(urlzone);
+            String jsonStrzonemesure=sh3.makeServiceCall(urlzonemesure);
 
 
+            Log.e(TAG, "Response from url: " + jsonStrzone);
 
-            try {
-                JSONObject jsonObj = new JSONObject(readJSONFromAssetsup_support());//donnÃ©es sup_support
-                JSONObject jsonObj1 = new JSONObject(readJSONFromAsset1());//donnÃ©es mesures
-                JSONObject jsonObj2 = new JSONObject(readJSONFromAssetantenneprox());//donnÃ©es observatoire2g_3g_4g
-                JSONObject jsonObjzone = new JSONObject(readJSONFromAssetantenneprox());//donnÃ©es observatoire2g_3g_4g zone de 250m autour de l'utilisateur
+            if (jsonStrzone != null) {
+                try {
+                    //code pour les hauteurs
+                    JSONObject jsonObjhauteur = new JSONObject(jsonStrhauteur);
+                    JSONArray recordshauteur = jsonObjhauteur.getJSONArray("records");
+                    for (int i = 0; i < recordshauteur.length(); i++) {
+                        JSONObject c1 = recordshauteur.getJSONObject(i);
+                        JSONObject fields1 = c1.getJSONObject("fields");
+                        String idsupport = fields1.getString("sup_id");
+                        String hauteur=fields1.getInt("sup_nm_haut")+"";
 
+                        sup_support.put(idsupport,hauteur);
 
+                    }
+                    //code pour les mesures
+                    JSONObject jsonObjmesure = new JSONObject(jsonmesure);
+                    JSONArray recordsmesure = jsonObjmesure.getJSONArray("records1");
+                    for (int i = 0; i < recordsmesure.length(); i++) {
+                        JSONObject c1 = recordsmesure.getJSONObject(i);
+                        String Longitude = c1.getString("FIELD2");
+                        String Latitude =c1.getString("FIELD3");
+                        String Niveauglobal = c1.getString("FIELD12");
+                        HashMap<String, String> mesure = new HashMap<>();
+                        mesure.put("Latitude",Latitude);
+                        mesure.put("Longitude",Longitude);
+                        mesure.put("Niveauglobal",Niveauglobal);
+                        Mesures.add(mesure);
+                    }
+                    //code pour les mesures dans une zone de 250m
+                    JSONObject jsonObjzonemesure = new JSONObject(jsonStrzonemesure);
+                    JSONArray recordszonemesure = jsonObjzonemesure.getJSONArray("records");
+                    for (int i = 0; i < recordszonemesure.length(); i++) {
+                        JSONObject c1 = recordszonemesure.getJSONObject(i);
+                        JSONObject fields = c1.getJSONObject("fields");
+                        String Longitude = fields.getDouble("longitude")+"";
+                        String Latitude =fields.getDouble("latitude")+"";
+                        String Niveauglobal = fields.getDouble("valeur_globale_v_m")+"";
+                        HashMap<String, String> mesures = new HashMap<>();
+                        mesures.put("Latitude",Latitude);
+                        mesures.put("Longitude",Longitude);
+                        mesures.put("Niveauglobal",Niveauglobal);
+                        Mesureszone.add(mesures);
+                    }
 
+                    for(int i=0;i<Mesures.size();i++){
 
-                // Getting JSON Array node
-                JSONArray records = jsonObj.getJSONArray("records");
-                JSONArray records1 = jsonObj1.getJSONArray("records1");
-
-
-
-                // Getting JSON Array node
-                JSONArray records2 = jsonObj2.getJSONArray("records");
-                JSONArray recordszone = jsonObjzone.getJSONArray("records");
-
-                //donnÃ©es sup_support
-                for (int i = 0; i < records.length(); i++) {
-                    JSONObject c = records.getJSONObject(i);
-                    JSONObject fields=c.getJSONObject("fields");
-
-                    String Numérodesupport = fields.getString("sup_id");
-                    String hauteur =fields.getString("sup_nm_haut");
-
-                    hashhauteur.put(Numérodesupport,"hauteur");
-
-
-
-                }
-                //donnÃ©es observatoire2g_3g_4g
-                for (int i = 0; i < records2.length(); i++) {
-                    JSONObject c2 = records2.getJSONObject(i);
-
-                    String datasetid = c2.getString("datasetid");
-                    String recordid = c2.getString("recordid");
-
-
-                    // Phone node is JSON Object
-                    JSONObject fields = c2.getJSONObject("fields");
-                    Log.i("tag", fields.toString());
-                    //String nom_reg = fields.getString("nom_reg");
-                    String emr_lb_systeme = fields.getString("emr_lb_systeme");
-
-//                       String nom_dept = fields.getString("nom_dept");
-                    String sta_nm_dpt = fields.getString("sta_nm_dpt");
-                    String mutualisation = fields.getString("mutualisation");
-                    String generation = fields.getString("generation");
-                    //String adr_lb_add2 = fields.getString("adr_lb_add2");
-//                        String adr_lb_add1 = fields.getString("adr_lb_add1");
-                    String adm_lb_nom = fields.getString("adm_lb_nom");
-                    String emr_dt_service = fields.getString("emr_dt_service");
-                    String coord = fields.getString("coord");
-                    String date_maj = fields.getString("date_maj");
-                    int dept = fields.getInt("dept");
-                    String code_insee = fields.getString("code_insee");
-                    String en_service = fields.getString("en_service");
-                    String sup_id = fields.getString("sup_id");
-
-                    JSONArray coordonnees = fields.getJSONArray("coordonnees");
-                    String latitude = Double.toString(coordonnees.getDouble(0));
-                    String longitude = Double.toString(coordonnees.getDouble(1));
-                    int id = fields.getInt("id");
-                    int total_de_adm_lb_nom = fields.getInt("total_de_adm_lb_nom");
-                    String mutualisation_public = fields.getString("mutualisation_public");
-                    JSONObject geometry = c2.getJSONObject("geometry");
-                    String type = geometry.getString("type");
-                    JSONArray coordinates = geometry.getJSONArray("coordinates");
-                    int latitude1 = coordinates.getInt(0);
-                    int longitude1 = coordinates.getInt(1);
-                    ArrayList<String> antenne=new ArrayList<String>();
-
-                    antenne.add(sup_id);
-                    antenne.add(longitude);
-                    antenne.add(latitude);
-                    antenne.add(generation);
-                    antenne.add(adm_lb_nom);
-                    antenne.add(hashhauteur.get(sup_id));
-                    Antennes.add(antenne);
-                }
-
-                //donnÃ©es observatoire2g_3g_4g zone de 250m autour de l'utilisateur
-                for (int i = 0; i < recordszone.length(); i++) {
-                    JSONObject czone = recordszone.getJSONObject(i);
-                    JSONObject fields = czone.getJSONObject("fields");
-                    String sup_id = fields.getString("sup_id");
-                    String generation = fields.getString("generation");
-                    String adm_lb_nom = fields.getString("adm_lb_nom");
-                    JSONArray coordonnees = fields.getJSONArray("coordonnees");
-                    String latitude = Double.toString(coordonnees.getDouble(0));
-                    String longitude = Double.toString(coordonnees.getDouble(1));
-                    ArrayList<String> mesurezone=new ArrayList<String>();
-                    mesurezone.add(latitude);
-                    mesurezone.add(longitude);
-                    mesurezone.add(generation);
-                    mesurezone.add(adm_lb_nom);
-                    //mesurezone.add(hashhauteur.get(sup_id));
-                    ZoneAntenne.add(mesurezone);
-                }
-                //code pour polygones
-                /*for(int i=0;i<ZoneAntenne.size();i++){
-                    String jsonStrbatvis=batvis("48.853","2.35",ZoneAntenne.get(i).get(0),ZoneAntenne.get(i).get(1));
-                    JSONObject jsonObjbatvis = new JSONObject(jsonStrbatvis);
-                    JSONArray recordsbatvis = jsonObjbatvis.getJSONArray("records");
-                    ArrayList<ArrayList<ArrayList<String>>> batsAntenne=new ArrayList<ArrayList<ArrayList<String>>>();
-                    for (int j = 0; j < recordsbatvis.length(); j++) {
-                        JSONObject cbatvis = recordsbatvis.getJSONObject(i);
-                        JSONObject geom = cbatvis.getJSONObject("geom");
-                        JSONArray coordinates = geom.getJSONArray("coordinates");
-
-                        ArrayList<ArrayList<String>> noeudsbat=new ArrayList<ArrayList<String>>();
-                        for (int k = 0; k < coordinates.length(); k++) {
-                            JSONArray coordk = coordinates.getJSONArray(k);
-                            String latitude = Double.toString(coordk.getDouble(0));
-                            String longitude = Double.toString(coordk.getDouble(1));
-                            ArrayList<String> noeud=new ArrayList<String>();
-                            noeud.add(latitude);
-                            noeud.add(longitude);
-                            noeudsbat.add(noeud);
+                        //myLatitude et myLongitude sont des Double maintenant
+                        double lat_a_degre=Float.parseFloat(myLatitude.toString());//ajouter ma latitude
+                        double lon_a_degre=Float.parseFloat(myLongitude.toString());//ajouter ma longitude
+                        double lat_b_degre=Float.parseFloat(Mesures.get(i).get("Latitude"));
+                        double lon_b_degre=Float.parseFloat(Mesures.get(i).get("Longitude"));
+                        double R = 6378000; //Rayon de la terre en mètre
+                        double lat_a = (Math.PI * lat_a_degre)/180;
+                        double lon_a = (Math.PI * lon_a_degre)/180;
+                        double lat_b = (Math.PI * lat_b_degre)/180;
+                        double lon_b = (Math.PI * lon_b_degre)/180;
+                        double d = R * (Math.PI / 2 - Math.asin(Math.sin(lat_b) * Math.sin(lat_a) + Math.cos(lon_b - lon_a) * Math.cos(lat_b) * Math.cos(lat_a)));
+                        HashMap<String, String> mesurezone = new HashMap<>();
+                        if(d<250){
+                            mesurezone.put("Latitude",Mesures.get(i).get("Latitude"));
+                            mesurezone.put("Longitude",Mesures.get(i).get("Longitude"));
+                            mesurezone.put("Niveauglobal",Mesures.get(i).get("Niveauglobal"));
+                            Mesureszone1.add(mesurezone);
                         }
-                        batsAntenne.add(noeudsbat);
+
+
 
                     }
-                    batvisibles.add(batsAntenne);
 
 
 
-                }
+                    //code pour zone 250m des antennes
+                    JSONObject jsonObjzone = new JSONObject(jsonStrzone);
+                    JSONArray recordszone = jsonObjzone.getJSONArray("records");
+                    for (int i = 0; i < recordszone.length(); i++) {
+                        JSONObject c = recordszone.getJSONObject(i);
+                        String datasetidzone = c.getString("datasetid");
+                        JSONObject fields = c.getJSONObject("fields");
+                        Log.i("tag", fields.toString());
+                        String generationzone = fields.getString("generation");
+                        String adm_lb_nomzone = fields.getString("adm_lb_nom");
+                        String sup_id = fields.getString("sup_id");
+                        JSONArray coordonnees = fields.getJSONArray("coordonnees");
+                        String Latitude = coordonnees.getInt(0)+"";
+                        String Longitude = coordonnees.getInt(1)+"";
+                        HashMap<String, String> contactzone = new HashMap<>();
 
-                for(int i = 0; i< batvisibles.size();i++){
-                    ArrayList<ArrayList<Point>> batsAntenne1=new ArrayList<ArrayList<Point>>();
-                    for(int j=0;j<batvisibles.get(i).size();j++){
-                        ArrayList<Point> noeudsbat1=new ArrayList<Point>();
-                        for(int k=0;k<batvisibles.get(i).get(j).size();k++){
-                            Point point=new Point(Float.parseFloat(batvisibles.get(i).get(j).get(k).get(0)),Float.parseFloat(batvisibles.get(i).get(j).get(k).get(1)));
-                            noeudsbat1.add(point);
+                        // adding each child node to HashMap key => value
+                        contactzone.put("Latitude", Latitude);
+                        contactzone.put("Longitude", Longitude);
+                        contactzone.put("adm_lb_nomzone", adm_lb_nomzone);
+                        contactzone.put("generationzone", generationzone);
+                        contactzone.put("hauteurzone",sup_support.get(sup_id));
+
+
+
+
+                        // adding contact to contact list
+                        Antennezone.add(contactzone);
+                    }
+                    //code pour les polygones
+
+                    for(int i=0;i<Antennezone.size();i++){
+                        String latAntenne=Antennezone.get(i).get("Latitude");
+                        String longAntenne=Antennezone.get(i).get("Longitude");
+                        String urlbatvis = "https://opendata.paris.fr/api/records/1.0/search/?dataset=bati_donnees_geographiques&rows=100&geofilter.polygon=("+"48.870156"+"%2C"+"2.301026"+")%2C("+latAntenne+"%2C"+longAntenne+")%2C("+latAntenne+"%2C"+"2.301026"+")";
+                        HttpHandler sh4 = new HttpHandler();
+                        String jsonbat = sh4.makeServiceCall(urlbatvis);;
+                        JSONObject jsonObjbatvis = new JSONObject(jsonbat);
+                        JSONArray recordsbatvis = jsonObjbatvis.getJSONArray("records");
+                        ArrayList<ArrayList<HashMap<String,String>>> batsAntenne=new ArrayList<ArrayList<HashMap<String,String>>>();
+                        for (int j = 0; j < recordsbatvis.length(); j++) {
+                            JSONObject cbatvis = recordsbatvis.getJSONObject(i);
+                            if (cbatvis.has("geom") ){
+
+
+                                JSONObject geom = cbatvis.getJSONObject("geom");
+                                JSONArray coordinates = geom.getJSONArray("coordinates");
+
+                                ArrayList<HashMap<String, String>> noeudsbat = new ArrayList<HashMap<String, String>>();
+                                for (int k = 0; k < coordinates.length(); k++) {
+                                    JSONArray coordk = coordinates.getJSONArray(k);
+                                    String latitude = Double.toString(coordk.getDouble(0));
+                                    String longitude = Double.toString(coordk.getDouble(1));
+                                    HashMap<String, String> noeud = new HashMap<>();
+                                    noeud.put("latitude", latitude);
+                                    noeud.put("longitude", longitude);
+                                    noeudsbat.add(noeud);
+                                }
+                                batsAntenne.add(noeudsbat);
+                            }
+
                         }
-                        batsAntenne1.add(noeudsbat1);
+                        batvisibles.add(batsAntenne);
+
 
 
                     }
-                    batvisiblesfloat.add(batsAntenne1);
-                }
-                for(int i = 0; i< batvisibles.size();i++){
-                    ArrayList<Polygon>polygon1=new ArrayList<Polygon>();
-                    for(int j=0;j<batvisibles.get(i).size();j++){
-                        Polygon polygon=Polygon.Builder().addVertex(batvisiblesfloat.get(i).get(j)).build();
-                        polygon1.add(polygon);
+                    for(int i = 0; i< batvisibles.size();i++){
+                        ArrayList<ArrayList<Point>> batsAntenne1=new ArrayList<ArrayList<Point>>();
+                        for(int j=0;j<batvisibles.get(i).size();j++){
+                            ArrayList<Point> noeudsbat1=new ArrayList<Point>();
+                            for(int k=0;k<batvisibles.get(i).get(j).size();k++){
+                                Point point=new Point(Float.parseFloat(batvisibles.get(i).get(j).get(k).get("latitude")),Float.parseFloat(batvisibles.get(i).get(j).get(k).get("longitude")));
+                                noeudsbat1.add(point);
+                            }
+                            batsAntenne1.add(noeudsbat1);
 
+
+                        }
+                        batvisiblesfloat.add(batsAntenne1);
                     }
-                    polygones.add(polygon1);
-                }*/
+                    for(int i = 0; i< batvisibles.size();i++){
+                        ArrayList<Polygon>polygon1=new ArrayList<Polygon>();
+                        for(int j=0;j<batvisibles.get(i).size();j++){
+                            Polygon polygon=Polygon.Builder().addVertex(batvisiblesfloat.get(i).get(j)).build();
+                            polygon1.add(polygon);
 
-
-
-
-
-
-                //donnÃ©es mesures
-                for (int i = 0; i < records1.length(); i++) {
-                    JSONObject c1 = records1.getJSONObject(i);
-                    String Longitude = c1.getString("FIELD2");
-                    String Latitude =c1.getString("FIELD3");
-                    String Niveauglobal = c1.getString("FIELD12");
-                    HashMap<String, String> contact1 = new HashMap<>();
-                    ArrayList<String> mesure=new ArrayList<String>();
-                    mesure.add(Latitude);
-                    mesure.add(Longitude);
-                    mesure.add(Niveauglobal);
-                    Mesures.add(mesure);
-                }
-                //liste des antennes Ã  afficher
-                /*for (int i = 0; i < ZoneAntenne.size(); i++) {
-                    if(isVisible("48.853","2.35",ZoneAntenne.get(i).get(0),ZoneAntenne.get(i).get(1),polygones.get(i)))
-                        antennesafficher.add(ZoneAntenne.get(i));
-                }
+                        }
+                        polygones.add(polygon1);
+                    }
+                    //liste des antennes à afficher
+                    for (int i = 0; i < Antennezone.size(); i++) {
+                        if(isVisible(myLatitude.toString(),myLongitude.toString(),Antennezone.get(i).get("Latitude"),Antennezone.get(i).get("Longitude"),polygones.get(i)))
+                            antennesafficher.add(Antennezone.get(i));
+                    }
+                /*
                 for (int i = 0; i < antennesafficher.size(); i++) {
                     ArrayList<String> liste=new ArrayList<String>();
                     liste.add("antenne");
@@ -371,13 +410,52 @@ public class FetchDataActivity extends AppCompatActivity {
 
 
 
-            } catch (final Exception e) {
-                Log.e(TAG, "Json parsing error: " + e.getMessage());
+                    //code pour les antennes de paris
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    JSONArray records = jsonObj.getJSONArray("records");
+                    for (int i = 0; i < records.length(); i++) {
+                        JSONObject c = records.getJSONObject(i);
+                        String datasetid = c.getString("datasetid");
+                        JSONObject fields = c.getJSONObject("fields");
+                        Log.i("tag",fields.toString());
+                        String generation = fields.getString("generation");
+                        String adm_lb_nom = fields.getString("adm_lb_nom");
+                        String sup_id = fields.getString("sup_id");
+                        JSONArray coordonnees = fields.getJSONArray("coordonnees");
+                        int latitude=coordonnees.getInt(0);
+                        int longitude=coordonnees.getInt(1);
+                        HashMap<String, String> contact = new HashMap<>();
+
+                        // adding each child node to HashMap key => value
+                        contact.put("datasetid", datasetid);
+                        contact.put("generation", generation);
+                        contact.put("adm_lb_nom", adm_lb_nom);
+
+
+                        // adding contact to contact list
+                        contactList.add(contact);
+                    }
+                } catch (final JSONException e) {
+                    Log.e(TAG, "Json parsing error: " + e.getMessage());
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(),
+                                    "Json parsing error: " + e.getMessage(),
+                                    Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                    });
+
+                }
+
+            } else {
+                Log.e(TAG, "Couldn't get json from server.");
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(getApplicationContext(),
-                                "Json parsing error: " + e.getMessage(),
+                                "Couldn't get json from server. Check LogCat for possible errors!",
                                 Toast.LENGTH_LONG)
                                 .show();
                     }
@@ -385,10 +463,8 @@ public class FetchDataActivity extends AppCompatActivity {
 
             }
 
-
             return null;
         }
-
 
         @Override
         protected void onPostExecute(Void result) {
@@ -396,23 +472,27 @@ public class FetchDataActivity extends AppCompatActivity {
             // Dismiss the progress dialog
             if (pDialog.isShowing())
                 pDialog.dismiss();
+                Intent intent = new Intent (getApplicationContext(),CoreActivity.class);
+                startActivity(intent);
             /**
              * Updating parsed JSON data into ListView
              * */
-
-            String[] test= new String[]{ZoneAntenne.size()+"",Mesures.size()+"",hashhauteur.size()+"",Antennes.size()+"",
-                    "Benoit", "Cyril", "David", "Eloise", "Florent",
+            String[] test= new String[]{contactList.size()+"",Antennezone.size()+"",Mesures.size()+"",
+                    sup_support.size()+"",Mesureszone.size()+"",Mesureszone1.size()+"",batvisibles.size()+"",batvisiblesfloat.size()+"", polygones.size()+"", antennesafficher.size()+"",
                     "Gerard", "Hugo", "Ingrid", "Jonathan", "Kevin", "Logan",
                     "Mathieu", "Noemie", "Olivia", "Philippe", "Quentin", "Romain",
                     "Sophie", "Tristan", "Ulric", "Vincent", "Willy", "Xavier"
             };
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(FetchDataActivity.this,
-                    android.R.layout.simple_list_item_1, test);
-            mListView.setAdapter(adapter);
 
+            /*ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(FetchDataActivity.this,
+                    R.layout.list_item, test);*/
+            /*ListAdapter adapter = new SimpleAdapter(
+                    FetchDataActivity.this, contactListzone,
+                    R.layout.list_item, new String[]{ "datasetidzone","generationzone","adm_lb_nomzone"}, new int[]{R.id.info1,
+                    R.id.info2,R.id.info3});*/
 
+            /*lv.setAdapter(adapter1);*/
         }
-
 
     }
 }

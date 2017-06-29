@@ -6,7 +6,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/lightPurple</item>
         <item name="android:navigationBarColor">@color/black</item>
         <!-- Theme for the Preferences -->
 
@@ -30,6 +30,14 @@
         <!-- Customize your theme here. -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.ActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        ...
+        <item name="actionMenuTextColor">@color/lightPurple</item>
+        <item name="theme">@color/lightPurple</item>
+
+        ...
     </style>
 
 

@@ -22,9 +22,14 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            app:titleTextColor="@color/lightPurple"
+            app:subtitleTextColor="@color/lightPurple"
 
-            android:background="@drawable/toolbar_shape"
+            android:theme="@style/AppTheme.ActionBar"
+            android:background="@color/whiteSmoke"
+            android:textColorSecondary="@color/lightPurple"
             />
+
 
     </android.support.design.widget.AppBarLayout>
 
@@ -58,5 +63,14 @@
 
 
     </FrameLayout>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/grey_border_bottom"
+        app:itemTextColor="@color/black"
+        app:menu="@menu/bottom_navigation_bar"/>
 
 </LinearLayout>

@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white"
+
     tools:context=".ProximityActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -22,8 +22,12 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            app:titleTextColor="@color/lightPurple"
+            app:subtitleTextColor="@color/lightPurple"
 
-            android:background="@drawable/toolbar_shape"
+            android:theme="@style/AppTheme.ActionBar"
+            android:background="@color/whiteSmoke"
+            android:textColorSecondary="@color/lightPurple"
             />
 
     </android.support.design.widget.AppBarLayout>

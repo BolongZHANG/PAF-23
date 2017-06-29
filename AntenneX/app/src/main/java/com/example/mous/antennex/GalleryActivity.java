@@ -13,6 +13,10 @@ import android.app.Activity;
         import android.graphics.BitmapFactory;
         import android.net.Uri;
         import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -46,6 +50,8 @@ public class GalleryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
 
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
+
         listView = (ListView) findViewById(R.id.list_item);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -61,7 +67,54 @@ public class GalleryActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), (String)parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
             }
         });
+
+
+        bottomNavigationView.setOnNavigationItemSelectedListener
+                (new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                        switch (item.getItemId()) {
+                            case R.id.homeItem:
+                                Intent intent = new Intent(GalleryActivity.this,MainActivity.class);
+
+                                /*intent.putExtra("Check",1);*/
+                                startActivity(intent);
+                                break;
+                            case R.id.historique:
+                                finish();
+                                break;
+                            case R.id.parameter:
+                                Intent intent2 = new Intent(getApplicationContext(),MainActivity.class);
+
+                                intent2.putExtra("Check","2");
+                                startActivity(intent2);
+
+                                break;
+
+                        }
+
+                        return true;
+                    }
+                });
+
+        /*FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        transaction.commit();*/
+
     }
+    //POUR REVENIR AUX FRAGMENTS
+    @Override
+    public void onBackPressed()
+    {
+
+        Intent intent2 = new Intent(getApplicationContext(),MainActivity.class);
+
+        intent2.putExtra("Check","2");
+        startActivity(intent2);
+    }
+
+    // FIN POUR REVENIR AUX FRAGMENTS
 
     private void setData() {
         stringArrayList = new ArrayList<>();

@@ -1,5 +1,7 @@
 package com.example.mous.antennex;
 
+import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -21,9 +23,11 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity {
 
 
+
     static {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
 
+
+
+        Intent intent = getIntent();
+        String s1 = intent.getStringExtra("Check");
+
+        if (s1==null) {
+            s1 = "";
+            Fragment fragment = new PreferenceFragmentCustom();
+            if (fragment != null) {
+
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_layout, fragment);
+                transaction.commit();
+
+            }
+        }
 
 
 
@@ -57,12 +77,18 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        //Manually displaying the first fragment - one time only
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout, Fragment1.newInstance());
-        transaction.commit();
 
-        //Used to select an item programmatically
-        //bottomNavigationView.getMenu().getItem(2).setChecked(true);
+        if (savedInstanceState == null) {
+
+            //Manually displaying the first fragment - one time only
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.frame_layout, Fragment1.newInstance());
+            transaction.commit();
+
+            //Used to select an item programmatically
+            //bottomNavigationView.getMenu().getItem(2).setChecked(true);
+        }
     }
 }
+
+
