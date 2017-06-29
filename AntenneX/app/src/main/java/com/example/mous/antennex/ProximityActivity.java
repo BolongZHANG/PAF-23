@@ -1,8 +1,10 @@
 package com.example.mous.antennex;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -45,6 +47,36 @@ public class ProximityActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_proximity);
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener
+                (new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                        switch (item.getItemId()) {
+                            case R.id.homeItem:
+                                Intent intent = new Intent(ProximityActivity.this,MainActivity.class);
+
+                                intent.putExtra("Check",1);
+                                startActivity(intent);
+                                break;
+                            case R.id.historique:
+                                finish();
+                                break;
+                            case R.id.parameter:
+                                Intent intent2 = new Intent(getApplicationContext(),MainActivity.class);
+
+                                intent2.putExtra("Check","2");
+                                startActivity(intent2);
+
+                                break;
+
+                        }
+
+                        return true;
+                    }
+                });
 
         ArrayList<Double> myInitialLocation = locationInOnCreate();
         myLatitude = myInitialLocation.get(0);

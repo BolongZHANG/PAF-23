@@ -124,6 +124,7 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private Button share ;
     private File imagePath;
     // FIN DE CETTE PARTIE ( SCREEN + SHARE )
+    private int valeurEntiereGauge;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,8 +143,9 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
 
                 TextView descriptionTextView = (TextView)findViewById(R.id.cameraTextView);
-                descriptionTextView.setText("LA CON DE TES MORTS");
-                /*disappear(descriptionTextView); // fais un effet toast*/
+                valeurEntiereGauge
+                descriptionTextView.setText(valueGauge+"");
+                disappear(descriptionTextView); // fais un effet toast
 
             }
         });
