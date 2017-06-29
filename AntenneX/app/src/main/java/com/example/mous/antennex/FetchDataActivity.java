@@ -82,12 +82,14 @@ public class FetchDataActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         ArrayList<Double> myInitialLocation = locationInOnCreate();
         myLatitude = myInitialLocation.get(0);
         myLongitude = myInitialLocation.get(1);
 
         //myLatitude=48.825945;
         //myLongitude =  2.345271;
+
 
 
         /*locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);

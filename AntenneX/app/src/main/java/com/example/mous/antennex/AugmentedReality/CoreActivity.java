@@ -12,6 +12,7 @@ import android.hardware.Camera;
 
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -118,7 +119,7 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
     ImageView proximityButton;
 
     Display display;
-    private Button buttonExposition;
+    private ImageView buttonExposition;
 
     //POUR PRENDRE UN SCREEN DE L'ACTIVITE ET L'ENREGISTRER ENSUITE
     private Button share ;
@@ -131,23 +132,6 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_core);
-        buttonExposition=(Button) findViewById(R.id.gaugeButton);
-
-        buttonExposition.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                descriptionTextView.setVisibility(View.VISIBLE);
-
-
-
-
-                TextView descriptionTextView = (TextView)findViewById(R.id.cameraTextView);
-                descriptionTextView.setText("LA CON DE TES MORTS");
-                /*disappear(descriptionTextView); // fais un effet toast*/
-
-            }
-        });
-
 
 
 
@@ -757,7 +741,7 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
 
     // Calculer la distance
-    public double getDistance( double lat_a_degre,  double lon_a_degre, double lat_b_degre,  double lon_b_degre) {
+    public  double getDistance( double lat_a_degre,  double lon_a_degre, double lat_b_degre,  double lon_b_degre) {
 
         double R = 6378000; //Rayon de la terre en mètre
 

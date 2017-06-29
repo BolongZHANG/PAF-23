@@ -29,7 +29,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ListAdapterGallery extends ArrayAdapter<String> {
 
-    private GalleryActivity activity;
+    private MesureActivity activity;
     private List<String> operatorList;
     private List<String> searchList;
     private List<String> distanceList; // Pour l'affichage de l'état de connexion
@@ -37,7 +37,7 @@ public class ListAdapterGallery extends ArrayAdapter<String> {
     private List<String> hauteurList;
 
 
-    public ListAdapterGallery(GalleryActivity context, int resource, List<String> objects, List<String> distance, List<String> hauteurList, ArrayList<Integer> profilePictures) {
+    public ListAdapterGallery(MesureActivity context, int resource, List<String> objects, List<String> distance, List<String> hauteurList, ArrayList<Integer> profilePictures) {
         super(context, resource, objects);
         this.activity = context;
         this.operatorList = objects;
@@ -147,8 +147,12 @@ public class ListAdapterGallery extends ArrayAdapter<String> {
             holder.imageView.setImageDrawable(activity.getDrawable(R.drawable.bouygues));
         }
 
+        else{
+            holder.imageView.setImageDrawable(activity.getDrawable(R.drawable.mesure_rotated_big));
+        }
 
-        holder.operatorHauteur.setText(hauteurList.get(position));
+
+        /*holder.operatorHauteur.setText(hauteurList.get(position));*/
 
         return convertView;
     }

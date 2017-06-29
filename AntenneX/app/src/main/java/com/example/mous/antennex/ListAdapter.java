@@ -99,14 +99,16 @@ public class ListAdapter extends ArrayAdapter<String> {
         String orangeCode="#ffa500";
         String greenCode="#09ce7c";
 
-        if (Integer.parseInt(distanceList.get(position))<50 ) {
+
+        //Integer.parseInt avant
+        if (Float.parseFloat(distanceList.get(position))<50 ) {
             holder.operatorConnected.setTextColor(Color.parseColor(redCode));
         }
-        if (Integer.parseInt(distanceList.get(position))>50 && Integer.parseInt(distanceList.get(position))<150 ) {
+        if (Float.parseFloat(distanceList.get(position))>50 && Float.parseFloat(distanceList.get(position))<150 ) {
             holder.operatorConnected.setTextColor(Color.parseColor(orangeCode));
         }
 
-        if (Integer.parseInt(distanceList.get(position))>150  ) {
+        if (Float.parseFloat(distanceList.get(position))>150  ) {
             holder.operatorConnected.setTextColor(Color.parseColor(greenCode));
         }
 
