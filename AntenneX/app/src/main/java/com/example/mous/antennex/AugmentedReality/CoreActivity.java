@@ -200,31 +200,6 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
         });
 
 
-
-        /*Toolbar coreToolbar = (Toolbar) findViewById(R.id.tToolbar);
-        amvMenu = (ActionMenuView) findViewById(R.id.amvM);
-        amvMenu.setOnMenuItemClickListener(new ActionMenuView.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                return onOptionsItemSelected(menuItem);
-            }
-        });*/
-
-        /*LinearLayout linearLayout = (LinearLayout) findViewById(R.id.lin);
-        linearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent (getApplicationContext(), ProximityActivity.class);
-                startActivity(intent);
-            }
-        });
-*/
-        /*setSupportActionBar(coreToolbar);
-        getSupportActionBar().setTitle(null);*/
-        /*getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
-
-
-
         display = ((android.view.WindowManager)getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 
         setupListeners();
@@ -232,11 +207,6 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
         initializeArrays();
         Log.d("Test", "Fin du start");
         setAugmentedRealityPoint();
-        /*ImageView wallpaper = (ImageView) findViewById(R.id.wallpaper);
-        fadeOutAndHideImage(wallpaper);*/
-
-
-
 
     }
 
@@ -248,26 +218,6 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
     }
 
 
-   /* @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        // use amvMenu here
-        inflater.inflate(R.menu.core_menu, amvMenu.getMenu());
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Do your actions here
-        switch (item.getItemId()){
-            case R.id.action_back:
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-    }*/
 
 
     // DEBUT DU CODE SCREEN ET SHARE
@@ -599,10 +549,7 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     private boolean rollIsBetween(double minAngle, double maxAngle, double roll) {
         // Checks if the azimuth angle lies in minAngle and maxAngle of Camera View Sector
-        /*if (minAngle > maxAngle) {
-            if (rollIsBetween(0, maxAngle, roll) || rollIsBetween(minAngle, 360, roll))
-                return true;
-        } else if (roll > minAngle && roll < maxAngle)*/
+
         Boolean test = roll> minAngle && roll< maxAngle;
         Double minangle = minAngle;
         Double maxangle = maxAngle;
@@ -682,22 +629,7 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
     }
 
 
-    /*@Override
-    public void onAzimuthChanged(float azimuthChangedFrom, float azimuthChangedTo) {
-        // Function to handle Change in azimuth angle
-        mAzimuthReal = azimuthChangedTo;
-        mAzimuthTheoretical = calculateTheoreticalAzimuth(mPoi);
 
-
-        // Since Camera View is perpendicular to device plane
-        mAzimuthReal = (mAzimuthReal+90)%360;
-
-        pointerIcon = (ImageView) findViewById(R.id.icon);
-
-        consequenceIsBetween(mAzimuthTheoretical,pointerIcon);
-        updateDescription();
-    }
-*/
 
 
     // To handle Change in azimuth angle
@@ -864,24 +796,7 @@ public class CoreActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
 
 
-    private void fadeOutAndHideImage(final ImageView img)
-    {
-        Animation fadeOut = new AlphaAnimation(1, 0);
-        fadeOut.setInterpolator(new AccelerateInterpolator());
-        fadeOut.setDuration(3000);
 
-        fadeOut.setAnimationListener(new Animation.AnimationListener()
-        {
-            public void onAnimationEnd(Animation animation)
-            {
-                img.setVisibility(View.GONE);
-            }
-            public void onAnimationRepeat(Animation animation) {}
-            public void onAnimationStart(Animation animation) {}
-        });
-
-        img.startAnimation(fadeOut);
-    }
 
     private int imageSizeDP(int index){
         int imageDP;

@@ -50,9 +50,7 @@ public class FetchDataActivity extends AppCompatActivity {
     ArrayList<ArrayList<Polygon>> polygones;
     ArrayList<HashMap<String,String>> antennesafficher;
 
-    /*CoreActivity core = new CoreActivity();
-    public String myLatitude = core.locationInOnCreate().get(0)+""; ;
-    public String myLongitude = core.locationInOnCreate().get(1)+""; ;*/
+
 
     Double myLatitude;
     Double myLongitude;
@@ -390,29 +388,7 @@ public class FetchDataActivity extends AppCompatActivity {
                         if(isVisible(myLatitude.toString(),myLongitude.toString(),Antennezone.get(i).get("Latitude"),Antennezone.get(i).get("Longitude"),polygones.get(i)))
                             antennesafficher.add(Antennezone.get(i));
                     }
-                /*
-                for (int i = 0; i < antennesafficher.size(); i++) {
-                    ArrayList<String> liste=new ArrayList<String>();
-                    liste.add("antenne");
-                    liste.add(antennesafficher.get(i).get(0));
-                    liste.add(antennesafficher.get(i).get(1));
-                    liste.add(antennesafficher.get(i).get(2));
-                    liste.add(antennesafficher.get(i).get(3));
-                    liste.add(antennesafficher.get(i).get(4));
-                    Listefinale.add(liste);
 
-                }
-                for (int i = 0; i < Mesures.size(); i++) {
-                    ArrayList<String> liste1=new ArrayList<String>();
-                    liste1.add("mesure");
-                    liste1.add(Mesures.get(i).get(0));
-                    liste1.add(Mesures.get(i).get(1));
-                    liste1.add(Mesures.get(i).get(2));
-                    Listefinale.add(liste1);
-
-
-
-                }*/
 
 
 
@@ -480,24 +456,7 @@ public class FetchDataActivity extends AppCompatActivity {
                 pDialog.dismiss();
                 Intent intent = new Intent (getApplicationContext(),CoreActivity.class);
                 startActivity(intent);
-            /**
-             * Updating parsed JSON data into ListView
-             * */
-            String[] test= new String[]{contactList.size()+"",Antennezone.size()+"",Mesures.size()+"",
-                    sup_support.size()+"",Mesureszone.size()+"",Mesureszone1.size()+"",batvisibles.size()+"",batvisiblesfloat.size()+"", polygones.size()+"", antennesafficher.size()+"",
-                    "Gerard", "Hugo", "Ingrid", "Jonathan", "Kevin", "Logan",
-                    "Mathieu", "Noemie", "Olivia", "Philippe", "Quentin", "Romain",
-                    "Sophie", "Tristan", "Ulric", "Vincent", "Willy", "Xavier"
-            };
 
-            /*ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(FetchDataActivity.this,
-                    R.layout.list_item, test);*/
-            /*ListAdapter adapter = new SimpleAdapter(
-                    FetchDataActivity.this, contactListzone,
-                    R.layout.list_item, new String[]{ "datasetidzone","generationzone","adm_lb_nomzone"}, new int[]{R.id.info1,
-                    R.id.info2,R.id.info3});*/
-
-            /*lv.setAdapter(adapter1);*/
         }
 
     }

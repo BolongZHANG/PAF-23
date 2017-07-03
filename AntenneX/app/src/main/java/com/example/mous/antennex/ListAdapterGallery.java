@@ -113,25 +113,6 @@ public class ListAdapterGallery extends ArrayAdapter<String> {
 
 
 
-
-
-       /*if (valeurHauteur<50 && valeurHauteur>0){
-           holder.operatorConnected.setTextColor(Color.parseColor("#1E824C"));
-       }
-
-       if (valeurHauteur<150 && valeurHauteur>50){
-           holder.operatorConnected.setTextColor(Color.parseColor("#ffa500"));
-       }
-
-        if (valeurHauteur>150){
-            holder.operatorConnected.setTextColor(Color.parseColor("#ff0000"));
-        }*/
-
-        /*else {
-            holder.operatorConnected.setTextColor(Color.parseColor("#bc060b"));
-        }*/
-
-
         holder.operatorConnected.setText(distanceList.get(position));
 
         int identifiant = profilePictures.get(position);

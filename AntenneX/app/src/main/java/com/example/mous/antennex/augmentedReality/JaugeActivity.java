@@ -31,14 +31,10 @@ public class JaugeActivity extends Activity {
         setContentView(R.layout.activity_jauge);
 
         gaugeView = (GaugeView) findViewById(R.id.gaugeView);
-        /*gaugeView1 = (GaugeView) findViewById(R.id.gaugeView1);
-        gaugeView2 = (GaugeView) findViewById(R.id.gaugeView2);
-        gaugeView3 = (GaugeView) findViewById(R.id.gaugeView3);*/
+
 
         gaugeView.setRotateDegree(degree);
-        /*gaugeView1.setRotateDegree(degree);
-        gaugeView2.setRotateDegree(degree);
-        gaugeView3.setRotateDegree(degree);*/
+
 
         ((Button) findViewById(R.id.btnStart)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,20 +77,7 @@ public class JaugeActivity extends Activity {
                                 gaugeView.setSweepAngleThirdChart(0);
                                 gaugeView.setRotateDegree(degree);
 
-                                /*gaugeView1.setSweepAngleFirstChart(0);
-                                gaugeView1.setSweepAngleSecondChart(0);
-                                gaugeView1.setSweepAngleThirdChart(0);
-                                gaugeView1.setRotateDegree(degree);
 
-                                gaugeView2.setSweepAngleFirstChart(0);
-                                gaugeView2.setSweepAngleSecondChart(0);
-                                gaugeView2.setSweepAngleThirdChart(0);
-                                gaugeView2.setRotateDegree(degree);
-
-                                gaugeView3.setSweepAngleFirstChart(0);
-                                gaugeView3.setSweepAngleSecondChart(0);
-                                gaugeView3.setSweepAngleThirdChart(0);
-                                gaugeView3.setRotateDegree(degree);*/
                             }
                         });
                         Thread.sleep(1);
